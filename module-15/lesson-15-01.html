@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M/J Music Theory 2 - Lesson 15.01</title>
+  <style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+
+    /* Page structure */
+    .optima-header { background: #0E1C42; padding: 0; border-bottom: 4px solid #00AEEF; }
+    .optima-header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 18px 32px; }
+    .optima-header-owl { width: 48px; height: 48px; flex-shrink: 0; }
+    .optima-header-title { color: #ffffff; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; line-height: 1.1; }
+    .optima-header-title span { display: block; color: #00AEEF; font-size: 12px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+
+    .metadata-strip { background: #F0F4FA; border-bottom: 1px solid #D8DDE8; display: flex; flex-wrap: wrap; gap: 0; }
+    .metadata-strip-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; flex-wrap: wrap; }
+    .meta-cell { padding: 10px 22px; border-right: 1px solid #D8DDE8; font-size: 12px; color: #4A5568; letter-spacing: 0.3px; }
+    .meta-cell:last-child { border-right: none; }
+    .meta-cell strong { display: block; color: #0E1C42; font-size: 13px; font-weight: 600; }
+
+    .page-body { padding: 32px 40px 48px; }
+    @media (max-width: 700px) { .page-body { padding: 20px 16px 36px; } }
+
+    .title-strip { background: #0E1C42; border-radius: 8px; padding: 22px 28px; margin-bottom: 28px; }
+    .title-strip-eyebrow { font-size: 11px; color: #00AEEF; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 6px; }
+    .title-strip-heading { font-size: 26px; font-weight: 700; color: #ffffff; line-height: 1.25; margin-bottom: 4px; text-wrap: balance; }
+    .title-strip-sub { font-size: 13px; color: #9BAED0; letter-spacing: 0.4px; }
+
+    .section-block { border-top: 4px solid #1A6B3C; border-radius: 0 0 8px 8px; background: #FFFFFF; border: 1px solid #D1D9E0; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 24px 28px; margin-bottom: 24px; }
+    .section-block.purple-top { border-top-color: #6B4C9A; }
+    .section-title { font-size: 13px; font-weight: 700; color: #1A6B3C; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .section-title.purple { color: #6B4C9A; }
+
+    .focus-intro { font-size: 16px; color: #2D3748; line-height: 1.7; margin-bottom: 18px; }
+
+    .obj-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .obj-item { display: flex; align-items: flex-start; gap: 14px; }
+    .obj-num { width: 28px; height: 28px; border-radius: 50%; background: #1A6B3C; color: #ffffff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .obj-text { font-size: 15px; color: #1a2340; line-height: 1.6; }
+
+    .materials-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .materials-list li { font-size: 15px; color: #2D3748; line-height: 1.6; padding-left: 20px; position: relative; }
+    .materials-list li::before { content: "\25B6"; position: absolute; left: 0; color: #1A6B3C; font-size: 11px; top: 4px; }
+
+    .prose { font-size: 15px; color: #1a2340; line-height: 1.75; margin-bottom: 16px; }
+    .prose:last-child { margin-bottom: 0; }
+
+    .sub-heading { font-size: 14px; font-weight: 700; color: #0E1C42; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Visuals */
+    .visual-container { margin: 20px 0; overflow-x: auto; }
+
+    /* Flowchart */
+    .flowchart { display: flex; flex-direction: column; gap: 0; align-items: center; }
+    .flow-step { display: flex; align-items: stretch; width: 100%; max-width: 680px; }
+    .flow-num { width: 44px; min-width: 44px; background: #0E1C42; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; border-radius: 8px 0 0 8px; }
+    .flow-body { flex: 1; background: #E7F4EC; border: 1px solid #B2D9C2; border-left: none; border-radius: 0 8px 8px 0; padding: 12px 18px; }
+    .flow-body-title { font-size: 13px; font-weight: 700; color: #1A6B3C; margin-bottom: 2px; }
+    .flow-body-detail { font-size: 13px; color: #2D3748; line-height: 1.5; }
+    .flow-arrow { width: 44px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #1A6B3C; padding: 4px 0; }
+    .flow-connector { display: flex; justify-content: center; align-items: center; height: 24px; }
+    .flow-connector-line { width: 3px; height: 100%; background: #2A9D5C; border-radius: 2px; }
+
+    /* Phrase function diagram */
+    .phrase-bar { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid #D1D9E0; margin-bottom: 14px; }
+    .phrase-zone { flex: 1; padding: 12px 10px; text-align: center; }
+    .phrase-zone.tonic { background: #1A6B3C; }
+    .phrase-zone.tonic-light { background: #2A9D5C; }
+    .phrase-zone.pd { background: #E7A800; }
+    .phrase-zone.dom { background: #C0392B; }
+    .phrase-zone-label { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .phrase-zone-desc { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.3; }
+    .phrase-chords { display: flex; border: 1px solid #D1D9E0; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; }
+    .phrase-chord-box { flex: 1; padding: 10px 8px; text-align: center; }
+    .phrase-chord-box.tonic { background: #E7F4EC; border-right: 1px solid #D1D9E0; }
+    .phrase-chord-box.pd { background: #FFF8E1; border-right: 1px solid #D1D9E0; }
+    .phrase-chord-box.dom { background: #FDECEC; border-right: 1px solid #D1D9E0; }
+    .phrase-chord-box.tonic-end { background: #E7F4EC; }
+    .phrase-chord-label { font-size: 13px; color: #666; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px; }
+    .phrase-chord-roman { font-size: 16px; font-weight: 700; color: #0E1C42; }
+    .phrase-chord-roman .sup { font-size: 11px; vertical-align: super; }
+    .phrase-caption { font-size: 12px; color: #5A6680; text-align: center; margin-top: 8px; font-style: italic; }
+
+    /* Harmonic rhythm strip */
+    .rhythm-strip { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid #D1D9E0; }
+    .rhythm-half { flex: 1; padding: 16px 14px; }
+    .rhythm-half.settled { background: #EFF5F9; border-right: 2px solid #D1D9E0; }
+    .rhythm-half.tension { background: #FDF0EC; }
+    .rhythm-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .rhythm-label.settled { color: #2471A3; }
+    .rhythm-label.tension { color: #C0392B; }
+    .rhythm-desc { font-size: 12px; color: #5A6680; margin-bottom: 14px; line-height: 1.5; }
+    .rhythm-measures { display: flex; gap: 6px; align-items: flex-end; }
+    .rhythm-block { border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #ffffff; }
+    .rhythm-block.settled { background: #2471A3; height: 48px; }
+    .rhythm-block.tension { background: #C0392B; height: 30px; }
+    .rhythm-caption { font-size: 11px; color: #7A8499; margin-top: 8px; font-style: italic; }
+
+    /* Flip card grid */
+    .flip-card-label { font-size: 12px; font-weight: 700; color: #6B4C9A; letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+    .flip-card-front-title { font-size: 15px; font-weight: 700; color: #0E1C42; margin-bottom: 6px; line-height: 1.4; }
+    .flip-card-front-hint { font-size: 12px; color: #7A6FA0; font-style: italic; }
+    .flip-card-back-text { font-size: 14px; color: #1a2340; line-height: 1.65; text-align: left; }
+    .flip-card-back-hint { font-size: 11px; color: #6B4C9A; margin-top: 8px; font-style: italic; }
+
+    /* What next / one thing */
+    .next-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .next-item { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: #1a2340; line-height: 1.6; }
+    .next-bullet { width: 8px; height: 8px; border-radius: 50%; background: #6B4C9A; flex-shrink: 0; margin-top: 8px; }
+
+    .one-thing-box { background: #E7F4EC; border-radius: 8px; padding: 18px 22px; border: 1px solid #B2D9C2; }
+    .one-thing-box p { font-size: 16px; color: #1A6B3C; font-weight: 600; line-height: 1.65; margin: 0; }
+
+    .discussion-box { background: #F7F4FB; border-left: 4px solid #6B4C9A; border-radius: 4px; padding: 14px 18px; margin: 14px 0; }
+    .discussion-box p { font-size: 15px; color: #2D1A52; line-height: 1.7; margin: 0; font-style: italic; }
+
+    /* Footer */
+    .optima-footer { background: #0E1C42; padding: 18px 32px; margin-top: 0; }
+    .optima-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .optima-footer-left { font-size: 12px; color: #9BAED0; }
+    .optima-footer-right { font-size: 12px; color: #9BAED0; text-align: right; }
+  </style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 15</div>
+        <div style="font-size: 12px; color: #666;">Harmonic Analysis</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 15.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Harmonic Analysis</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<div class="page-body">
+
+  <!-- TITLE STRIP -->
+  <div class="title-strip">
+    <div class="title-strip-eyebrow">LESSON 15.01 &middot; Lesson</div>
+    <div class="title-strip-heading">Harmonic Analysis: The Complete Method</div>
+    <div class="title-strip-sub">Quarter 2 &middot; Module 15</div>
+  </div>
+
+  <!-- TODAY'S FOCUS -->
+  <div class="section-block">
+    <div class="section-title">Today's Focus</div>
+    <p class="focus-intro">
+      Harmonic analysis is how musicians read a chord progression the way a reader reads a sentence &ndash; not just word by word, but understanding how each part contributes to the whole meaning. In this lesson you will learn a six-step method for labeling every chord in a passage, identifying what role each one plays, and writing a short paragraph connecting those harmonic choices to the music's expressive effect.
+    </p>
+
+    <div class="sub-heading">Objectives</div>
+    <ul class="obj-list">
+      <li class="obj-item">
+        <div class="obj-num">1</div>
+        <div class="obj-text">Perform a complete Roman numeral analysis of an 8&ndash;16 measure passage in major or minor, including inversions, seventh chords, secondary dominants, and borrowed chords.</div>
+      </li>
+      <li class="obj-item">
+        <div class="obj-num">2</div>
+        <div class="obj-text">Identify all secondary dominants, borrowed chords, and cadence types in an analyzed passage.</div>
+      </li>
+      <li class="obj-item">
+        <div class="obj-num">3</div>
+        <div class="obj-text">Write a harmonic analysis paragraph that connects a passage's chord progression to its expressive function.</div>
+      </li>
+    </ul>
+
+    <div class="sub-heading" style="margin-top:22px;">Materials</div>
+    <ul class="materials-list">
+      <li>Open Music Theory (OMT), pages 411, 412, and 530</li>
+      <li>Staff paper or your notebook</li>
+      <li>BWV 253, "Aus meines Herzens Grunde" &ndash; <a href="https://imslp.org/wiki/371_Four-Part_Chorales,_BWV_253-438_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener" style="color:#1A6B3C;">the first chorale in this free, public-domain IMSLP collection</a> (or the copy your teacher posted in Canvas Files)</li>
+    </ul>
+  </div>
+
+  <!-- PART 1: THE SIX-STEP METHOD -->
+  <div class="section-block">
+    <div class="section-title">Part 1: The Six-Step Method</div>
+    <p class="prose">
+      OMT (p. 412) lays out a reliable sequence for analyzing any tonal passage. Working through steps in order &ndash; rather than jumping to what looks interesting &ndash; prevents the most common errors, like mislabeling a secondary dominant as a simple triad or missing a borrowed chord because you assumed the key was pure major.
+    </p>
+
+    <!-- VISUAL 1: Flowchart -->
+    <div class="visual-container">
+      <div class="flowchart">
+
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Determine the Key</div>
+            <div class="flow-body-detail">Read the key signature. Confirm the tonal center by noting which pitch phrases begin and end on. Decide major or minor. Flag any accidentals that might suggest a modal shift later.</div>
+          </div>
+        </div>
+        <div class="flow-connector"><div class="flow-connector-line"></div></div>
+
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Identify Root and Quality</div>
+            <div class="flow-body-detail">For each chord, name the bass note and stack the intervals above it. Determine whether the triad is major, minor, augmented, or diminished &ndash; and whether a 7th is present.</div>
+          </div>
+        </div>
+        <div class="flow-connector"><div class="flow-connector-line"></div></div>
+
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Assign Roman Numerals and Inversion Figures</div>
+            <div class="flow-body-detail">Match the root to its scale degree. Use uppercase for major quality, lowercase for minor, the degree symbol for diminished. Add inversion figures (6, 6/4, 7, 6/5, 4/3, 2) if the chord is not in root position.</div>
+          </div>
+        </div>
+        <div class="flow-connector"><div class="flow-connector-line"></div></div>
+
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Find Secondary Dominants</div>
+            <div class="flow-body-detail">Look for chromatic pitches &ndash; notes outside the established key. A raised chromatic pitch often signals a secondary dominant: a V or V7 applied to a chord other than I. Label it V/IV, V7/V, and so on.</div>
+          </div>
+        </div>
+        <div class="flow-connector"><div class="flow-connector-line"></div></div>
+
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Find Borrowed Chords</div>
+            <div class="flow-body-detail">A chord that uses a scale degree from the parallel key is a borrowed chord (modal mixture). In major, watch for iv, &#9837;VI, and &#9837;VII as common borrowed sonorities. Label them with the flat sign if needed.</div>
+          </div>
+        </div>
+        <div class="flow-connector"><div class="flow-connector-line"></div></div>
+
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-body">
+            <div class="flow-body-title">Mark Cadences</div>
+            <div class="flow-body-detail">At each phrase ending, label the cadence type: PAC (perfect authentic &ndash; V-I root position, tonic in soprano), IAC (imperfect authentic), HC (half cadence on V), or DC (deceptive &ndash; V-vi).</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- end visual 1 -->
+
+    <p class="prose" style="margin-top:16px;">
+      Notice that secondary dominants (step 4) come after you have assigned basic Roman numerals (step 3). This matters: you need the key established and the chord quality confirmed before you can recognize that a chromatic pitch is producing a tonicization.
+    </p>
+  </div>
+
+  <!-- PART 2: PHRASE FUNCTION MODEL -->
+  <div class="section-block">
+    <div class="section-title">Part 2: The Phrase Function Model</div>
+    <p class="prose">
+      OMT (p. 411) describes the T&ndash;PD&ndash;D&ndash;T phrase model, which names the harmonic function of each part of a phrase rather than just its Roman numeral. A tonic chord can appear at the beginning or the end; its function depends on context. Labeling function helps you describe what the passage is doing, not just which chords appear.
+    </p>
+
+    <!-- VISUAL 2: T-PD-D-T diagram -->
+    <div class="visual-container">
+      <div class="phrase-bar">
+        <div class="phrase-zone tonic">
+          <div class="phrase-zone-label">T</div>
+          <div class="phrase-zone-desc">Tonic<br/>Departure</div>
+        </div>
+        <div class="phrase-zone pd">
+          <div class="phrase-zone-label">PD</div>
+          <div class="phrase-zone-desc">Predominant<br/>Movement away</div>
+        </div>
+        <div class="phrase-zone dom">
+          <div class="phrase-zone-label">D</div>
+          <div class="phrase-zone-desc">Dominant<br/>Tension peak</div>
+        </div>
+        <div class="phrase-zone tonic-light">
+          <div class="phrase-zone-label">T</div>
+          <div class="phrase-zone-desc">Tonic<br/>Arrival</div>
+        </div>
+      </div>
+      <div class="phrase-chords">
+        <div class="phrase-chord-box tonic">
+          <div class="phrase-chord-label">Opening</div>
+          <div class="phrase-chord-roman">I</div>
+        </div>
+        <div class="phrase-chord-box pd">
+          <div class="phrase-chord-label">Common choices</div>
+          <div class="phrase-chord-roman">ii &nbsp;&#9135;&nbsp; IV</div>
+        </div>
+        <div class="phrase-chord-box dom">
+          <div class="phrase-chord-label">Dominant seventh</div>
+          <div class="phrase-chord-roman">V<span class="sup">7</span></div>
+        </div>
+        <div class="phrase-chord-box tonic-end">
+          <div class="phrase-chord-label">Cadential goal</div>
+          <div class="phrase-chord-roman">I</div>
+        </div>
+      </div>
+      <div class="phrase-caption">T &rarr; PD &rarr; D &rarr; T: one complete phrase arc. Each section can contain multiple chords; this shows the most common single-chord representatives.</div>
+    </div>
+    <!-- end visual 2 -->
+
+    <p class="prose">
+      A tonic prolongation at the start (T) gives the phrase its grounding. The predominant zone (PD) introduces motion away from tonic without yet creating the full tension of the dominant. The dominant zone (D) is the point of highest harmonic tension &ndash; it drives toward resolution. The final tonic (T) closes the phrase and, at a PAC, confirms the key decisively.
+    </p>
+    <p class="prose">
+      When you annotate a score, you can write T, PD, D in brackets above or below the staff in addition to the Roman numerals. This two-layer labeling (function + numeral) is the complete analytical annotation described in OMT.
+    </p>
+  </div>
+
+  <!-- PART 3: HARMONIC RHYTHM -->
+  <div class="section-block">
+    <div class="section-title">Part 3: Harmonic Rhythm</div>
+    <p class="prose">
+      Harmonic rhythm is the rate at which chords change. A passage where one chord spans two or three measures feels settled and spacious &ndash; the harmony is not pressing forward. A passage where chords shift every beat or half-beat feels urgent and driven. Noticing harmonic rhythm is part of a complete analysis because it maps directly onto the emotional shape of the music.
+    </p>
+
+    <!-- VISUAL 3: Rhythm strip -->
+    <div class="visual-container">
+      <div class="rhythm-strip">
+
+        <div class="rhythm-half settled">
+          <div class="rhythm-label settled">Slow Harmonic Rhythm &ndash; Settled</div>
+          <div class="rhythm-desc">One chord lasts two or more measures. The music breathes; tension is low.</div>
+          <div class="rhythm-measures">
+            <div class="rhythm-block settled" style="width:110px; font-size:12px; padding:0 8px;">I &nbsp;(mm. 1&ndash;2)</div>
+            <div class="rhythm-block settled" style="width:110px; font-size:12px; padding:0 8px;">IV &nbsp;(mm. 3&ndash;4)</div>
+          </div>
+          <div class="rhythm-caption">Wide blocks = chord held across multiple measures</div>
+        </div>
+
+        <div class="rhythm-half tension">
+          <div class="rhythm-label tension">Fast Harmonic Rhythm &ndash; Tension</div>
+          <div class="rhythm-desc">Chords change each beat or half-beat. The music pushes forward urgently.</div>
+          <div class="rhythm-measures">
+            <div class="rhythm-block tension" style="width:38px;">I</div>
+            <div class="rhythm-block tension" style="width:38px;">IV</div>
+            <div class="rhythm-block tension" style="width:38px;">ii</div>
+            <div class="rhythm-block tension" style="width:38px;">V</div>
+            <div class="rhythm-block tension" style="width:38px;">I</div>
+          </div>
+          <div class="rhythm-caption">Narrow blocks = one chord per beat</div>
+        </div>
+
+      </div>
+    </div>
+    <!-- end visual 3 -->
+
+    <p class="prose">
+      In your analysis paragraph, mentioning harmonic rhythm turns a list of Roman numerals into an argument about expressive effect. Instead of "the passage uses I, IV, ii, V, I," you can write: "the harmonic rhythm accelerates into the cadence, with chords changing every beat in the final measure &ndash; a technique that heightens the sense of arrival at the PAC."
+    </p>
+  </div>
+
+  <!-- PART 4: FLIP CARD REVIEW -->
+  <div class="section-block">
+    <div class="section-title">Part 4: Review the Six Steps</div>
+    <p class="prose">
+      Each card below shows one of the six analysis steps. Tap a card to flip it and read the explanation. Use these to check your understanding before you try the practice analysis.
+    </p>
+
+    <div class="optima-widget ow-flip" style="cursor:default; background:linear-gradient(135deg,#EFEAF6,#F7F4FB);">
+      <div class="widget-kicker">&#127279; FLIP CARDS &middot; TAP TO REVEAL &middot; Six Steps of Harmonic Analysis</div>
+      <div class="flip-grid" style="cursor:pointer;">
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 1 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 1</div>
+            <div class="flip-card-front-title">Determine the Key</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">Check the key signature. Then confirm the tonal center: which note do phrases begin and end on? Is the mode major or minor? Note any accidentals that suggest a modal shift.</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 2 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 2</div>
+            <div class="flip-card-front-title">Identify Root and Quality</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">For each chord, name the bass note and stack the intervals above it. Is the triad major, minor, augmented, or diminished? Is there a 7th?</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 3 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 3</div>
+            <div class="flip-card-front-title">Assign Roman Numerals</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">Match the root to a scale degree. Use uppercase for major, lowercase for minor, the degree sign for diminished. Add inversion figures (6, 6/4, 7, 6/5, 4/3, 2) if the chord is inverted.</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 4 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 4</div>
+            <div class="flip-card-front-title">Find Secondary Dominants</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">Look for chromatic pitches (notes outside the key). A raised pitch often means a secondary dominant &ndash; a V or V7 applied to a chord other than I. Label it V/IV, V7/V, etc.</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 5 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 5</div>
+            <div class="flip-card-front-title">Find Borrowed Chords</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">A chord that uses a scale degree from the parallel key (major borrowing from minor or vice versa) is a borrowed chord (modal mixture). Common: iv, &#9837;VI, &#9837;VII in major.</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+        <div class="ow-flip" tabindex="0" aria-label="Step 6 flip card" role="button">
+          <div class="ow-flip-front">
+            <div class="flip-card-label">Step 6</div>
+            <div class="flip-card-front-title">Mark Cadences</div>
+            <div class="flip-card-front-hint">Tap to see what this step involves &rarr;</div>
+          </div>
+          <div class="ow-flip-back">
+            <div class="flip-card-back-text">At phrase endings, label the cadence type: PAC (perfect authentic: V-I, both in root position, tonic in soprano), IAC (imperfect authentic), HC (half cadence ending on V), DC (deceptive: V-vi).</div>
+            <div class="flip-card-back-hint">Tap again to flip back</div>
+          </div>
+        </div>
+
+      </div>
+      <button class="widget-reset" style="margin-top:14px;">Reset all cards</button>
+    </div>
+
+    <!-- Discussion prompt -->
+    <div class="sub-heading" style="margin-top:24px;">Think About It</div>
+    <div class="discussion-box">
+      <p>When you label V7/ii in a passage, what are you telling the reader about the music? What does that label explain about the harmonic motion at that moment?</p>
+    </div>
+    <p class="prose" style="font-size:14px; color:#5A6680;">
+      Write two or three sentences in your notebook before moving to the Canvas discussion. The goal is to put the idea into your own words first, then refine it when you see what classmates say.
+    </p>
+  </div>
+
+  <!-- WHAT YOU'LL DO NEXT -->
+  <div class="section-block purple-top">
+    <div class="section-title purple">What You'll Do Next</div>
+    <ul class="next-list">
+      <li class="next-item"><div class="next-bullet"></div><div>Complete the Canvas intro wrapper: write your first instinct about what it means to analyze music, then rate your current confidence level.</div></li>
+      <li class="next-item"><div class="next-bullet"></div><div>Open BWV 253 (or the chorale your teacher posted in Canvas Files) and complete the harmonic analysis practice assignment: label Roman numerals, circle secondary dominants and borrowed chords, mark cadences, and write a short analytical paragraph.</div></li>
+      <li class="next-item"><div class="next-bullet"></div><div>Take the Module 15 Harmonic Analysis Check quiz (multiple attempts allowed) to confirm your grasp of the six steps and key vocabulary.</div></li>
+      <li class="next-item"><div class="next-bullet"></div><div>Post in the Canvas discussion: explain what V7/ii tells us about harmonic motion, and reply to a classmate's post with one specific detail about what that chord sounds like in practice.</div></li>
+      <li class="next-item"><div class="next-bullet"></div><div>Complete the outro wrapper: revise your opening definition of analysis and name the six steps from memory.</div></li>
+    </ul>
+  </div>
+
+  <!-- THE ONE THING TO REMEMBER -->
+  <div class="section-block">
+    <div class="section-title">The One Thing to Remember</div>
+    <div class="one-thing-box">
+      <p>
+        Work through the six steps in order every time &ndash; key first, root and quality second, Roman numerals third. Chromatic pitches and borrowed chords only become visible once you have the key established and the basic label assigned. The method is a filter: each step removes ambiguity before you face the next one.
+      </p>
+    </div>
+  </div>
+
+</div><!-- end page-body -->
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 15.01 &middot; Harmonic Analysis</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div><!-- end canvas-frame -->
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

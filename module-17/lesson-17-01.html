@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 17.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 17</div>
+        <div style="font-size: 12px; color: #666;">Form and Counterpoint</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 17.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Jazz: History &amp; Concepts</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 40 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 17.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Jazz: History and Fundamental Concepts</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Jazz combines African rhythmic traditions and European harmonic practice. How does that combination create something neither tradition produced alone?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Jazz did not emerge from a single tradition. It grew at the crossroads of African rhythmic practices (swing feel, call-and-response, improvisation) and European harmonic conventions (chord progressions, voice leading, functional harmony). The result was a new music with its own logic, vocabulary, and expressive range. Today you trace that history and begin reading the symbols jazz performers use.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> describe the historical development of jazz from New Orleans to bebop and beyond.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify and use basic jazz chord symbols (Cmaj7, Dm7, G7, Cm7&#9837;5).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain swing rhythm and demonstrate it by clapping or tapping.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2, free at viva.pressbooks.pub/openmusictheory: Jazz section, pp. 526&ndash;574.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook for the practice clap exercise in Part 2.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: JAZZ HISTORY ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 1 &middot; JAZZ HISTORY</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Jazz emerged in New Orleans around 1900 as African American musicians blended blues, ragtime, marching band music, and the improvisational spirit of African musical traditions. Over the next century it evolved through a series of distinct styles, each building on and reacting to what came before.</p>
+
+        <!-- VISUAL 1: Jazz History Timeline -->
+        <div style="background: #FCFCFD; border: 1px solid #E2E7F0; border-radius: 8px; padding: 20px 16px; margin: 6px 0 18px; overflow-x: auto;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 14px; text-align: center;">Jazz History Timeline</div>
+          <div style="min-width: 680px;">
+            <div style="display: flex; align-items: center; gap: 0; flex-wrap: nowrap;">
+
+              <!-- Era 1 -->
+              <div style="background: #0E1C42; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 80px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">New Orleans</div>
+                <div style="font-size: 10px; color: #55C8E8; margin-top: 3px;">1900&ndash;20</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 2 -->
+              <div style="background: #1A6B3C; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Swing</div>
+                <div style="font-size: 10px; color: #BFE3CC; margin-top: 3px;">1930s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 3 -->
+              <div style="background: #0E1C42; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Bebop</div>
+                <div style="font-size: 10px; color: #55C8E8; margin-top: 3px;">1940s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 4 -->
+              <div style="background: #1A6B3C; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Cool Jazz</div>
+                <div style="font-size: 10px; color: #BFE3CC; margin-top: 3px;">1950s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 5 -->
+              <div style="background: #0E1C42; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Hard Bop</div>
+                <div style="font-size: 10px; color: #55C8E8; margin-top: 3px;">1950&ndash;60s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 6 -->
+              <div style="background: #1A6B3C; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 76px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Modal Jazz</div>
+                <div style="font-size: 10px; color: #BFE3CC; margin-top: 3px;">1960s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 7 -->
+              <div style="background: #0E1C42; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Free Jazz</div>
+                <div style="font-size: 10px; color: #55C8E8; margin-top: 3px;">1960&ndash;70s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 8 -->
+              <div style="background: #1A6B3C; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 72px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Fusion</div>
+                <div style="font-size: 10px; color: #BFE3CC; margin-top: 3px;">1970s</div>
+              </div>
+              <div style="color: #1A6B3C; font-size: 18px; padding: 0 4px; flex-shrink: 0;">&rarr;</div>
+
+              <!-- Era 9 -->
+              <div style="background: #0E1C42; color: #fff; border-radius: 8px; padding: 10px 10px; text-align: center; min-width: 80px; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: bold; line-height: 1.3;">Contemporary</div>
+                <div style="font-size: 10px; color: #55C8E8; margin-top: 3px;">today</div>
+              </div>
+
+            </div>
+          </div>
+          <div style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">Scroll right on small screens to see the full timeline.</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>New Orleans Jazz (ca. 1900&ndash;1920)</strong> featured collective improvisation among a small front-line group (cornet, clarinet, trombone) over a rhythm section. Blues and march traditions both contributed. Louis Armstrong was the defining soloist of this era and the transition into the next.</p>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>Swing (1930s)</strong> scaled jazz up to large ensembles called big bands, with sections of brass, reeds, and rhythm players. Written arrangements guided the ensemble while soloists improvised. Jazz became American popular dance music. Duke Ellington, Count Basie, and Benny Goodman led major bands.</p>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>Bebop (1940s)</strong> was a reaction against commercial dance music. Young musicians including Charlie Parker and Dizzy Gillespie developed a complex, fast-paced style for listening rather than dancing. Bebop features dense chromatic harmony, rapid tempos, and virtuosic improvisation over intricate chord progressions.</p>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>Cool Jazz (1950s)</strong> dialed the intensity back, favoring smoother tone, more relaxed tempos, and a lighter touch. Miles Davis's recording <em>Birth of the Cool</em> (1957) is a landmark. <strong>Hard Bop (1950s&ndash;60s)</strong> reintegrated blues and gospel influences into the bebop framework. <strong>Modal Jazz (1960s)</strong> replaced dense chord changes with modes as the basis for improvisation &ndash; Miles Davis's <em>Kind of Blue</em> (1959) is the defining recording. <strong>Free Jazz (1960s&ndash;70s)</strong> abandoned fixed meter and chord progressions entirely. <strong>Fusion (1970s)</strong> merged jazz improvisation with rock rhythms and electric instruments. <strong>Contemporary jazz</strong> continues to draw from all of these traditions.</p>
+
+        <!-- Listening links -->
+        <div style="background: #EEF1F8; border-left: 4px solid #0E1C42; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #0E1C42; margin-bottom: 10px;">&#127909; LISTEN &middot; EXTERNAL LINKS (open in a new tab)</div>
+            <p style="font-size: 15px; color: #1a2340; margin: 0 0 8px 0;">These are YouTube links to publicly available jazz recordings. They open outside this page.</p>
+            <div style="margin-bottom: 8px;">
+                <a href="https://www.youtube.com/results?search_query=Louis+Armstrong+%22What+a+Wonderful+World%22" target="_blank" style="color: #0E1C42; font-size: 16px; font-weight: bold;">&#9654; Louis Armstrong &ndash; Search on YouTube</a>
+                <span style="font-size: 14px; color: #555;"> &nbsp; New Orleans style, expressive trumpet and vocal</span>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <a href="https://www.youtube.com/results?search_query=Charlie+Parker+bebop+%22Ko-Ko%22" target="_blank" style="color: #0E1C42; font-size: 16px; font-weight: bold;">&#9654; Charlie Parker &ndash; Search on YouTube</a>
+                <span style="font-size: 14px; color: #555;"> &nbsp; Bebop alto saxophone, fast tempos, complex harmony</span>
+            </div>
+            <div>
+                <a href="https://www.youtube.com/results?search_query=Miles+Davis+Kind+of+Blue+%22So+What%22" target="_blank" style="color: #0E1C42; font-size: 16px; font-weight: bold;">&#9654; Miles Davis &ndash; Search on YouTube</a>
+                <span style="font-size: 14px; color: #555;"> &nbsp; Modal jazz, <em>Kind of Blue</em>, Dorian mode improvisation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: SWING RHYTHM ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127928; PART 2 &middot; SWING RHYTHM</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Swing is the rhythmic foundation of jazz. When a performer plays two consecutive eighth notes, the first note is held longer than the second &ndash; roughly in a 2:1 ratio. This long-short pattern, called <strong>swing feel</strong>, replaces the even, mechanical division of a beat into two equal halves.</p>
+
+        <!-- VISUAL 2: Swing Rhythm Diagram -->
+        <div style="background: #FCFCFD; border: 1px solid #E2E7F0; border-radius: 8px; padding: 20px 16px; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 16px; text-align: center;">Straight Eighths vs. Swung Eighths</div>
+
+          <!-- Straight row -->
+          <div style="margin-bottom: 20px;">
+            <div style="font-size: 13px; color: #555; margin-bottom: 6px; font-weight: bold;">Straight (even):</div>
+            <div style="display: flex; align-items: stretch; gap: 0; height: 48px; max-width: 400px;">
+              <div style="flex: 1; background: #9E9E9E; display: flex; align-items: center; justify-content: center; border-radius: 6px 0 0 6px; color: #fff; font-size: 16px; font-weight: bold;">1</div>
+              <div style="width: 3px; background: #fff; flex-shrink: 0;"></div>
+              <div style="flex: 1; background: #9E9E9E; display: flex; align-items: center; justify-content: center; border-radius: 0 6px 6px 0; color: #fff; font-size: 16px; font-weight: bold;">e</div>
+            </div>
+            <div style="display: flex; max-width: 400px; margin-top: 4px;">
+              <div style="flex: 1; text-align: center; font-size: 12px; color: #666;">50%</div>
+              <div style="flex: 1; text-align: center; font-size: 12px; color: #666;">50%</div>
+            </div>
+            <div style="font-size: 13px; color: #555; margin-top: 4px;">Both notes equal duration. Counted: "one and two and&hellip;"</div>
+          </div>
+
+          <!-- Swung row -->
+          <div>
+            <div style="font-size: 13px; color: #1A6B3C; margin-bottom: 6px; font-weight: bold;">Swung (long-short, approximately 2:1):</div>
+            <div style="display: flex; align-items: stretch; gap: 0; height: 48px; max-width: 400px;">
+              <div style="flex: 2; background: #2A9D5C; display: flex; align-items: center; justify-content: center; border-radius: 6px 0 0 6px; color: #fff; font-size: 16px; font-weight: bold;">du</div>
+              <div style="width: 3px; background: #fff; flex-shrink: 0;"></div>
+              <div style="flex: 1; background: #1A6B3C; display: flex; align-items: center; justify-content: center; border-radius: 0 6px 6px 0; color: #fff; font-size: 16px; font-weight: bold;">da</div>
+            </div>
+            <div style="display: flex; max-width: 400px; margin-top: 4px;">
+              <div style="flex: 2; text-align: center; font-size: 12px; color: #1A6B3C;">&approx;67% (long)</div>
+              <div style="flex: 1; text-align: center; font-size: 12px; color: #1A6B3C;">&approx;33% (short)</div>
+            </div>
+            <div style="font-size: 13px; color: #1A6B3C; margin-top: 4px; font-weight: bold;">Ratio: approximately 2:1 (long&ndash;short)</div>
+          </div>
+
+          <div style="font-size: 12px; color: #666; margin-top: 14px; border-top: 1px solid #E2E7F0; padding-top: 10px;">In notation, swing is often written as straight eighth notes with the instruction "Swing" at the top of the chart. The performer knows to apply the long-short feel.</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The 2:1 ratio is a guideline, not a rigid rule. At slower tempos the swing is more pronounced (closer to 3:1, resembling a triplet feel). At very fast bebop tempos it approaches straight eighths. Experienced jazz performers adjust instinctively to the tempo and the other musicians.</p>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; TRY IT IN YOUR NOTEBOOK</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">Before reading on, tap or clap a steady beat and say "du-da du-da" over each beat, making the "du" about twice as long as the "da." That is swing feel. Write one sentence in your notebook describing what changed from straight counting.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: JAZZ CHORD SYMBOLS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 3 &middot; JAZZ CHORD SYMBOLS</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Jazz performers read from <strong>lead sheets</strong>, which show only the melody and chord symbols. The chord symbols tell you what harmony to play but leave the voicing, timing, and texture up to you. Learning to decode them is essential for any jazz musician.</p>
+
+        <!-- VISUAL 3: Jazz Chord Symbol Decoder -->
+        <div style="background: #FCFCFD; border: 1px solid #E2E7F0; border-radius: 8px; padding: 20px 16px; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 16px; text-align: center;">Jazz Chord Symbol Decoder</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+
+            <!-- Cmaj7 -->
+            <div style="background: #FFFFFF; border: 1px solid #BFE3CC; border-top: 4px solid #2A9D5C; border-radius: 8px; padding: 14px 16px;">
+              <div style="font-size: 22px; color: #0E1C42; font-weight: bold; margin-bottom: 6px;">Cmaj7</div>
+              <div style="font-size: 14px; color: #1A6B3C; font-weight: bold; margin-bottom: 6px;">C major 7th</div>
+              <div style="font-size: 13px; color: #555; margin-bottom: 6px;">Major triad + major 7th</div>
+              <div style="font-size: 13px; color: #1a2340; margin-bottom: 6px;">Notes: C &ndash; E &ndash; G &ndash; B</div>
+              <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 8px;">
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">B (maj 7th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">G (5th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">E (3rd)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">C (root)</span>
+              </div>
+            </div>
+
+            <!-- Dm7 -->
+            <div style="background: #FFFFFF; border: 1px solid #BFE3CC; border-top: 4px solid #2A9D5C; border-radius: 8px; padding: 14px 16px;">
+              <div style="font-size: 22px; color: #0E1C42; font-weight: bold; margin-bottom: 6px;">Dm7</div>
+              <div style="font-size: 14px; color: #1A6B3C; font-weight: bold; margin-bottom: 6px;">D minor 7th</div>
+              <div style="font-size: 13px; color: #555; margin-bottom: 6px;">Minor triad + minor 7th</div>
+              <div style="font-size: 13px; color: #1a2340; margin-bottom: 6px;">Notes: D &ndash; F &ndash; A &ndash; C</div>
+              <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 8px;">
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">C (min 7th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">A (5th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">F (min 3rd)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">D (root)</span>
+              </div>
+            </div>
+
+            <!-- G7 -->
+            <div style="background: #FFFFFF; border: 1px solid #BFE3CC; border-top: 4px solid #2A9D5C; border-radius: 8px; padding: 14px 16px;">
+              <div style="font-size: 22px; color: #0E1C42; font-weight: bold; margin-bottom: 6px;">G7</div>
+              <div style="font-size: 14px; color: #1A6B3C; font-weight: bold; margin-bottom: 6px;">G dominant 7th</div>
+              <div style="font-size: 13px; color: #555; margin-bottom: 6px;">Major triad + minor 7th</div>
+              <div style="font-size: 13px; color: #1a2340; margin-bottom: 6px;">Notes: G &ndash; B &ndash; D &ndash; F</div>
+              <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 8px;">
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">F (min 7th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">D (5th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">B (maj 3rd)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px;">G (root)</span>
+              </div>
+              <div style="font-size: 12px; color: #555; margin-top: 6px;">Plain "7" = lowered (minor) 7th. No "maj" = not major 7th.</div>
+            </div>
+
+            <!-- Cm7b5 -->
+            <div style="background: #FFFFFF; border: 1px solid #BFE3CC; border-top: 4px solid #2A9D5C; border-radius: 8px; padding: 14px 16px;">
+              <div style="font-size: 22px; color: #0E1C42; font-weight: bold; margin-bottom: 6px;">Cm7&#9837;5</div>
+              <div style="font-size: 14px; color: #1A6B3C; font-weight: bold; margin-bottom: 6px;">C half-diminished 7th</div>
+              <div style="font-size: 13px; color: #555; margin-bottom: 6px;">Diminished triad + minor 7th</div>
+              <div style="font-size: 13px; color: #1a2340; margin-bottom: 6px;">Notes: C &ndash; E&#9837; &ndash; G&#9837; &ndash; B&#9837;</div>
+              <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 8px;">
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px; background: #6B4C9A;">B&#9837; (min 7th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px; background: #6B4C9A;">G&#9837; (dim 5th)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px; background: #6B4C9A;">E&#9837; (min 3rd)</span>
+                <span class="note-chip" style="font-size: 12px; padding: 2px 8px; background: #6B4C9A;">C (root)</span>
+              </div>
+              <div style="font-size: 12px; color: #555; margin-top: 6px;">Also written C&#248;7. The &#9837;5 lowers the fifth to make a diminished triad.</div>
+            </div>
+
+          </div>
+          <div style="font-size: 12px; color: #666; margin-top: 12px; text-align: center;">Key rule: "maj7" = major 7th &nbsp;|&nbsp; plain "7" = minor 7th &nbsp;|&nbsp; "&#9837;5" = lowered fifth</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">In practice, the four chord types above appear constantly in jazz progressions. The ii&ndash;V&ndash;I progression (Dm7 &ndash; G7 &ndash; Cmaj7 in C major) is the most common harmonic formula in jazz, equivalent to the ii&ndash;V&ndash;I in classical harmony. You will use these symbols throughout the rest of the course.</p>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; KEY POINT</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">A <strong>jazz standard</strong> is a song from the Great American Songbook (or jazz repertoire) that has been performed widely across generations. Standards such as <em>Autumn Leaves</em>, <em>All the Things You Are</em>, and <em>Misty</em> all use the chord types you just learned. Knowing these symbols lets you read a lead sheet for any standard.</div>
+        </div>
+    </div>
+
+    <!-- ===================== VOCABULARY FLIP CARDS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128218; KEY VOCABULARY &middot; MODULE 17</div>
+        <p style="font-size: 16px; color: #1a2340; margin: 0 0 14px 0; line-height: 1.55;">Tap each card to reveal the definition. Review all five before moving to the quiz.</p>
+
+        <div class="flip-grid">
+          <!-- Card 1: New Orleans Jazz -->
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">New Orleans Jazz<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">New Orleans</span><br><br>The earliest jazz style, ca. 1900&ndash;1920. Features collective improvisation among a front-line of cornet, clarinet, and trombone; influenced by march music, blues, and ragtime.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+
+          <!-- Card 2: Bebop -->
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">Bebop<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">Bebop</span><br><br>Jazz style developed in the 1940s. Fast tempos, complex chord progressions, virtuosic improvisation. Associated with Charlie Parker and Dizzy Gillespie. Designed for listening, not dancing.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+
+          <!-- Card 3: Swing -->
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">Swing<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">Swing</span><br><br>A jazz rhythmic feel in which pairs of eighth notes are played long-short, approximately in a 2:1 ratio. The defining rhythmic feel of jazz across most styles.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+
+          <!-- Card 4: Lead Sheet -->
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">Lead Sheet<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">Lead Sheet</span><br><br>A score showing only the melody and chord symbols. The jazz performer uses it as a guide and improvises the accompaniment, voicings, and embellishments.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+        </div>
+
+        <!-- Card 5: Jazz Standard (full width) -->
+        <div class="optima-widget" style="margin-top:12px;">
+          <div class="ow-flip" tabindex="0">
+            <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">Jazz Standard<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+            <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">Jazz Standard</span><br><br>A song from the Great American Songbook or jazz repertoire that is widely known and performed across generations. Standards form the shared repertoire that jazz musicians learn to play together.</div>
+          </div>
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: CHECK YOUR UNDERSTANDING ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 14px;">&#9997;&#65039; PART 4 &middot; CHECK YOUR UNDERSTANDING</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Think through each question using the timeline, rhythm diagram, and chord decoder above. Write your answer in your notebook first, then check it here.</p>
+
+        <!-- ow-select: data-correct values = 2,0,3,1,2,3,0,1,3,2 -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; CHECK IT &middot; JAZZ: HISTORY &amp; CONCEPTS</div>
+          <div class="widget-question">Ten questions on jazz history, swing, and chord symbols. Think before you tap.</div>
+
+          <!-- Q1 data-correct="2": correct = New Orleans (index 2) -->
+          <div class="widget-row" data-correct="2"
+               data-fb="Correct. New Orleans jazz, ca. 1900&ndash;1920, featured collective improvisation and combined march, blues, and ragtime influences."
+               data-hint="Think about the first era on the timeline.">
+            <div class="widget-row-prompt">1. The first jazz style to emerge (ca. 1900&ndash;1920) originated in which U.S. city?</div>
+            <div class="widget-options">
+              <button data-choice="0">Chicago</button>
+              <button data-choice="1">New York</button>
+              <button data-choice="2">New Orleans</button>
+              <button data-choice="3">Kansas City</button>
+            </div>
+          </div>
+
+          <!-- Q2 data-correct="0": correct = the 1940s (index 0) -->
+          <div class="widget-row" data-correct="0"
+               data-fb="Correct. Bebop emerged in the 1940s with musicians like Charlie Parker and Dizzy Gillespie. It featured fast tempos and complex harmonies."
+               data-hint="Check the timeline between Swing and Cool Jazz.">
+            <div class="widget-row-prompt">2. Bebop developed primarily in which decade?</div>
+            <div class="widget-options">
+              <button data-choice="0">the 1940s</button>
+              <button data-choice="1">the 1930s</button>
+              <button data-choice="2">the 1920s</button>
+              <button data-choice="3">the 1960s</button>
+            </div>
+          </div>
+
+          <!-- Q3 data-correct="3": correct = 2:1 long-short (index 3) -->
+          <div class="widget-row" data-correct="3"
+               data-fb="Correct. Swing eighths are roughly 2:1 long-short, giving jazz its lilting, propulsive feel."
+               data-hint="The first note of each pair is longer. Look at the rhythm diagram.">
+            <div class="widget-row-prompt">3. In swing rhythm, eighth-note pairs are played in approximately what ratio?</div>
+            <div class="widget-options">
+              <button data-choice="0">1:1 (equal)</button>
+              <button data-choice="1">3:1 (very long and very short)</button>
+              <button data-choice="2">1:2 (short-long)</button>
+              <button data-choice="3">2:1 (long-short)</button>
+            </div>
+          </div>
+
+          <!-- Q4 data-correct="1": correct = C major triad plus a major 7th (index 1) -->
+          <div class="widget-row" data-correct="1"
+               data-fb="Correct. Cmaj7 = C&ndash;E&ndash;G&ndash;B: a C major triad with a major 7th (B) added."
+               data-hint="&ldquo;maj7&rdquo; tells you the 7th is major, not lowered.">
+            <div class="widget-row-prompt">4. What does the chord symbol Cmaj7 mean?</div>
+            <div class="widget-options">
+              <button data-choice="0">C minor with a minor 7th</button>
+              <button data-choice="1">C major triad plus a major 7th above the root</button>
+              <button data-choice="2">C dominant 7th</button>
+              <button data-choice="3">C diminished 7th</button>
+            </div>
+          </div>
+
+          <!-- Q5 data-correct="2": correct = G major triad plus a minor 7th (index 2) -->
+          <div class="widget-row" data-correct="2"
+               data-fb="Correct. G7 is a dominant 7th chord: G&ndash;B&ndash;D&ndash;F. The 7th (F) is a minor 7th above the root."
+               data-hint="A plain &ldquo;7&rdquo; without &ldquo;maj&rdquo; always means a lowered (minor) 7th.">
+            <div class="widget-row-prompt">5. What does the chord symbol G7 mean?</div>
+            <div class="widget-options">
+              <button data-choice="0">G major triad plus a major 7th</button>
+              <button data-choice="1">G minor 7th chord</button>
+              <button data-choice="2">G major triad plus a minor 7th</button>
+              <button data-choice="3">G diminished 7th</button>
+            </div>
+          </div>
+
+          <!-- Q6 data-correct="3": correct = C diminished triad (index 3) -->
+          <div class="widget-row" data-correct="3"
+               data-fb="Correct. Cm7&#9837;5 is built on a diminished triad (C&ndash;E&#9837;&ndash;G&#9837;) with a minor 7th (B&#9837;) added. The &ldquo;&#9837;5&rdquo; tells you the fifth is lowered."
+               data-hint="The &ldquo;&#9837;5&rdquo; symbol lowers the fifth of an otherwise minor-7th chord, making the triad diminished.">
+            <div class="widget-row-prompt">6. Cm7&#9837;5 (half-diminished) contains which triad as its base?</div>
+            <div class="widget-options">
+              <button data-choice="0">C major triad</button>
+              <button data-choice="1">C augmented triad</button>
+              <button data-choice="2">C minor triad</button>
+              <button data-choice="3">C diminished triad</button>
+            </div>
+          </div>
+
+          <!-- Q7 data-correct="0": correct = only the melody and chord symbols (index 0) -->
+          <div class="widget-row" data-correct="0"
+               data-fb="Correct. A lead sheet gives the melody and chord symbols only; the performer improvises the accompaniment."
+               data-hint="Jazz performers need freedom to improvise. What is the minimum they need written down?">
+            <div class="widget-row-prompt">7. A lead sheet shows performers&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">only the melody and chord symbols</button>
+              <button data-choice="1">all four SATB voice parts</button>
+              <button data-choice="2">full orchestration for every instrument</button>
+              <button data-choice="3">only the bass line and rhythm</button>
+            </div>
+          </div>
+
+          <!-- Q8 data-correct="1": correct = Modal Jazz (index 1) -->
+          <div class="widget-row" data-correct="1"
+               data-fb="Correct. &ldquo;Kind of Blue&rdquo; is the landmark modal jazz recording. Miles Davis used modes (Dorian, Mixolydian) rather than dense chord changes as the basis for improvisation."
+               data-hint="Modal jazz uses scales (modes) as the basis for improvisation instead of complex chord changes.">
+            <div class="widget-row-prompt">8. Which jazz era is most associated with Miles Davis's album &ldquo;Kind of Blue&rdquo; (1959)?</div>
+            <div class="widget-options">
+              <button data-choice="0">Swing</button>
+              <button data-choice="1">Modal Jazz</button>
+              <button data-choice="2">Free Jazz</button>
+              <button data-choice="3">Bebop</button>
+            </div>
+          </div>
+
+          <!-- Q9 data-correct="3": correct = large ensemble dance music... (index 3) -->
+          <div class="widget-row" data-correct="3"
+               data-fb="Correct. Swing Era jazz featured large big bands (15&ndash;20 players), written arrangements for sections (brass, reeds, rhythm), and space for soloists to improvise."
+               data-hint="The Swing Era was the era when jazz became American popular dance music.">
+            <div class="widget-row-prompt">9. Swing Era big-band jazz (1930s) is best described as&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">free, unstructured improvisation with no fixed meter</button>
+              <button data-choice="1">solo piano music with a strong left-hand bass</button>
+              <button data-choice="2">complex, fast, and harmonically dense chamber music</button>
+              <button data-choice="3">large ensemble dance music with written-out arrangements and improvised solos</button>
+            </div>
+          </div>
+
+          <!-- Q10 data-correct="2": correct = chord type and function, leaving voicing... (index 2) -->
+          <div class="widget-row" data-correct="2"
+               data-fb="Correct. Chord symbols identify the harmony (root + quality + extensions). The performer decides how to voice and time each chord."
+               data-hint="Lead sheets give freedom. Chord symbols name the chord, not how to play it.">
+            <div class="widget-row-prompt">10. Jazz chord symbols like Dm7 and G7 tell a performer&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">the exact inversion to use</button>
+              <button data-choice="1">the precise voicing in every octave</button>
+              <button data-choice="2">the chord type and function, leaving voicing and timing to the performer</button>
+              <button data-choice="3">which mode to avoid</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== WHAT YOU'LL DO NEXT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 17 Jazz History and Chord Symbols Practice (Canvas Assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Open a Word document, list all nine jazz eras in order with one fact each, decode four chord symbols, and describe your experience clapping swing rhythm. Upload to Canvas.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 17 Jazz History Check (Canvas Quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on jazz eras, swing rhythm, and chord symbols. Multiple attempts allowed.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Jazz in Context Discussion (Canvas Discussion)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Post 4&ndash;6 sentences on how jazz combined African and European traditions to create something new, then reply to one classmate.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Jazz grew from the convergence of African rhythmic tradition and European harmonic practice. Its defining rhythmic feel is <strong>swing</strong> (long-short, approximately 2:1). Its performers read <strong>lead sheets</strong> with chord symbols (Cmaj7, Dm7, G7, Cm7&#9837;5) that name the harmony while leaving voicing and timing to the musician. Every jazz standard you encounter will use these tools.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 17.01 &middot; Jazz: History &amp; Concepts</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

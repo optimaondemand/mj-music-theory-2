@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 12.01</title>
+<style>
+body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+.canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+.widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+.widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+.widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+.widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+.widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+.widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+.widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+.widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+.widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+.widget-feedback.show { display: block; }
+.row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+.row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+.row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+.widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+.widget-reset:hover { background: #F0EAF7; }
+.ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+.ow-flip .ow-flip-back { display: none; color: #1a2340; }
+.ow-flip.flipped .ow-flip-front { display: none; }
+.ow-flip.flipped .ow-flip-back { display: block; }
+.flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+.note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- HEADER -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+    <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" />
+    </div>
+    <div>
+      <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+      <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+    </div>
+  </div>
+  <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- METADATA STRIP -->
+<div style="background: #F0F2F7; border-bottom: 1px solid #DDE1EC; padding: 10px 34px; font-size: 13px; color: #4A5478; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+  Q2 &middot; Module 12 &nbsp;|&nbsp; Lesson 12.01 &nbsp;|&nbsp; Topic: Classical Forms &nbsp;|&nbsp; About 35 min
+</div>
+
+<!-- BODY -->
+<div style="padding: 24px 34px;">
+
+  <!-- TITLE STRIP -->
+  <div style="margin-bottom: 22px;">
+    <div style="font-size: 11px; color: #6B4C9A; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">Lesson</div>
+    <div style="font-size: 13px; color: #6B7A99; margin-bottom: 2px;">LESSON 12.01</div>
+    <div style="font-size: 30px; color: #0E1C42; font-weight: 600; line-height: 1.2;">Classical Forms: Sonata, Rondo, and Binary</div>
+  </div>
+
+  <!-- TODAY'S FOCUS -->
+  <div style="border-top: 4px solid #2A9D5C; background: #E7F4EC; border-radius: 0 0 8px 8px; padding: 18px 22px; margin-bottom: 22px;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;">&#127911; Today's Focus</div>
+    <div style="font-size: 16px; color: #1A6B3C; font-style: italic; margin-bottom: 10px; line-height: 1.5;">
+      "Music has always returned home. A melody leaves, wanders, and comes back. Today you learn the names composers gave to those patterns of departure and return."
+    </div>
+    <p style="font-size: 15px; color: #1a2340; line-height: 1.65; margin: 0;">
+      How does a composer organize an entire movement? The answer is form: a plan for where themes appear, what keys they visit, and how they return. Three forms dominate the Classical period: sonata form (the most complex and dramatic), rondo (a sectional alternation of refrain and episode), and binary form (a simple two-part structure). Understanding them lets you follow a piece the way you follow a story.
+    </p>
+  </div>
+
+  <!-- OBJECTIVES -->
+  <div style="border-top: 4px solid #2A9D5C; background: #E7F4EC; border-radius: 0 0 8px 8px; padding: 18px 22px; margin-bottom: 22px;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 12px;">&#127919; By the End of This Lesson</div>
+    <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px;">
+      <div style="min-width: 26px; height: 26px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">1</div>
+      <div style="font-size: 15px; color: #1a2340; line-height: 1.55; padding-top: 2px;">I will be able to identify exposition, development, and recapitulation in a sonata form analysis.</div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px;">
+      <div style="min-width: 26px; height: 26px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">2</div>
+      <div style="font-size: 15px; color: #1a2340; line-height: 1.55; padding-top: 2px;">I will be able to identify the ritornello and episode structure of a rondo.</div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: flex-start;">
+      <div style="min-width: 26px; height: 26px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">3</div>
+      <div style="font-size: 15px; color: #1a2340; line-height: 1.55; padding-top: 2px;">I will be able to compare and contrast binary, ternary, sonata, and rondo forms.</div>
+    </div>
+  </div>
+
+  <!-- MATERIALS -->
+  <div style="background: #F4F6FA; border: 1px solid #DDE1EC; border-radius: 8px; padding: 16px 20px; margin-bottom: 26px;">
+    <div style="font-size: 11px; color: #4A5478; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 10px;">&#128218; Materials</div>
+    <ul style="margin: 0; padding-left: 18px; font-size: 15px; color: #1a2340; line-height: 1.7;">
+      <li>OMT: Binary Form (p. 345), Sonata Form (p. 359), Rondo (p. 368) at <strong>viva.pressbooks.pub/openmusictheory</strong></li>
+      <li>Notebook for the warm-up and form diagrams</li>
+      <li>Headphones for the listening examples your teacher posts in Canvas</li>
+    </ul>
+  </div>
+
+  <!-- WIDGET 1: ow-reflect WARM-UP -->
+  <div class="optima-widget ow-reflect">
+    <div class="widget-kicker">&#9889; BEFORE WE BEGIN &middot; WARM UP</div>
+    <div class="widget-question">
+      Think about a piece of music you know well -- a film score, a song, or a classical piece. Does it have a section that goes away and comes back? Select the response that fits your experience, then read what it tells you about form.
+    </div>
+    <div class="widget-options">
+      <button data-response="That exact return is the heart of many classical forms. Ternary (ABA) and rondo both bring the opening material back unchanged. You are already hearing formal structure.">Yes, a section returns exactly the same way</button>
+      <button data-response="Development and varied return is precisely what sonata form does. The recapitulation brings themes back, but after the turbulence of the development section everything feels earned and resolved.">Yes, but when it comes back it feels different or developed</button>
+      <button data-response="That repeating refrain pattern is rondo. A-B-A-C-A: the A section is the ritornello, and each B and C is a new episode. You already have the instinct for rondo.">Something keeps coming back between contrasting sections</button>
+      <button data-response="Most listeners feel form without naming it. By the end of this lesson you will have labels for what you have always been hearing. Form is the reason a piece feels satisfying when it ends.">I am not sure I notice structure in music</button>
+    </div>
+    <div class="widget-feedback"></div>
+    <button class="widget-reset">Reset</button>
+  </div>
+
+  <!-- PART 1: SONATA FORM -->
+  <div style="border-top: 4px solid #2A9D5C; padding-top: 18px; margin-top: 28px; margin-bottom: 6px;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;">&#127926; PART 1 &middot; SONATA FORM</div>
+    <p style="font-size: 16px; color: #1a2340; line-height: 1.7; margin-top: 0;">
+      Sonata form is the most important form in Western classical music. Every symphony first movement, every piano sonata first movement, and most string quartet first movements use it. The key to understanding sonata form is its harmonic logic: tonic leaves for the dominant, becomes unstable, and returns.
+    </p>
+  </div>
+
+  <!-- VISUAL 1: Sonata-Form Block Bar (SVG) -->
+  <div style="margin: 22px 0; overflow-x: auto;">
+    <svg viewBox="0 0 900 200" width="100%" style="max-width: 900px; display: block;" aria-label="Sonata form diagram showing Exposition, Development, and Recapitulation">
+
+      <!-- Section labels -->
+      <text x="190" y="22" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#0E1C42">EXPOSITION</text>
+      <text x="487" y="22" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#C0392B">DEVELOPMENT</text>
+      <text x="732" y="22" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#0E1C42">RECAPITULATION</text>
+
+      <!-- EXPOSITION blocks -->
+      <!-- P Theme: tonic -->
+      <rect x="10" y="38" width="110" height="62" rx="6" fill="#0E1C42"/>
+      <text x="65" y="64" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">P Theme</text>
+      <text x="65" y="82" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A0B0CC">TONIC</text>
+
+      <!-- Transition -->
+      <rect x="130" y="38" width="70" height="62" rx="6" fill="#6b7a99"/>
+      <text x="165" y="64" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Trans.</text>
+      <text x="165" y="80" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#D0D8E8">modulating</text>
+
+      <!-- S Theme: dominant -->
+      <rect x="210" y="38" width="110" height="62" rx="6" fill="#2A9D5C"/>
+      <text x="265" y="62" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">S Theme</text>
+      <text x="265" y="79" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#D0EDDD">DOMINANT</text>
+      <text x="265" y="93" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#D0EDDD">or rel. major</text>
+
+      <!-- Closing -->
+      <rect x="330" y="38" width="55" height="62" rx="6" fill="#BFE3CC"/>
+      <text x="357" y="64" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#1A4030">Clos.</text>
+      <text x="357" y="80" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#1A4030">tonic area</text>
+
+      <!-- Divider line -->
+      <line x1="393" y1="30" x2="393" y2="108" stroke="#DDE1EC" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- DEVELOPMENT block with diagonal hash pattern -->
+      <defs>
+        <pattern id="hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+          <rect width="8" height="8" fill="#C0392B"/>
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#A93226" stroke-width="2.5"/>
+        </pattern>
+      </defs>
+      <rect x="397" y="38" width="183" height="62" rx="6" fill="url(#hatch)"/>
+      <text x="488" y="62" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Development</text>
+      <text x="488" y="78" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#F4C0BB">unstable / fragmenting</text>
+      <text x="488" y="92" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#F4C0BB">modulating</text>
+
+      <!-- Divider line -->
+      <line x1="586" y1="30" x2="586" y2="108" stroke="#DDE1EC" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- RECAPITULATION blocks -->
+      <!-- P Theme: tonic -->
+      <rect x="590" y="38" width="100" height="62" rx="6" fill="#0E1C42"/>
+      <text x="640" y="64" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">P Theme</text>
+      <text x="640" y="82" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A0B0CC">TONIC</text>
+
+      <!-- S Theme: now tonic -->
+      <rect x="700" y="38" width="100" height="62" rx="6" fill="#1A6B3C"/>
+      <text x="750" y="62" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">S Theme</text>
+      <text x="750" y="79" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A8D8B8">NOW TONIC</text>
+      <text x="750" y="93" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#A8D8B8">resolved</text>
+
+      <!-- Coda: optional -->
+      <rect x="810" y="38" width="78" height="62" rx="6" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+      <text x="849" y="64" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700" fill="#1A4030">Coda</text>
+      <text x="849" y="80" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#1A6B3C">optional</text>
+
+      <!-- Color key -->
+      <rect x="10" y="120" width="14" height="14" rx="3" fill="#0E1C42"/>
+      <text x="28" y="132" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">Tonic</text>
+      <rect x="90" y="120" width="14" height="14" rx="3" fill="#2A9D5C"/>
+      <text x="108" y="132" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">Dominant / resolved</text>
+      <rect x="255" y="120" width="14" height="14" rx="3" fill="#C0392B"/>
+      <text x="273" y="132" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">Unstable</text>
+      <rect x="360" y="120" width="14" height="14" rx="3" fill="#6b7a99"/>
+      <text x="378" y="132" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">Transition</text>
+
+      <!-- Caption -->
+      <text x="10" y="165" font-family="Segoe UI,sans-serif" font-size="13" font-style="italic" fill="#4A5478">The harmonic tension: S theme leaves tonic in the Exposition and returns to tonic in the Recapitulation. That is the form.</text>
+    </svg>
+  </div>
+
+  <!-- Key Point callout -->
+  <div style="border-left: 4px solid #2A9D5C; background: #E7F4EC; border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 6px;">Key Point</div>
+    <p style="font-size: 15px; color: #1a2340; line-height: 1.65; margin: 0;">
+      The fundamental motion of sonata form is harmonic, not just melodic. The Exposition creates tension by moving the S theme to the dominant. The Development makes it worse. The Recapitulation resolves it by bringing both themes home to the tonic.
+    </p>
+  </div>
+
+  <p style="font-size: 15px; color: #1a2340; line-height: 1.7; margin-bottom: 14px;">
+    <strong>Exposition:</strong> The P theme establishes the tonic key firmly. The transition modulates away. The S theme arrives in the dominant (major-key pieces) or relative major (minor-key pieces). A closing section confirms the new key and rounds off the exposition.
+  </p>
+  <p style="font-size: 15px; color: #1a2340; line-height: 1.7; margin-bottom: 14px;">
+    <strong>Development:</strong> The composer fragments P and S material, places themes in unexpected keys, and builds tension through sequences and modulations. The section ends with a retransition -- a passage that prepares the listener for the return.
+  </p>
+  <p style="font-size: 15px; color: #1a2340; line-height: 1.7; margin-bottom: 22px;">
+    <strong>Recapitulation:</strong> The P theme returns in the tonic. Then -- crucially -- the S theme also returns in the tonic. The harmonic asymmetry of the Exposition is resolved. An optional Coda may follow to provide a final sense of arrival.
+  </p>
+
+  <!-- PART 2: RONDO FORM -->
+  <div style="border-top: 4px solid #2A9D5C; padding-top: 18px; margin-top: 28px; margin-bottom: 6px;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;">&#127926; PART 2 &middot; RONDO FORM</div>
+    <p style="font-size: 16px; color: #1a2340; line-height: 1.7; margin-top: 0;">
+      Rondo is simpler and more predictable than sonata form -- but that predictability is the point. The main theme (the ritornello, or refrain) returns in the tonic after every contrasting episode.
+    </p>
+  </div>
+
+  <!-- VISUAL 2: Rondo Diagram A-B-A-C-A (SVG) -->
+  <div style="margin: 22px 0; overflow-x: auto;">
+    <svg viewBox="0 0 750 130" width="100%" style="max-width: 750px; display: block;" aria-label="Rondo form diagram showing A-B-A-C-A pattern">
+
+      <!-- Block A1 -->
+      <rect x="10" y="18" width="110" height="72" rx="8" fill="#0E1C42"/>
+      <text x="65" y="50" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">A</text>
+      <text x="65" y="70" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A0B0CC">Ritornello</text>
+      <text x="65" y="84" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#A0B0CC">TONIC</text>
+
+      <!-- Arrow -->
+      <text x="128" y="60" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="18" fill="#8A9DBF">&#8594;</text>
+
+      <!-- Block B -->
+      <rect x="145" y="18" width="110" height="72" rx="8" fill="#6B4C9A"/>
+      <text x="200" y="50" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">B</text>
+      <text x="200" y="70" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#D0C4E8">Episode 1</text>
+      <text x="200" y="84" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#D0C4E8">contrast</text>
+
+      <!-- Arrow -->
+      <text x="263" y="60" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="18" fill="#8A9DBF">&#8594;</text>
+
+      <!-- Block A2 -->
+      <rect x="280" y="18" width="110" height="72" rx="8" fill="#0E1C42"/>
+      <text x="335" y="50" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">A</text>
+      <text x="335" y="70" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A0B0CC">Ritornello</text>
+      <text x="335" y="84" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#A0B0CC">TONIC</text>
+
+      <!-- Arrow -->
+      <text x="398" y="60" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="18" fill="#8A9DBF">&#8594;</text>
+
+      <!-- Block C -->
+      <rect x="415" y="18" width="110" height="72" rx="8" fill="#2A9D5C"/>
+      <text x="470" y="50" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">C</text>
+      <text x="470" y="70" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#D0EDDD">Episode 2</text>
+      <text x="470" y="84" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#D0EDDD">contrast</text>
+
+      <!-- Arrow -->
+      <text x="533" y="60" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="18" fill="#8A9DBF">&#8594;</text>
+
+      <!-- Block A3 -->
+      <rect x="550" y="18" width="110" height="72" rx="8" fill="#0E1C42"/>
+      <text x="605" y="50" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">A</text>
+      <text x="605" y="70" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="11" fill="#A0B0CC">Ritornello</text>
+      <text x="605" y="84" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="10" fill="#A0B0CC">TONIC</text>
+
+      <!-- Caption row -->
+      <text x="10" y="118" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">A always returns in TONIC</text>
+      <text x="220" y="118" font-family="Segoe UI,sans-serif" font-size="12" fill="#6B4C9A">|</text>
+      <text x="232" y="118" font-family="Segoe UI,sans-serif" font-size="12" fill="#4A5478">Episodes contrast in other keys</text>
+    </svg>
+  </div>
+  <p style="font-size: 13px; color: #6B7A99; font-style: italic; margin-top: -10px; margin-bottom: 18px;">
+    The A section (ritornello) returns in the tonic after each contrasting episode. The form is sectional -- each return of A is complete and recognizable.
+  </p>
+
+  <p style="font-size: 15px; color: #1a2340; line-height: 1.7; margin-bottom: 14px;">
+    The A section is the <strong>ritornello</strong> (Italian: "little return"), the main theme, and it always returns in the tonic. B and C are <strong>episodes</strong> -- contrasting sections that may be in a related key or in a contrasting character. The number of returns can vary: ABACABA adds a second return of B before the final A, making the form longer without changing its logic.
+  </p>
+  <p style="font-size: 15px; color: #1a2340; line-height: 1.7; margin-bottom: 22px;">
+    <strong>Rondo vs. Sonata:</strong> Rondo is sectional -- each A is a complete, self-contained return. Sonata form develops material continuously through the development section, then resolves it. Both forms use key contrast, but for different structural purposes. Rondo sections arrive and depart cleanly; sonata form is one continuous harmonic argument.
+  </p>
+
+  <!-- PART 3: FORM COMPARISON -->
+  <div style="border-top: 4px solid #6B4C9A; padding-top: 18px; margin-top: 28px; margin-bottom: 14px;">
+    <div style="font-size: 11px; color: #6B4C9A; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;">&#9997;&#65039; PART 3 &middot; COMPARING FORMS</div>
+    <p style="font-size: 16px; color: #1a2340; line-height: 1.7; margin-top: 0;">
+      You have now studied four related forms. Here they are side by side.
+    </p>
+  </div>
+
+  <!-- VISUAL 3: Form Comparison Table -->
+  <div style="overflow-x: auto; margin-bottom: 22px;">
+    <table style="border-collapse: collapse; width: 100%; font-size: 15px; min-width: 550px;">
+      <thead>
+        <tr style="background: #0E1C42; color: #FFFFFF;">
+          <th style="padding: 12px 14px; text-align: left; font-weight: 600;">Form</th>
+          <th style="padding: 12px 14px; text-align: left; font-weight: 600;">Sections</th>
+          <th style="padding: 12px 14px; text-align: left; font-weight: 600;">Key Scheme</th>
+          <th style="padding: 12px 14px; text-align: left; font-weight: 600;">Character</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: #FFFFFF;">
+          <td style="padding: 12px 14px; color: #0E1C42; font-weight: 600; border-bottom: 1px solid #DDE1EC;">Binary (AB)</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">A then B</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">A: tonic; B: moves to dominant or relative key</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">Simple two-part; common in Baroque dance</td>
+        </tr>
+        <tr style="background: #F4F6FA;">
+          <td style="padding: 12px 14px; color: #0E1C42; font-weight: 600; border-bottom: 1px solid #DDE1EC;">Ternary (ABA)</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">A, B (contrast), A return</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">A: tonic; B: contrasting key; A: tonic</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">Balanced three-part; satisfying symmetry</td>
+        </tr>
+        <tr style="background: #FFF6F5; border-left: 4px solid #C0392B;">
+          <td style="padding: 12px 14px; color: #0E1C42; font-weight: 600; border-bottom: 1px solid #DDE1EC;">Sonata Form</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">Exposition / Development / Recapitulation</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">Exp: tonic to dominant; Dev: unstable; Recap: both themes in tonic</td>
+          <td style="padding: 12px 14px; color: #1a2340; border-bottom: 1px solid #DDE1EC;">Dramatic and developmental; greatest tension and resolution</td>
+        </tr>
+        <tr style="background: #FFFFFF;">
+          <td style="padding: 12px 14px; color: #0E1C42; font-weight: 600;">Rondo (ABACA)</td>
+          <td style="padding: 12px 14px; color: #1a2340;">Alternating refrain and episodes</td>
+          <td style="padding: 12px 14px; color: #1a2340;">A: always tonic; episodes: contrasting keys</td>
+          <td style="padding: 12px 14px; color: #1a2340;">Sectional, predictable returns; lighter character</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size: 15px; color: #4A5478; font-style: italic; margin-bottom: 18px;">
+    Before you tap each question below, write your answer in your notebook.
+  </p>
+
+  <!-- WIDGET 2: ow-select CHECK IT -->
+  <div class="optima-widget ow-select">
+    <div class="widget-kicker">&#9889; CHECK IT &middot; CLASSICAL FORMS</div>
+    <div class="widget-question">Five questions on sonata, rondo, and binary forms. Think before you tap.</div>
+
+    <!-- Q1: correct = index 2 -->
+    <div class="widget-row" data-correct="2">
+      <div class="widget-row-prompt">In a sonata, the secondary theme (S theme) first appears in which key area?</div>
+      <div class="widget-options">
+        <button data-choice="0" data-hint="The S theme leaves the tonic. Where does it go to create harmonic tension?">The tonic</button>
+        <button data-choice="1" data-hint="The S theme leaves the tonic. Where does it go to create harmonic tension?">The subdominant</button>
+        <button data-choice="2" data-fb="Correct. The S theme appears in the dominant (major key) or relative major (minor key). That departure from tonic is the harmonic tension the form resolves in the recapitulation.">The dominant or relative major</button>
+        <button data-choice="3" data-hint="The S theme leaves the tonic. Where does it go to create harmonic tension?">The mediant</button>
+      </div>
+    </div>
+
+    <!-- Q2: correct = index 1 -->
+    <div class="widget-row" data-correct="1">
+      <div class="widget-row-prompt">What is the primary purpose of the development section in sonata form?</div>
+      <div class="widget-options">
+        <button data-choice="0" data-hint="The development is harmonically unstable. What does it do to the themes?">Presents both themes in the tonic key</button>
+        <button data-choice="1" data-fb="Correct. The development section takes material from the exposition and fragments, sequences, and modulates it through several keys, building tension toward the recapitulation.">Fragments and develops P and S theme material through unstable modulations</button>
+        <button data-choice="2" data-hint="The development is harmonically unstable. What does it do to the themes?">Introduces a brand new theme not heard in the exposition</button>
+        <button data-choice="3" data-hint="The development is harmonically unstable. What does it do to the themes?">Repeats the exposition verbatim</button>
+      </div>
+    </div>
+
+    <!-- Q3: correct = index 3 -->
+    <div class="widget-row" data-correct="3">
+      <div class="widget-row-prompt">In a rondo, the A section is called the:</div>
+      <div class="widget-options">
+        <button data-choice="0" data-hint="What Italian term names the recurring main theme in rondo?">Episode</button>
+        <button data-choice="1" data-hint="What Italian term names the recurring main theme in rondo?">Development</button>
+        <button data-choice="2" data-hint="What Italian term names the recurring main theme in rondo?">Transition</button>
+        <button data-choice="3" data-fb="Correct. The A section is the ritornello, Italian for 'little return.' It is the recurring refrain that comes back in the tonic after each episode.">Ritornello (refrain)</button>
+      </div>
+    </div>
+
+    <!-- Q4: correct = index 0 -->
+    <div class="widget-row" data-correct="0">
+      <div class="widget-row-prompt">In the recapitulation of a sonata, how does the secondary theme differ from its appearance in the exposition?</div>
+      <div class="widget-options">
+        <button data-choice="0" data-fb="Correct. In the recapitulation, the S theme returns in the tonic. This resolves the harmonic asymmetry created when the S theme left for the dominant in the exposition.">It returns in the tonic key, resolving the harmonic tension</button>
+        <button data-choice="1" data-hint="The whole point of the recapitulation is harmonic resolution. Where must both themes land?">It returns in the dominant key again</button>
+        <button data-choice="2" data-hint="The whole point of the recapitulation is harmonic resolution. Where must both themes land?">It is omitted to save time</button>
+        <button data-choice="3" data-hint="The whole point of the recapitulation is harmonic resolution. Where must both themes land?">It appears in the relative minor for variety</button>
+      </div>
+    </div>
+
+    <!-- Q5: correct = index 2 -->
+    <div class="widget-row" data-correct="2">
+      <div class="widget-row-prompt">Which form uses sectional alternation of a recurring refrain with contrasting episodes?</div>
+      <div class="widget-options">
+        <button data-choice="0" data-hint="This form has a recurring refrain that keeps returning between contrasting sections.">Binary (AB)</button>
+        <button data-choice="1" data-hint="This form has a recurring refrain that keeps returning between contrasting sections.">Ternary (ABA)</button>
+        <button data-choice="2" data-fb="Correct. Rondo alternates the returning A ritornello with contrasting episodes. Each return of A is complete and in the tonic. The form is sectional, not developmental.">Rondo (A-B-A-C-A)</button>
+        <button data-choice="3" data-hint="This form has a recurring refrain that keeps returning between contrasting sections.">Sonata form</button>
+      </div>
+    </div>
+
+    <button class="widget-reset">Reset</button>
+  </div>
+
+  <!-- WHAT YOU'LL DO NEXT -->
+  <div style="border-top: 4px solid #6B4C9A; padding-top: 18px; margin-top: 28px; margin-bottom: 14px;">
+    <div style="font-size: 11px; color: #6B4C9A; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 12px;">&#128203; What You'll Do Next</div>
+    <div style="display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start;">
+      <div style="min-width: 28px; height: 28px; background: #6B4C9A; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">1</div>
+      <div>
+        <div style="font-size: 15px; color: #0E1C42; font-weight: 600; margin-bottom: 4px;">Formal Analysis Practice</div>
+        <div style="font-size: 15px; color: #1a2340; line-height: 1.6;">
+          Identify and label the P theme, S theme, transition, development, and recapitulation in a public-domain piano sonata excerpt (OMT p. 359 provides context). Write a labeled diagram or annotated outline. Submit in Canvas.
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: flex-start;">
+      <div style="min-width: 28px; height: 28px; background: #6B4C9A; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">2</div>
+      <div>
+        <div style="font-size: 15px; color: #0E1C42; font-weight: 600; margin-bottom: 4px;">Module 12 Classical Forms Check</div>
+        <div style="font-size: 15px; color: #1a2340; line-height: 1.6;">
+          Canvas quiz, auto-graded, multiple attempts allowed.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE ONE THING TO REMEMBER -->
+  <div style="border-top: 4px solid #2A9D5C; background: #E7F4EC; border-radius: 0 0 8px 8px; padding: 18px 22px; margin-top: 28px; margin-bottom: 10px;">
+    <div style="font-size: 11px; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;">&#128161; The One Thing to Remember</div>
+    <p style="font-size: 16px; color: #1a2340; line-height: 1.7; margin: 0;">
+      Sonata form is a harmonic story: the S theme leaves the tonic in the exposition, the development makes that departure unstable, and the recapitulation resolves it by bringing both themes home. Rondo is a sectional form where the ritornello (A) returns in the tonic after each episode. Binary is the simplest: two sections, A and B. Know those three forms and you can follow any Classical-period movement.
+    </p>
+  </div>
+
+</div><!-- end body -->
+
+<!-- FOOTER -->
+<div style="background: #0E1C42; border-top: 5px solid #55C8E8; padding: 20px 34px; text-align: center; margin-top: 10px;">
+  <div style="font-size: 13px; color: #A0B4CC; margin-bottom: 4px;">Optima Academy Online &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+  <div style="font-size: 13px; color: #55C8E8; margin-bottom: 6px;">Lesson 12.01 &middot; Classical Forms</div>
+  <div style="font-size: 12px; color: #6A7F9A;">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div><!-- end canvas-frame -->
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+</body>
+</html>

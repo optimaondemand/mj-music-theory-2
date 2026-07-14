@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 2.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 2</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 2.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Natural Minor</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 2.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Natural Minor and Its Harmonies</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Why does minor music sound the way it does, and what makes it different from major?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You already know major scales and their harmonies. Natural minor is built from the same notes, just starting on a different pitch, yet the whole emotional landscape shifts. Today you map that new territory: the step pattern, the diatonic chords, and the one harmonic quirk that set composers searching for something more.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> construct a natural minor scale from any starting pitch using the W-H-W-W-H-W-W pattern.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> label all seven diatonic triads of natural minor with correct Roman numerals and chord qualities.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain why the minor v chord is harmonically weak and why that matters for the next module.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2, free at viva.pressbooks.pub/openmusictheory: read <em>Minor Scales, Scale Degrees, and Key Signatures</em> (p. 111), Natural Minor section (p. 112).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and staff paper (or MuseScore) for the practice exercises.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Headphones for listening to the A natural minor scale and the VII-i progression examples linked at the end.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE STEP PATTERN ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 1 &middot; THE NATURAL MINOR SCALE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Natural minor is built on the pattern <strong>W-H-W-W-H-W-W</strong>. Two half steps fall in specific places: between scale degrees 2-3 and between 5-6. Everything else is a whole step. The simplest natural minor scale uses no sharps or flats: A natural minor (A-B-C-D-E-F-G-A).</p>
+
+        <!-- VISUAL 1: Step-ladder diagram W-H-W-W-H-W-W with A natural minor notes -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 16px; text-align:center; margin: 6px 0 18px;">
+          <svg viewBox="0 0 620 340" width="100%" style="max-width:620px;" role="img" aria-label="Natural minor scale step-ladder. Seven steps from A at the bottom to A at the top. Whole steps between most degrees; half steps (marked HS) between scale degrees 2-3 (B to C) and 5-6 (E to F).">
+            <!-- ladder rungs: 8 positions, y from 300 down to 20, each rung is 40px tall -->
+            <!-- Notes: A(1), B(2), C(3), D(4), E(5), F(6), G(7), A(8) -->
+            <!-- y positions: 300,260,220,180,140,100,60,20 -->
+            <!-- Steps between rungs (left bracket side) -->
+            <!-- background bar -->
+            <rect x="120" y="10" width="60" height="300" rx="6" fill="#E7F4EC" />
+
+            <!-- Rung 8: A (top) -->
+            <rect x="90" y="15" width="200" height="34" rx="6" fill="#0E1C42" />
+            <text x="200" y="37" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9398; A (octave)</text>
+            <!-- Step label between 7-8: W -->
+            <text x="68" y="52" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">W</text>
+            <!-- Rung 7: G -->
+            <rect x="90" y="58" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="80" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9397; G</text>
+            <!-- Step label between 6-7: W -->
+            <text x="68" y="97" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">W</text>
+            <!-- Rung 6: F -->
+            <rect x="90" y="100" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="122" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9396; F</text>
+            <!-- Step label between 5-6: H (half step, highlighted) -->
+            <rect x="50" y="134" width="36" height="22" rx="4" fill="#C0392B" />
+            <text x="68" y="149" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">HS</text>
+            <!-- Rung 5: E -->
+            <rect x="90" y="157" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="179" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9395; E</text>
+            <!-- Step label between 4-5: W -->
+            <text x="68" y="198" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">W</text>
+            <!-- Rung 4: D -->
+            <rect x="90" y="200" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="222" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9394; D</text>
+            <!-- Step label between 3-4: W -->
+            <text x="68" y="241" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">W</text>
+            <!-- Rung 3: C -->
+            <rect x="90" y="243" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="265" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9393; C</text>
+            <!-- Step label between 2-3: H (half step, highlighted) -->
+            <rect x="50" y="277" width="36" height="22" rx="4" fill="#C0392B" />
+            <text x="68" y="292" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="bold">HS</text>
+            <!-- Rung 1-2: B -->
+            <rect x="90" y="285" width="200" height="34" rx="6" fill="#2A9D5C" />
+            <text x="200" y="307" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9392; B</text>
+            <!-- Rung 1: A (bottom) -->
+            <rect x="330" y="285" width="200" height="34" rx="6" fill="#0E1C42" />
+            <text x="430" y="307" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">&#9391; A (tonic)</text>
+
+            <!-- step pattern text between rungs on right side -->
+            <g font-size="12" fill="#1A6B3C" text-anchor="start">
+              <text x="308" y="52">W  (whole step)</text>
+              <text x="308" y="97">W  (whole step)</text>
+              <text x="308" y="149" fill="#C0392B" font-weight="bold">HS (half step) &lt;-- between 5-6</text>
+              <text x="308" y="198">W  (whole step)</text>
+              <text x="308" y="241">W  (whole step)</text>
+              <text x="308" y="292" fill="#C0392B" font-weight="bold">HS (half step) &lt;-- between 2-3</text>
+            </g>
+          </svg>
+          <div style="font-size:13px; color:#666; margin-top:8px;">Red <strong>HS</strong> = half step. Half steps fall at 2-3 and 5-6. The top A is omitted from the right-side step labels because no step follows the octave.</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Compare that to major (W-W-H-W-W-W-H): natural minor pushes both half steps earlier and changes where they land. The result is scale degrees 3, 6, and 7 are each a half step lower than in major. Those three flatted degrees are the engine of the minor sound.</p>
+
+        <!-- VISUAL 2: Major vs Natural Minor side-by-side comparison -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; margin: 6px 0 14px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 12px; text-align: center;">C Major vs. A Natural Minor: Scale Degree Comparison</div>
+          <div style="overflow-x: auto;">
+          <svg viewBox="0 0 620 180" width="100%" style="min-width:400px; max-width:620px;" role="img" aria-label="Table comparing C major and A natural minor scale degrees 1 through 7. Degrees 3, 6, and 7 are highlighted as lower in natural minor.">
+            <!-- Column headers -->
+            <g font-size="13" fill="#6b7a99" text-anchor="middle">
+              <text x="70"  y="20">Degree</text>
+              <text x="150" y="20">1</text>
+              <text x="220" y="20">2</text>
+              <text x="290" y="20">3</text>
+              <text x="360" y="20">4</text>
+              <text x="430" y="20">5</text>
+              <text x="500" y="20">6</text>
+              <text x="570" y="20">7</text>
+            </g>
+            <!-- Row 1: Major -->
+            <rect x="10" y="28" width="600" height="36" rx="4" fill="#E7F4EC" />
+            <text x="70" y="51" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">Major</text>
+            <g font-size="16" fill="#1A6B3C" text-anchor="middle" font-weight="bold">
+              <text x="150" y="51">C</text>
+              <text x="220" y="51">D</text>
+              <text x="290" y="51">E</text>
+              <text x="360" y="51">F</text>
+              <text x="430" y="51">G</text>
+              <text x="500" y="51">A</text>
+              <text x="570" y="51">B</text>
+            </g>
+            <!-- Row 2: Natural Minor -->
+            <rect x="10" y="68" width="600" height="36" rx="4" fill="#EEF1F8" />
+            <text x="70" y="91" font-size="13" fill="#0E1C42" text-anchor="middle" font-weight="bold">Nat. Minor</text>
+            <g font-size="16" text-anchor="middle" font-weight="bold">
+              <text x="150" y="91" fill="#0E1C42">A</text>
+              <text x="220" y="91" fill="#0E1C42">B</text>
+              <text x="290" y="91" fill="#C0392B">C &#9837;3</text>
+              <text x="360" y="91" fill="#0E1C42">D</text>
+              <text x="430" y="91" fill="#0E1C42">E</text>
+              <text x="500" y="91" fill="#C0392B">F &#9837;6</text>
+              <text x="570" y="91" fill="#C0392B">G &#9837;7</text>
+            </g>
+            <!-- Row 3: Change label -->
+            <rect x="10" y="108" width="600" height="30" rx="4" fill="#FDECEC" />
+            <text x="70" y="127" font-size="12" fill="#8A1F16" text-anchor="middle">Change</text>
+            <g font-size="12" fill="#8A1F16" text-anchor="middle">
+              <text x="150" y="127">same</text>
+              <text x="220" y="127">same</text>
+              <text x="290" y="127" font-weight="bold">flat 3rd</text>
+              <text x="360" y="127">same</text>
+              <text x="430" y="127">same</text>
+              <text x="500" y="127" font-weight="bold">flat 6th</text>
+              <text x="570" y="127" font-weight="bold">flat 7th</text>
+            </g>
+            <!-- Caption -->
+            <text x="310" y="158" font-size="12" fill="#666" text-anchor="middle">Natural minor lowers scale degrees 3, 6, and 7 compared to parallel major.</text>
+            <text x="310" y="173" font-size="12" fill="#666" text-anchor="middle">These three changes create the characteristic minor sound.</text>
+          </svg>
+          </div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; KEY POINT</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">Natural minor is also known as the <strong>Aeolian mode</strong>. It uses the key signature without any alteration. A minor uses no sharps or flats; E minor uses one sharp (F&#9839;); D minor uses one flat (B&#9837;).</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: DIATONIC TRIADS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127928; PART 2 &middot; DIATONIC TRIADS IN NATURAL MINOR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Stack a third and a fifth on each scale degree. The seven triads you get are called the <strong>diatonic triads</strong> of natural minor. Roman numerals tell you the root; <strong>lowercase</strong> = minor, <strong>UPPERCASE</strong> = major, and the degree sign &#176; = diminished.</p>
+
+        <!-- VISUAL 3: Diatonic triads of natural minor -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px 16px; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 12px; text-align: center;">Diatonic Triads of A Natural Minor</div>
+          <div style="overflow-x: auto;">
+          <svg viewBox="0 0 700 200" width="100%" style="min-width:500px; max-width:700px;" role="img" aria-label="Seven diatonic triads in A natural minor labeled i through VII with their chord qualities.">
+            <!-- Column positions: x = 50,150,250,350,450,550,650 -->
+            <!-- Row 1: Roman numeral labels -->
+            <!-- i -->
+            <rect x="10" y="10" width="80" height="42" rx="5" fill="#0E1C42" />
+            <text x="50" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">i</text>
+            <!-- ii diminished -->
+            <rect x="110" y="10" width="80" height="42" rx="5" fill="#6B4C9A" />
+            <text x="150" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">ii&#176;</text>
+            <!-- III major -->
+            <rect x="210" y="10" width="80" height="42" rx="5" fill="#2A9D5C" />
+            <text x="250" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">III</text>
+            <!-- iv minor -->
+            <rect x="310" y="10" width="80" height="42" rx="5" fill="#0E1C42" />
+            <text x="350" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">iv</text>
+            <!-- v minor -- highlighted differently -->
+            <rect x="410" y="10" width="80" height="42" rx="5" fill="#C0392B" />
+            <text x="450" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">v</text>
+            <!-- VI major -->
+            <rect x="510" y="10" width="80" height="42" rx="5" fill="#2A9D5C" />
+            <text x="550" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">VI</text>
+            <!-- VII major -->
+            <rect x="610" y="10" width="80" height="42" rx="5" fill="#2A9D5C" />
+            <text x="650" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">VII</text>
+
+            <!-- Row 2: Root notes -->
+            <g font-size="14" fill="#0E1C42" text-anchor="middle">
+              <text x="50"  y="76">A</text>
+              <text x="150" y="76">B</text>
+              <text x="250" y="76">C</text>
+              <text x="350" y="76">D</text>
+              <text x="450" y="76">E</text>
+              <text x="550" y="76">F</text>
+              <text x="650" y="76">G</text>
+            </g>
+            <!-- Row 3: Quality label -->
+            <g font-size="12" text-anchor="middle">
+              <text x="50"  y="98" fill="#0E1C42">minor</text>
+              <text x="150" y="98" fill="#6B4C9A">dim</text>
+              <text x="250" y="98" fill="#1A6B3C">major</text>
+              <text x="350" y="98" fill="#0E1C42">minor</text>
+              <text x="450" y="98" fill="#C0392B" font-weight="bold">minor!</text>
+              <text x="550" y="98" fill="#1A6B3C">major</text>
+              <text x="650" y="98" fill="#1A6B3C">major</text>
+            </g>
+
+            <!-- Highlight callout for v and VII -->
+            <rect x="398" y="110" width="104" height="50" rx="5" fill="#FDECEC" stroke="#C0392B" stroke-width="1.5"/>
+            <text x="450" y="127" font-size="11" fill="#8A1F16" text-anchor="middle" font-weight="bold">v is MINOR</text>
+            <text x="450" y="142" font-size="11" fill="#8A1F16" text-anchor="middle">(no leading tone)</text>
+            <text x="450" y="155" font-size="10" fill="#8A1F16" text-anchor="middle">weak dominant</text>
+
+            <rect x="598" y="110" width="104" height="50" rx="5" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+            <text x="650" y="127" font-size="11" fill="#1A6B3C" text-anchor="middle" font-weight="bold">VII is MAJOR</text>
+            <text x="650" y="142" font-size="11" fill="#1A6B3C" text-anchor="middle">(subtonic triad)</text>
+            <text x="650" y="155" font-size="10" fill="#1A6B3C" text-anchor="middle">modal sound</text>
+
+            <!-- Caption -->
+            <text x="350" y="185" font-size="12" fill="#666" text-anchor="middle">i and iv are minor; VII and VI are major; v is minor (the key issue); ii&#176; is diminished.</text>
+          </svg>
+          </div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Notice the <strong>red v chord</strong>. In major, the V chord is major, and it contains a <strong>leading tone</strong>: scale degree 7 is a half step below the tonic, creating a strong pull home. In natural minor, scale degree 7 is a <em>whole step</em> below the tonic. That note is called the <strong>subtonic</strong>, and the v chord built on it is <strong>minor</strong>. A minor v chord lacks the leading-tone tension. It does not pull strongly back to i.</p>
+
+        <div style="background: #FDECEC; border-left: 5px solid #C0392B; border-radius: 6px; padding: 14px 20px; margin: 4px 0 14px;">
+            <div style="font-size: 11px; color: #8A1F16; margin-bottom: 8px;">&#9888; THE HARMONIC PROBLEM</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">In natural minor: <strong>v-i</strong> sounds weak. Both chords are minor, scale degree 7 steps down by a whole step instead of pulling up by a half step, and the cadence lacks the resolution power of V-i in major. This is precisely why composers developed <strong>harmonic minor</strong> (coming up in Module 3).</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The <strong>VII chord</strong> (the subtonic triad: G major in A minor) <em>does</em> sound satisfying in natural minor, but in a different way. It resolves by stepping downward (G to A) rather than by the half-step pull of a leading tone. You hear this sound constantly in rock, folk, and modal music.</p>
+
+        <!-- Flip cards: 7 diatonic triad qualities -->
+        <div style="font-size: 16px; color: #6B4C9A; margin: 10px 0 8px;">&#9889; TAP EACH CARD to check the triad quality in natural minor:</div>
+        <div class="flip-grid">
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">i chord (on scale degree 1)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip">minor</span><br>Root: A &bull; A-C-E &bull; Tonic minor, home chord. Lowercase i.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">ii&#176; chord (on scale degree 2)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip" style="background:#6B4C9A;">dim</span><br>Root: B &bull; B-D-F &bull; Diminished; two minor thirds stacked. The &#176; symbol.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">III chord (on scale degree 3)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip">major</span><br>Root: C &bull; C-E-G &bull; Major triad. Uppercase III. Often called the mediant.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">iv chord (on scale degree 4)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip">minor</span><br>Root: D &bull; D-F-A &bull; Minor subdominant. Lowercase iv.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">v chord (on scale degree 5)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip" style="background:#C0392B;">minor!</span><br>Root: E &bull; E-G-B &bull; Minor dominant. No leading tone. Weak cadence. Lowercase v.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">VI chord (on scale degree 6)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip">major</span><br>Root: F &bull; F-A-C &bull; Major submediant. Uppercase VI.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+        </div>
+        <div class="optima-widget" style="margin-top:12px;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;">VII chord (on scale degree 7 = subtonic)<br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:16px;line-height:1.55;"><span class="note-chip">major</span><br>Root: G &bull; G-B-D &bull; Major subtonic triad. Uppercase VII. Characteristic of natural minor and modal music; resolves by step downward (G to A).</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: PRACTICE + SELECT QUIZ ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 14px;">&#9997;&#65039; PART 3 &middot; CHECK YOUR UNDERSTANDING</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Before you tap, think through each question using the step pattern and triad charts above. Write your answer in your notebook first, then check it here.</p>
+
+        <!-- ow-select: scrambled correct indices: 1, 3, 0, 2 -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; CHECK IT &middot; NATURAL MINOR TRIADS</div>
+          <div class="widget-question">Four questions on natural minor. Think before you tap.</div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. The half steps in natural minor land between scale degrees 2-3 and 5-6, just like the W-H-W-W-H-W-W pattern shows." data-hint="Count the whole and half steps: W-H-W-W-H-W-W. Where are the H positions?">
+            <div class="widget-row-prompt">1. In natural minor, half steps fall between scale degrees&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">3-4 and 7-8</button>
+              <button data-choice="1">2-3 and 5-6</button>
+              <button data-choice="2">1-2 and 4-5</button>
+              <button data-choice="3">4-5 and 7-8</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. In A natural minor, the v chord is E-G-B, which is a minor triad. It has no leading tone." data-hint="In natural minor, what quality is the chord built on scale degree 5? Check the triad chart.">
+            <div class="widget-row-prompt">2. In A natural minor, what is the quality of the chord built on E (scale degree 5)?</div>
+            <div class="widget-options">
+              <button data-choice="0">augmented</button>
+              <button data-choice="1">major</button>
+              <button data-choice="2">diminished</button>
+              <button data-choice="3">minor</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="0" data-fb="Correct. The VII chord in natural minor is a major triad. In A minor it is G-B-D, and it is called the subtonic triad." data-hint="Scale degree 7 in natural minor is a whole step below the tonic. Stack a major triad there. What quality comes out?">
+            <div class="widget-row-prompt">3. The chord on scale degree 7 in natural minor (the VII chord) is&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">a major triad (the subtonic chord)</button>
+              <button data-choice="1">a minor triad (the leading-tone chord)</button>
+              <button data-choice="2">an augmented triad</button>
+              <button data-choice="3">a diminished triad</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. The v chord in natural minor is minor because scale degree 7 (the fifth of the v chord) is a subtonic, a whole step below the tonic, not a leading tone. That weak pull is the problem harmonic minor was designed to fix." data-hint="Why is the v chord weak? Think about what the fifth of that chord is, and whether it wants to pull upward.">
+            <div class="widget-row-prompt">4. The v chord in natural minor is harmonically weak because&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">it is built on the wrong scale degree</button>
+              <button data-choice="1">it contains a diminished fifth</button>
+              <button data-choice="2">it is minor and has no leading tone to pull toward the tonic</button>
+              <button data-choice="3">it shares no notes with the tonic chord</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== WHAT YOU'LL DO NEXT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Minor Scale Practice (musictheory.net)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Complete the Minor Scale Identification exercise. Aim for 85%. Screenshot your result and submit in Canvas.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 2 Natural Minor Check (Canvas quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on scale construction, triad qualities, and the v-chord problem. Multiple attempts allowed.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Natural minor (W-H-W-W-H-W-W) lowers scale degrees 3, 6, and 7. Its seven diatonic triads include a <strong>minor v</strong> chord (no leading tone, weak dominant) and a <strong>major VII</strong> chord (the subtonic). The minor v is the harmonic problem that drives the development of harmonic minor. Keep that problem in mind as you move to Module 3.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 2.01 &middot; Natural Minor</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

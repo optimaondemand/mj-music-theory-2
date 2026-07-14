@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M/J Music Theory 2 - Lesson 16.01</title>
+  <style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+
+    /* --- Page layout --- */
+    .optima-header { background: #0E1C42; border-bottom: 4px solid #00B4D8; padding: 0; }
+    .optima-header-inner { display: flex; align-items: center; gap: 18px; padding: 18px 32px; }
+    .optima-owl { font-size: 32px; line-height: 1; }
+    .optima-course-title { color: #FFFFFF; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; margin: 0; }
+    .optima-course-sub { color: #A8C8D8; font-size: 13px; margin: 2px 0 0; letter-spacing: 0.3px; }
+
+    .metadata-strip { background: #1a2a54; display: flex; flex-wrap: wrap; gap: 0; border-bottom: 1px solid #2e3f6e; }
+    .meta-cell { padding: 9px 20px; font-size: 12px; color: #8DAEC8; letter-spacing: 0.3px; border-right: 1px solid #2e3f6e; }
+    .meta-cell:last-child { border-right: none; }
+    .meta-cell strong { color: #FFFFFF; font-weight: 600; }
+
+    .body-wrapper { padding: 28px 32px 40px; }
+
+    .title-strip { margin-bottom: 28px; }
+    .title-strip .lesson-kicker { display: inline-block; background: #0E1C42; color: #00B4D8; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; text-transform: uppercase; }
+    .title-strip .lesson-type { display: inline-block; background: #E7F4EC; color: #1A6B3C; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; margin-left: 8px; text-transform: uppercase; }
+    .title-strip h1 { margin: 0 0 6px; font-size: 28px; color: #0E1C42; font-weight: 700; line-height: 1.25; }
+    .title-strip .lesson-sub { font-size: 15px; color: #4a5a7a; margin: 0; }
+
+    .section-block { border-top: 4px solid #2A9D5C; background: #f8fdf9; border-radius: 0 0 8px 8px; padding: 20px 24px; margin: 24px 0; }
+    .section-block.purple { border-top-color: #6B4C9A; background: #faf8fd; }
+    .section-block h2 { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #1A6B3C; letter-spacing: 0.3px; text-transform: uppercase; }
+    .section-block.purple h2 { color: #6B4C9A; }
+    .section-block p { margin: 0 0 10px; font-size: 15px; color: #1a2340; line-height: 1.6; }
+    .section-block p:last-child { margin-bottom: 0; }
+
+    /* Objectives */
+    .objectives-list { display: flex; flex-direction: column; gap: 10px; margin: 12px 0 0; }
+    .obj-item { display: flex; align-items: flex-start; gap: 14px; }
+    .obj-num { flex-shrink: 0; width: 32px; height: 32px; background: #2A9D5C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; }
+    .obj-text { font-size: 15px; color: #1a2340; line-height: 1.55; padding-top: 5px; }
+
+    /* Materials */
+    .materials-list { list-style: none; margin: 10px 0 0; padding: 0; }
+    .materials-list li { font-size: 15px; color: #1a2340; line-height: 1.6; padding: 5px 0 5px 22px; position: relative; }
+    .materials-list li::before { content: "\25B6"; position: absolute; left: 0; color: #2A9D5C; font-size: 11px; top: 7px; }
+    .materials-list a { color: #0E1C42; font-weight: 600; text-decoration: underline; }
+    .materials-list a:hover { color: #2A9D5C; }
+
+    /* IMSLP info box */
+    .imslp-box { border-left: 5px solid #0E1C42; background: #f0f3fa; border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; }
+    .imslp-box .imslp-label { font-size: 11px; font-weight: 700; color: #0E1C42; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+    .imslp-box p { margin: 0 0 8px; font-size: 15px; color: #1a2340; line-height: 1.6; }
+    .imslp-box p:last-child { margin-bottom: 0; }
+    .imslp-box a { color: #0E1C42; font-weight: 700; }
+    .imslp-box a:hover { color: #2A9D5C; }
+
+    /* Checklist card */
+    .checklist-card { background: #FFFFFF; border: 1px solid #c8d6c0; border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+    .checklist-card h3 { margin: 0 0 14px; font-size: 14px; font-weight: 700; color: #1A6B3C; letter-spacing: 0.4px; text-transform: uppercase; }
+    .checklist-items { display: flex; flex-direction: column; gap: 8px; }
+    .checklist-item { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #f4fdf6; border-radius: 6px; border: 1px solid #d4ead8; }
+    .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid #2A9D5C; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .check-num { font-size: 11px; font-weight: 700; color: #1A6B3C; }
+    .check-label { font-size: 15px; color: #1a2340; }
+    .check-sub { font-size: 13px; color: #4a6a54; margin-top: 2px; }
+
+    /* Essay structure SVG container */
+    .essay-diagram { margin: 16px 0; overflow-x: auto; }
+
+    /* What you'll do next */
+    .next-list { list-style: none; margin: 10px 0 0; padding: 0; counter-reset: next-counter; }
+    .next-list li { font-size: 15px; color: #1a2340; line-height: 1.6; padding: 6px 0 6px 36px; position: relative; counter-increment: next-counter; }
+    .next-list li::before { content: counter(next-counter); position: absolute; left: 0; top: 5px; width: 24px; height: 24px; background: #6B4C9A; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 24px; }
+    .next-list a { color: #6B4C9A; font-weight: 600; }
+
+    /* One thing */
+    .one-thing { background: #E7F4EC; border: 1px solid #b4ddc0; border-left: 5px solid #1A6B3C; border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; font-size: 16px; color: #1a2340; line-height: 1.6; }
+    .one-thing strong { color: #1A6B3C; }
+
+    /* Footer */
+    .optima-footer { background: #0E1C42; border-top: 3px solid #00B4D8; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .footer-main { color: #A8C8D8; font-size: 12px; letter-spacing: 0.3px; }
+    .footer-lesson { color: #6a8aaa; font-size: 12px; }
+
+    @media (max-width: 680px) {
+      .body-wrapper { padding: 18px 16px 32px; }
+      .optima-header-inner { padding: 14px 16px; }
+      .optima-footer { padding: 14px 16px; }
+      .meta-cell { padding: 7px 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 16</div>
+        <div style="font-size: 12px; color: #666;">Score Analysis</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 16.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Score Analysis</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+  <!-- BODY -->
+  <div class="body-wrapper">
+
+    <!-- TITLE STRIP -->
+    <div class="title-strip">
+      <span class="lesson-kicker">Lesson 16.01</span>
+      <span class="lesson-type">Lesson</span>
+      <h1>Score Analysis: Public Domain Works</h1>
+      <p class="lesson-sub">Quarter 2 &middot; Module 16 &middot; Form and Counterpoint</p>
+    </div>
+
+    <!-- TODAY'S FOCUS -->
+    <div class="section-block">
+      <h2>&#127918; Today's Focus</h2>
+      <p>Every skill you have built in Theory II comes together here. You have analyzed keys, labeled Roman numerals, identified form, named secondary dominants, and described cadences. In this lesson you apply all of it to a real score &ndash; a piece composed centuries ago, available free of charge, and ready for you to study in detail.</p>
+      <p>The lesson is intentionally compact. The main work is the score analysis essay you will write after finishing this page. Read carefully, use the checklist and essay structure below, then open IMSLP and get started.</p>
+    </div>
+
+    <!-- OBJECTIVES -->
+    <div class="section-block">
+      <h2>&#127919; Objectives</h2>
+      <div class="objectives-list">
+        <div class="obj-item">
+          <div class="obj-num">1</div>
+          <div class="obj-text">Analyze a public domain piano or vocal piece for key, form, and harmonic language.</div>
+        </div>
+        <div class="obj-item">
+          <div class="obj-num">2</div>
+          <div class="obj-text">Identify at least two techniques studied in Theory II within your chosen piece.</div>
+        </div>
+        <div class="obj-item">
+          <div class="obj-num">3</div>
+          <div class="obj-text">Write a structured analytical essay connecting formal structure to harmonic content.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERIALS -->
+    <div class="section-block">
+      <h2>&#128218; Materials</h2>
+      <ul class="materials-list">
+        <li>Open Music Theory (OMT) &ndash; all analysis chapters as reference</li>
+        <li><a href="https://imslp.org" target="_blank" rel="noopener">IMSLP (imslp.org)</a> &ndash; free public domain scores; no account required for most downloads</li>
+        <li>Word or Google Docs &ndash; for drafting and submitting your essay</li>
+        <li>Your notebook &ndash; for sketching Roman numerals and form diagrams before you write</li>
+      </ul>
+    </div>
+
+    <!-- PART 1: PUBLIC DOMAIN -->
+    <div class="section-block">
+      <h2>Part 1: What Is Public Domain?</h2>
+      <p>Before you can analyze a score, you need to find one you are legally free to use. That is where public domain and IMSLP come in.</p>
+
+      <!-- Visual 3: IMSLP info box -->
+      <div class="imslp-box">
+        <div class="imslp-label">&#127758; Public Domain &amp; IMSLP</div>
+        <p><strong>Public domain</strong> means the copyright on a work has expired. For music, this generally applies to works by composers who died before approximately 1930. You can download, print, study, and reproduce these scores without permission or payment.</p>
+        <p><strong>IMSLP</strong> (the International Music Score Library Project) is the primary free repository of public domain music scores. It hosts hundreds of thousands of scores in PDF format. Most scores are available immediately without creating an account.</p>
+        <p>&#8594; Visit IMSLP at <a href="https://imslp.org" target="_blank" rel="noopener">imslp.org</a> to browse by composer, instrument, or genre.</p>
+        <p>Good starting points for this essay: <strong>J.S. Bach</strong> (Well-Tempered Clavier, chorales), <strong>Beethoven</strong> (early piano sonatas, Op. 2&ndash;22), <strong>Schubert</strong> (lieder), <strong>Schumann</strong> (Album for the Young, Op. 68).</p>
+      </div>
+    </div>
+
+    <!-- PART 2: ANALYSIS CHECKLIST -->
+    <div class="section-block">
+      <h2>Part 2: The Analysis Checklist</h2>
+      <p>When you open a score for the first time, work through these six steps in order. Each step gives you information that makes the next step easier.</p>
+
+      <!-- Visual 1: 6-item checklist card -->
+      <div class="checklist-card">
+        <h3>&#9997; Score Analysis Checklist</h3>
+        <div class="checklist-items">
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">1</span></div>
+            <div>
+              <div class="check-label"><strong>Key / Mode</strong></div>
+              <div class="check-sub">Identify the key signature. Confirm major or minor (or modal) from context. Write the tonic.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">2</span></div>
+            <div>
+              <div class="check-label"><strong>Form + Sections</strong></div>
+              <div class="check-sub">Mark where sections begin and end. Label them A, B, A&prime;, etc. Note any repeats.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">3</span></div>
+            <div>
+              <div class="check-label"><strong>Harmony (RN / secondary dominants / mixture / 7ths)</strong></div>
+              <div class="check-sub">Add Roman numerals measure by measure. Flag secondary dominants (V/x), borrowed chords, and seventh chords.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">4</span></div>
+            <div>
+              <div class="check-label"><strong>Cadences</strong></div>
+              <div class="check-sub">Identify the cadence type at the end of each phrase: authentic, half, deceptive, or plagal.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">5</span></div>
+            <div>
+              <div class="check-label"><strong>Texture</strong></div>
+              <div class="check-sub">Describe the texture (monophonic, homophonic, polyphonic). Note any changes and where they occur.</div>
+            </div>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box"><span class="check-num">6</span></div>
+            <div>
+              <div class="check-label"><strong>Modal / Chromatic Features</strong></div>
+              <div class="check-sub">Note any accidentals that do not belong to the key. Are they chromatic passing tones, borrowed chords, or tonicizations?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p>Work through the checklist in your notebook before you begin writing. Your essay will draw directly from what you find here.</p>
+    </div>
+
+    <!-- PART 3: ANALYTICAL ESSAY -->
+    <div class="section-block">
+      <h2>Part 3: The Analytical Essay</h2>
+      <p>An <strong>analytical essay</strong> connects observed musical details &ndash; harmony, form, rhythm, texture &ndash; to structural or expressive conclusions. It is not a summary of what happens; it is an explanation of why the choices matter.</p>
+      <p>Your essay (400&ndash;600 words) follows a five-part structure:</p>
+
+      <!-- Visual 2: Essay structure SVG -->
+      <div class="essay-diagram">
+        <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto;" aria-label="Essay structure: five sections in sequence">
+          <!-- Boxes -->
+          <rect x="4" y="20" width="120" height="80" rx="7" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+          <rect x="144" y="20" width="120" height="80" rx="7" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+          <rect x="284" y="20" width="120" height="80" rx="7" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+          <rect x="424" y="20" width="120" height="80" rx="7" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+          <rect x="564" y="20" width="132" height="80" rx="7" fill="#1A6B3C" stroke="#1A6B3C" stroke-width="1.5"/>
+          <!-- Arrows -->
+          <polygon points="127,57 139,52 139,62" fill="#2A9D5C"/>
+          <line x1="124" y1="57" x2="143" y2="57" stroke="#2A9D5C" stroke-width="1.5"/>
+          <polygon points="267,57 279,52 279,62" fill="#2A9D5C"/>
+          <line x1="264" y1="57" x2="283" y2="57" stroke="#2A9D5C" stroke-width="1.5"/>
+          <polygon points="407,57 419,52 419,62" fill="#2A9D5C"/>
+          <line x1="404" y1="57" x2="423" y2="57" stroke="#2A9D5C" stroke-width="1.5"/>
+          <polygon points="547,57 559,52 559,62" fill="#2A9D5C"/>
+          <line x1="544" y1="57" x2="563" y2="57" stroke="#2A9D5C" stroke-width="1.5"/>
+          <!-- Labels -->
+          <text x="64" y="48" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">Introduction</text>
+          <text x="64" y="64" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">Names piece,</text>
+          <text x="64" y="77" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">composer,</text>
+          <text x="64" y="90" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">key + mode</text>
+          <text x="204" y="48" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">Formal</text>
+          <text x="204" y="62" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">Analysis</text>
+          <text x="204" y="76" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">Sections, labels,</text>
+          <text x="204" y="89" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">repeats</text>
+          <text x="344" y="48" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">Harmonic</text>
+          <text x="344" y="62" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">Language</text>
+          <text x="344" y="76" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">RN, sec. dom.,</text>
+          <text x="344" y="89" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">cadences</text>
+          <text x="484" y="45" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">One Passage</text>
+          <text x="484" y="59" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A6B3C">in Detail</text>
+          <text x="484" y="73" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">2&ndash;4 measures,</text>
+          <text x="484" y="86" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#1a2340">every chord</text>
+          <text x="630" y="48" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="700" fill="#ffffff">Conclusion</text>
+          <text x="630" y="64" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#d0f0dc">Connects analysis</text>
+          <text x="630" y="77" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#d0f0dc">to character</text>
+          <text x="630" y="90" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#d0f0dc">+ effect</text>
+        </svg>
+      </div>
+
+      <p>Notice that Step 4 &ndash; "One Passage in Detail" &ndash; is where the essay earns its weight. Choosing 2&ndash;4 consecutive measures and explaining every chord change forces you to move from labeling to reasoning. That is the difference between a list and an analysis.</p>
+      <p>For Step 5, do not just restate what you found. Connect your harmonic observations to something expressive: why does the deceptive cadence feel unfinished? What does the secondary dominant do to the forward energy of the phrase? That connection is the conclusion's job.</p>
+      <p>A note on sources: all scores are public domain and available through IMSLP. You do not need to cite any copyrighted material for this essay.</p>
+    </div>
+
+    <!-- PART 4: REFLECT WIDGET -->
+    <div class="section-block">
+      <h2>Part 4: Check Your Thinking</h2>
+      <p>Before you begin your essay, use this widget to check how you are approaching analysis. There are no wrong answers &ndash; choose the response that best matches your instinct, then read the explanation.</p>
+
+      <div class="optima-widget ow-reflect">
+        <div class="widget-kicker">REFLECT &middot; SCORE ANALYSIS</div>
+        <div class="widget-question">Three reflection prompts. Choose the response that best matches your thinking for each one.</div>
+
+        <!-- Prompt 1 -->
+        <div class="widget-row">
+          <div class="widget-row-prompt">When I look at a score for the first time, my first step is usually to&hellip;</div>
+          <div class="widget-options">
+            <button data-response="Good instinct. Key and mode are the foundation of everything else. Once you know if it is major or minor (or modal), every Roman numeral follows from that.">Look at the key signature and figure out the key</button>
+            <button data-response="Also useful. Form gives you the large-scale architecture. You can analyze harmony more efficiently once you know where the sections begin and end.">Count the measures and look for repeating sections</button>
+            <button data-response="This works in practice. Anchor chords (like the tonic or a clear dominant) let you orient yourself, then fill in the gaps by moving outward measure by measure.">Find a chord I recognize and work outward from there</button>
+          </div>
+          <div class="widget-feedback"></div>
+        </div>
+
+        <!-- Prompt 2 -->
+        <div class="widget-row">
+          <div class="widget-row-prompt">The hardest part of writing an analysis paragraph is&hellip;</div>
+          <div class="widget-options">
+            <button data-response="Accuracy matters, but the labels alone are not the analysis. The goal is to explain what the chords do: why that secondary dominant creates anticipation, why the deceptive cadence surprises.">Listing all the Roman numerals without making errors</button>
+            <button data-response="Exactly the challenge. Every analytical paragraph needs at least one sentence that connects the label to the effect: &ldquo;The V7/IV in m. 12 creates unexpected warmth before the return to the tonic.&rdquo;">Moving from labels to meaning &ndash; explaining what the chords do</button>
+            <button data-response="Good instinct. Pick a passage where something interesting happens: an unexpected chord, a cadence that delays resolution, a moment of texture change. That gives you something to explain.">Deciding which passage to analyze in detail</button>
+          </div>
+          <div class="widget-feedback"></div>
+        </div>
+
+        <!-- Prompt 3 -->
+        <div class="widget-row">
+          <div class="widget-row-prompt">An analytical essay is different from a summary because&hellip;</div>
+          <div class="widget-options">
+            <button data-response="Length is not the key difference. A summary describes what happens; an essay explains why it matters and what effect it creates.">An essay has more paragraphs</button>
+            <button data-response="Right. The goal is interpretation, not just description. You observed the V/vi &ndash; now explain what that secondary dominant does to the forward motion of the phrase.">An essay explains why the musical choices create specific effects</button>
+            <button data-response="Technical terms help precision, but they are a tool, not the goal. Even a short paragraph that explains what a single borrowed chord achieves is better than a long list of labels without commentary.">An essay uses technical vocabulary</button>
+          </div>
+          <div class="widget-feedback"></div>
+        </div>
+
+        <button class="widget-reset">&#8635; Reset</button>
+      </div>
+    </div>
+
+    <!-- WHAT YOU'LL DO NEXT -->
+    <div class="section-block purple">
+      <h2>&#9654; What You'll Do Next</h2>
+      <ol class="next-list">
+        <li><strong>Choose your IMSLP piece.</strong> Go to <a href="https://imslp.org" target="_blank" rel="noopener">imslp.org</a>, select a composer from the list above, and download the score PDF. Choose a complete movement or a self-contained section of at least 16 measures.</li>
+        <li><strong>Complete the score analysis essay.</strong> Work through the checklist in your notebook, then write your 400&ndash;600 word structured essay in Word or Google Docs. Attach or embed the relevant score pages.</li>
+        <li><strong>Peer discussion.</strong> In the module discussion, share one chord from your analysis and explain what it does. Read a classmate's post and respond with one observation they might have missed.</li>
+      </ol>
+    </div>
+
+    <!-- THE ONE THING -->
+    <div class="section-block">
+      <h2>&#9998; The One Thing to Remember</h2>
+      <div class="one-thing">
+        Identifying a chord is the beginning, not the analysis. The essay asks you to move one step further: once you have labeled the chord, explain what it <em>does</em>. What does it create? What does it delay? What changes because of it? <strong>That sentence &ndash; from label to meaning &ndash; is what makes an analysis an analysis.</strong>
+      </div>
+    </div>
+
+  </div><!-- /body-wrapper -->
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 16.01 &middot; Score Analysis</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div><!-- /canvas-frame -->
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      var thisRow = rBtn.closest('.widget-row');
+      thisRow.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = thisRow.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+</body>
+</html>

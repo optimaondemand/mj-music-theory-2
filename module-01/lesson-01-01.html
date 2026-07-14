@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 1.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 1</div>
+        <div style="font-size: 12px; color: #666;">Theory I Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 1.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Theory I Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 1.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Fundamentals Refresher: The Foundation of Theory II</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- VISUAL 1: Fundamentals Stack Pyramid (LEAD VISUAL) -->
+    <div style="background: #FCFCFD; border: 1px solid #E2E7F0; border-radius: 8px; padding: 20px; margin-bottom: 20px; text-align: center;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px; letter-spacing: 0.5px;">&#127963; THE FUNDAMENTALS STACK &middot; WHERE THEORY II BEGINS</div>
+        <svg viewBox="0 0 600 340" width="100%" style="max-width:600px;" role="img" aria-label="A pyramid of music theory fundamentals. From bottom to top: Staff and Notes (widest), then Rhythm, then Scales and Key Signatures, then Intervals, then Triads and Roman Numerals at the top. An arrow points upward above the pyramid labeled Theory II builds from here.">
+            <!-- Layer 5 (bottom, widest): Staff and Notes -->
+            <polygon points="50,310 550,310 500,258 100,258" fill="#1A6B3C" opacity="0.9"/>
+            <text x="300" y="288" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="600">Staff &amp; Notes</text>
+            <!-- Layer 4: Rhythm -->
+            <polygon points="100,258 500,258 450,206 150,206" fill="#2A9D5C" opacity="0.9"/>
+            <text x="300" y="236" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="600">Rhythm</text>
+            <!-- Layer 3: Scales and Key Signatures -->
+            <polygon points="150,206 450,206 400,154 200,154" fill="#3DB870" opacity="0.9"/>
+            <text x="300" y="184" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="600">Scales &amp; Key Signatures</text>
+            <!-- Layer 2: Intervals -->
+            <polygon points="200,154 400,154 355,102 245,102" fill="#55C8E8" opacity="0.85"/>
+            <text x="300" y="132" font-size="14" fill="#0E1C42" text-anchor="middle" font-weight="600">Intervals</text>
+            <!-- Layer 1 (top): Triads and Roman Numerals -->
+            <polygon points="245,102 355,102 320,50 280,50" fill="#0E1C42"/>
+            <text x="300" y="74" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">Triads &amp;</text>
+            <text x="300" y="89" font-size="11" fill="#ffffff" text-anchor="middle">Roman Numerals</text>
+            <!-- Arrow and label above -->
+            <line x1="300" y1="45" x2="300" y2="10" stroke="#6B4C9A" stroke-width="3" marker-end="url(#arr)"/>
+            <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#6B4C9A"/></marker></defs>
+            <text x="300" y="8" font-size="13" fill="#6B4C9A" text-anchor="middle" font-weight="600">Theory II builds from here</text>
+        </svg>
+        <div style="font-size: 13px; color: #666; margin-top: 10px;">Everything in Theory I is assumed knowledge in Theory II. This lesson is your refresher before new material starts in Module 2.</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Which Theory I ideas are second nature, and which ones need a quick refresh before Theory II begins?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Theory II starts in Module 2. This module is your bridge. You will review major scales, triad qualities, Roman numeral analysis, and cadence types - the four cornerstones that carry every new concept this year.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> construct a major scale using the W-W-H-W-W-W-H pattern and identify its key signature.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify the quality of any triad (major, minor, diminished, augmented) by its interval stack.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> name cadence types (PAC, IAC, HC, plagal, deceptive) by their chord motion.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2, free at viva.pressbooks.pub/openmusictheory: Part I Fundamentals review (pp. 21-200); specifically Major Scales (p. 100), Triads (p. 152), Roman Numerals and SATB Chord Construction (p. 183), and Cadences (p. 376).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Theory notebook for working out any scales or chords you want to check by hand.</div>
+        </div>
+    </div>
+
+    <!-- ow-reflect check-in widget -->
+    <div class="optima-widget ow-reflect">
+        <div class="widget-kicker">&#9889; QUICK CHECK-IN BEFORE WE START</div>
+        <div class="widget-question">How solid does your Theory I feel right now - before we review anything?</div>
+        <div class="widget-options">
+            <button data-response="Good. That is exactly the right place to be. This review will sharpen the details and send you into Module 2 with confidence.">&#128080; Solid overall - a few gaps but I remember most of it</button>
+            <button data-response="Completely normal after time away. Work through each section carefully and use the OMT links. The self-assessment at the end will show you exactly where to focus.">&#128542; Fuzzy - I need this review badly</button>
+            <button data-response="Perfect. Use the visuals as a quick reference tool and zoom through the quiz. You will be well prepared for Module 2.">&#127919; I feel confident - just want a quick sweep</button>
+        </div>
+        <div class="widget-feedback"></div>
+        <button class="widget-reset">Reset</button>
+    </div>
+
+    <!-- ===================== PART 1: MAJOR SCALES ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; MAJOR SCALES AND KEY SIGNATURES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">A <strong>major scale</strong> is a sequence of eight notes following the pattern whole-whole-half-whole-whole-whole-half (<strong>W-W-H-W-W-W-H</strong>). Half steps fall between scale degrees 3-4 and 7-8. Every major key has a unique key signature that places the accidentals for you.</p>
+
+        <!-- Scale pattern visual -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; text-align:center; margin: 6px 0 14px;">
+            <svg viewBox="0 0 620 100" width="100%" style="max-width:620px;" role="img" aria-label="C major scale from C to C showing the whole and half step pattern W W H W W W H between scale degrees 1 through 8.">
+                <!-- 8 circles for scale degrees -->
+                <g>
+                    <circle cx="40"  cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="120" cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="200" cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="280" cy="50" r="22" fill="#C0392B"/>
+                    <circle cx="360" cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="440" cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="520" cy="50" r="22" fill="#1A6B3C"/>
+                    <circle cx="600" cy="50" r="22" fill="#2A9D5C"/>
+                </g>
+                <!-- note names -->
+                <g font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">
+                    <text x="40"  y="55">C</text>
+                    <text x="120" y="55">D</text>
+                    <text x="200" y="55">E</text>
+                    <text x="280" y="55">F</text>
+                    <text x="360" y="55">G</text>
+                    <text x="440" y="55">A</text>
+                    <text x="520" y="55">B</text>
+                    <text x="600" y="55">C</text>
+                </g>
+                <!-- scale degree numbers (top) -->
+                <g font-size="11" fill="#1A6B3C" text-anchor="middle">
+                    <text x="40"  y="18">1</text>
+                    <text x="120" y="18">2</text>
+                    <text x="200" y="18">3</text>
+                    <text x="280" y="18">4</text>
+                    <text x="360" y="18">5</text>
+                    <text x="440" y="18">6</text>
+                    <text x="520" y="18">7</text>
+                    <text x="600" y="18">8</text>
+                </g>
+                <!-- step labels (between circles) -->
+                <g font-size="12" fill="#0e1c42" text-anchor="middle" font-weight="600">
+                    <text x="80"  y="88">W</text>
+                    <text x="160" y="88">W</text>
+                    <text x="240" y="88" fill="#C0392B">H</text>
+                    <text x="320" y="88">W</text>
+                    <text x="400" y="88">W</text>
+                    <text x="480" y="88">W</text>
+                    <text x="560" y="88" fill="#C0392B">H</text>
+                </g>
+                <!-- lines connecting circles -->
+                <g stroke="#ccc" stroke-width="1.5">
+                    <line x1="62"  y1="50" x2="98"  y2="50"/>
+                    <line x1="142" y1="50" x2="178" y2="50"/>
+                    <line x1="222" y1="50" x2="258" y2="50"/>
+                    <line x1="302" y1="50" x2="338" y2="50"/>
+                    <line x1="382" y1="50" x2="418" y2="50"/>
+                    <line x1="462" y1="50" x2="498" y2="50"/>
+                    <line x1="542" y1="50" x2="578" y2="50"/>
+                </g>
+            </svg>
+            <div style="font-size:13px; color:#666; margin-top:6px;">C major (no sharps or flats). Red = half steps. W = whole step, H = half step. Half steps always fall at 3-4 and 7-8.</div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin-bottom: 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; KEY SIGNATURES TO KNOW</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.65;">Sharp keys: G (1&#9839;), D (2&#9839;), A (3&#9839;), E (4&#9839;), B (5&#9839;). Flat keys: F (1&#9837;), B&#9837; (2&#9837;), E&#9837; (3&#9837;), A&#9837; (4&#9837;). Order of sharps: F&#9839;-C&#9839;-G&#9839;-D&#9839;-A&#9839;-E&#9839;-B&#9839;. Order of flats reverses: B&#9837;-E&#9837;-A&#9837;-D&#9837;-G&#9837;-C&#9837;-F&#9837;. Theory II expects you to write these from memory - use this module to verify your speed.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: TRIAD QUALITIES ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 2 &middot; TRIAD QUALITIES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">A <strong>triad</strong> is a stack of three pitches built from thirds. The combination of those two thirds determines the <strong>quality</strong>. There are exactly four qualities you need to recognize by sight and by sound:</p>
+
+        <!-- VISUAL 2: Four triad qualities as stacked noteheads on treble-clef mini staves -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; text-align:center; margin: 6px 0 14px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px; letter-spacing: 0.5px;">FOUR TRIAD QUALITIES &middot; INTERVAL STACKS ON THE TREBLE STAFF</div>
+            <svg viewBox="0 0 660 220" width="100%" style="max-width:660px;" role="img" aria-label="Four triads on the treble staff, each at a different pitch: Major C-E-G with C below the staff on a ledger line. Minor A-C-E on the middle three spaces. Diminished B-D-F on the top three lines. Augmented C-E-G-sharp with a sharp sign on the top note, one space above the staff.">
+                <!-- Grid of 4 triads -->
+                <!-- === MAJOR (C4-E4-G4) === -->
+                <rect x="15" y="10" width="150" height="200" rx="8" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1.5"/>
+                <text x="90" y="32" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="700">MAJOR</text>
+                <g stroke="#0E1C42" stroke-width="1.2">
+                    <line x1="35" y1="80" x2="145" y2="80"/>
+                    <line x1="35" y1="95" x2="145" y2="95"/>
+                    <line x1="35" y1="110" x2="145" y2="110"/>
+                    <line x1="35" y1="125" x2="145" y2="125"/>
+                    <line x1="35" y1="140" x2="145" y2="140"/>
+                </g>
+                <text x="38" y="133" font-size="50" fill="#0E1C42" font-family="serif">&#119070;</text>
+                <!-- ledger line for C4 (below the staff) -->
+                <line x1="105" y1="155" x2="131" y2="155" stroke="#0E1C42" stroke-width="1.2"/>
+                <!-- Root C4 (ledger, y=155), Third E4 (line1, y=140), Fifth G4 (line2, y=125) -->
+                <ellipse cx="118" cy="155" rx="10" ry="7" fill="#1A6B3C"/>
+                <ellipse cx="118" cy="140" rx="10" ry="7" fill="#2A9D5C"/>
+                <ellipse cx="118" cy="125" rx="10" ry="7" fill="#3DB870"/>
+                <text x="90" y="172" font-size="12" fill="#0E1C42" text-anchor="middle">C &ndash; E &ndash; G</text>
+                <text x="90" y="187" font-size="11" fill="#1A6B3C" text-anchor="middle">M3 + m3</text>
+                <text x="90" y="203" font-size="11" fill="#1A6B3C" text-anchor="middle">Uppercase: I, IV, V</text>
+
+                <!-- === MINOR (A4-C5-E5) === -->
+                <rect x="175" y="10" width="150" height="200" rx="8" fill="#EEF1F8" stroke="#0E1C42" stroke-width="1.5"/>
+                <text x="250" y="32" font-size="13" fill="#0E1C42" text-anchor="middle" font-weight="700">MINOR</text>
+                <g stroke="#0E1C42" stroke-width="1.2">
+                    <line x1="195" y1="80" x2="305" y2="80"/>
+                    <line x1="195" y1="95" x2="305" y2="95"/>
+                    <line x1="195" y1="110" x2="305" y2="110"/>
+                    <line x1="195" y1="125" x2="305" y2="125"/>
+                    <line x1="195" y1="140" x2="305" y2="140"/>
+                </g>
+                <text x="198" y="133" font-size="50" fill="#0E1C42" font-family="serif">&#119070;</text>
+                <!-- Root A4 (space2, y=117.5), Third C5 (space3, y=102.5), Fifth E5 (space4, y=87.5) -->
+                <ellipse cx="278" cy="117.5" rx="10" ry="7" fill="#0E1C42"/>
+                <ellipse cx="278" cy="102.5" rx="10" ry="7" fill="#0E1C42"/>
+                <ellipse cx="278" cy="87.5" rx="10" ry="7" fill="#0E1C42"/>
+                <text x="250" y="172" font-size="12" fill="#0E1C42" text-anchor="middle">A &ndash; C &ndash; E</text>
+                <text x="250" y="187" font-size="11" fill="#0E1C42" text-anchor="middle">m3 + M3</text>
+                <text x="250" y="203" font-size="11" fill="#0E1C42" text-anchor="middle">Lowercase: ii, iii, vi</text>
+
+                <!-- === DIMINISHED (B4-D5-F5) === -->
+                <rect x="335" y="10" width="150" height="200" rx="8" fill="#FDF5F5" stroke="#C0392B" stroke-width="1.5"/>
+                <text x="410" y="32" font-size="13" fill="#C0392B" text-anchor="middle" font-weight="700">DIMINISHED</text>
+                <g stroke="#0E1C42" stroke-width="1.2">
+                    <line x1="355" y1="80" x2="465" y2="80"/>
+                    <line x1="355" y1="95" x2="465" y2="95"/>
+                    <line x1="355" y1="110" x2="465" y2="110"/>
+                    <line x1="355" y1="125" x2="465" y2="125"/>
+                    <line x1="355" y1="140" x2="465" y2="140"/>
+                </g>
+                <text x="358" y="133" font-size="50" fill="#0E1C42" font-family="serif">&#119070;</text>
+                <!-- Root B4 (line3, y=110), Third D5 (line4, y=95), Fifth F5 (line5, y=80) -->
+                <ellipse cx="438" cy="110" rx="10" ry="7" fill="#C0392B"/>
+                <ellipse cx="438" cy="95" rx="10" ry="7" fill="#C0392B"/>
+                <ellipse cx="438" cy="80" rx="10" ry="7" fill="#C0392B"/>
+                <text x="410" y="172" font-size="12" fill="#0E1C42" text-anchor="middle">B &ndash; D &ndash; F</text>
+                <text x="410" y="187" font-size="11" fill="#C0392B" text-anchor="middle">m3 + m3</text>
+                <text x="410" y="203" font-size="11" fill="#C0392B" text-anchor="middle">Circle: vii&#176;</text>
+
+                <!-- === AUGMENTED (C5-E5-G-sharp5) === -->
+                <rect x="495" y="10" width="150" height="200" rx="8" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="1.5"/>
+                <text x="570" y="32" font-size="13" fill="#6B4C9A" text-anchor="middle" font-weight="700">AUGMENTED</text>
+                <g stroke="#0E1C42" stroke-width="1.2">
+                    <line x1="515" y1="80" x2="625" y2="80"/>
+                    <line x1="515" y1="95" x2="625" y2="95"/>
+                    <line x1="515" y1="110" x2="625" y2="110"/>
+                    <line x1="515" y1="125" x2="625" y2="125"/>
+                    <line x1="515" y1="140" x2="625" y2="140"/>
+                </g>
+                <text x="518" y="133" font-size="50" fill="#0E1C42" font-family="serif">&#119070;</text>
+                <!-- Root C5 (space3, y=102.5), Third E5 (space4, y=87.5), Fifth G-sharp5 (space above staff, y=72.5) -->
+                <ellipse cx="598" cy="102.5" rx="10" ry="7" fill="#6B4C9A"/>
+                <ellipse cx="598" cy="87.5" rx="10" ry="7" fill="#6B4C9A"/>
+                <text x="580" y="77" font-size="16" fill="#8A1F16" font-weight="bold">&#9839;</text>
+                <ellipse cx="598" cy="72.5" rx="10" ry="7" fill="#8A6FBF"/>
+                <text x="570" y="172" font-size="12" fill="#0E1C42" text-anchor="middle">C &ndash; E &ndash; G&#9839;</text>
+                <text x="570" y="187" font-size="11" fill="#6B4C9A" text-anchor="middle">M3 + M3</text>
+                <text x="570" y="203" font-size="11" fill="#6B4C9A" text-anchor="middle">Plus sign: III+</text>
+            </svg>
+            <div style="font-size:13px; color:#666; margin-top:8px;">Each triad sits at its own real pitch on the treble staff, root to fifth. Notice the augmented triad needs an explicit sharp sign on its top note (G&#9839;) &ndash; that raised fifth is what makes it sound stretched. Read the interval stack from root up: major = M3 then m3. Minor = m3 then M3. Diminished = m3 twice. Augmented = M3 twice.</div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; ROMAN NUMERAL NOTATION REVIEW</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.65;">Uppercase Roman numerals (I, II, IV) = major quality. Lowercase (ii, iii, vi) = minor. Lowercase + circle (vii&#176;) = diminished. Uppercase + plus sign (III+) = augmented. In major keys, the diatonic triads are I, ii, iii, IV, V, vi, vii&#176;.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: CADENCES ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 3 &middot; CADENCE TYPES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">A <strong>cadence</strong> is a chord progression that signals a pause or ending. Theory II analysis uses cadences constantly. Here are the five types you must know cold:</p>
+
+        <!-- VISUAL 3: Cadence reference card -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px; margin: 6px 0 14px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px; letter-spacing: 0.5px;">CADENCE REFERENCE CARD</div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+
+                <!-- PAC -->
+                <div style="display:flex; align-items:center; gap:16px; background:#E7F4EC; border-radius:8px; padding:12px 16px;">
+                    <div style="min-width:80px; font-size:13px; font-weight:700; color:#1A6B3C;">PAC</div>
+                    <div style="flex:1;">
+                        <div style="font-size:15px; color:#0E1C42; font-weight:600; margin-bottom:2px;">Perfect Authentic Cadence</div>
+                        <div style="font-size:14px; color:#1a2340; line-height:1.5;">V (or V7) &#8594; I, both chords in root position, tonic note in the soprano. The strongest cadence - a full stop.</div>
+                    </div>
+                    <div style="background:#1A6B3C; color:#fff; border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; white-space:nowrap; flex-shrink:0;">V &#8594; I</div>
+                </div>
+
+                <!-- IAC -->
+                <div style="display:flex; align-items:center; gap:16px; background:#EEF1F8; border-radius:8px; padding:12px 16px;">
+                    <div style="min-width:80px; font-size:13px; font-weight:700; color:#0E1C42;">IAC</div>
+                    <div style="flex:1;">
+                        <div style="font-size:15px; color:#0E1C42; font-weight:600; margin-bottom:2px;">Imperfect Authentic Cadence</div>
+                        <div style="font-size:14px; color:#1a2340; line-height:1.5;">V &#8594; I but with at least one exception: inverted chord, non-tonic soprano, or V replaced by vii&#176;. Sounds like a PAC but slightly open.</div>
+                    </div>
+                    <div style="background:#0E1C42; color:#fff; border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; white-space:nowrap; flex-shrink:0;">V &#8594; I*</div>
+                </div>
+
+                <!-- HC -->
+                <div style="display:flex; align-items:center; gap:16px; background:#EEF1F8; border-radius:8px; padding:12px 16px;">
+                    <div style="min-width:80px; font-size:13px; font-weight:700; color:#0E1C42;">HC</div>
+                    <div style="flex:1;">
+                        <div style="font-size:15px; color:#0E1C42; font-weight:600; margin-bottom:2px;">Half Cadence</div>
+                        <div style="font-size:14px; color:#1a2340; line-height:1.5;">Any chord &#8594; V. The phrase ends on dominant - sounds like a comma, not a period. Pulls forward to the next phrase.</div>
+                    </div>
+                    <div style="background:#55C8E8; color:#0E1C42; border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; white-space:nowrap; flex-shrink:0;">? &#8594; V</div>
+                </div>
+
+                <!-- Plagal -->
+                <div style="display:flex; align-items:center; gap:16px; background:#EEF1F8; border-radius:8px; padding:12px 16px;">
+                    <div style="min-width:80px; font-size:13px; font-weight:700; color:#0E1C42;">Plagal</div>
+                    <div style="flex:1;">
+                        <div style="font-size:15px; color:#0E1C42; font-weight:600; margin-bottom:2px;">Plagal Cadence</div>
+                        <div style="font-size:14px; color:#1a2340; line-height:1.5;">IV &#8594; I. The "Amen" cadence. Softer and more final-sounding than the authentic cadence. Common in hymns and gospel.</div>
+                    </div>
+                    <div style="background:#2A9D5C; color:#fff; border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; white-space:nowrap; flex-shrink:0;">IV &#8594; I</div>
+                </div>
+
+                <!-- Deceptive -->
+                <div style="display:flex; align-items:center; gap:16px; background:#EFEAF6; border-radius:8px; padding:12px 16px;">
+                    <div style="min-width:80px; font-size:13px; font-weight:700; color:#6B4C9A;">Deceptive</div>
+                    <div style="flex:1;">
+                        <div style="font-size:15px; color:#0E1C42; font-weight:600; margin-bottom:2px;">Deceptive Cadence</div>
+                        <div style="font-size:14px; color:#1a2340; line-height:1.5;">V &#8594; vi. The ear expects V &#8594; I, but the music surprises with vi instead. Used to extend a phrase or delay resolution.</div>
+                    </div>
+                    <div style="background:#6B4C9A; color:#fff; border-radius:6px; padding:6px 12px; font-size:13px; font-weight:600; white-space:nowrap; flex-shrink:0;">V &#8594; vi</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; PHRASE MODEL REMINDER</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.65;">Harmonic phrases in common-practice music follow the Tonic - Pre-Dominant - Dominant - Tonic model (T-PD-D-T). A PAC closes the T-PD-D-T arch. A HC pauses on D and opens a new arch. Theory II will use this model constantly, so make sure it is automatic.</div>
+        </div>
+    </div>
+
+    <!-- ===================== QUIZ WIDGET ===================== -->
+    <!-- In your notebook: decide each answer before you tap. -->
+    <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 12px 18px; margin-bottom: 12px;">
+        <div style="font-size: 15px; color: #1A6B3C; line-height: 1.5;">Before each question below, look at the options and decide your answer in your notebook. Then tap to check.</div>
+    </div>
+
+    <div class="optima-widget ow-select">
+        <div class="widget-kicker">&#9889; FUNDAMENTALS REFRESHER &middot; QUICK CHECK</div>
+        <div class="widget-question">Select the correct answer for each question.</div>
+
+        <!-- Row 1: triad quality ID. data-correct="1" (index 1 = "Minor: m3+M3") -->
+        <div class="widget-row" data-correct="1" data-fb="Right. Minor triads stack a minor third (m3) below and a major third (M3) above the root. That is what gives minor its characteristic sound." data-hint="Think about the interval order from the root up. Which quality has the minor third on the bottom?">
+            <div class="widget-row-prompt">1. A triad built with a minor third on the bottom and a major third on top is:</div>
+            <div class="widget-options">
+                <button data-choice="0">Major: M3+m3</button>
+                <button data-choice="1">Minor: m3+M3</button>
+                <button data-choice="2">Diminished: m3+m3</button>
+                <button data-choice="3">Augmented: M3+M3</button>
+            </div>
+        </div>
+
+        <!-- Row 2: cadence ID. data-correct="3" (index 3 = "Half Cadence: ends on V") -->
+        <div class="widget-row" data-correct="3" data-fb="Correct. A Half Cadence ends on V, leaving the phrase open - like a comma mid-sentence. The ear expects more." data-hint="Which cadence type ends on the dominant chord rather than tonic?">
+            <div class="widget-row-prompt">2. A phrase that closes on the dominant chord (V) is called a:</div>
+            <div class="widget-options">
+                <button data-choice="0">Perfect Authentic Cadence</button>
+                <button data-choice="1">Plagal Cadence</button>
+                <button data-choice="2">Deceptive Cadence</button>
+                <button data-choice="3">Half Cadence</button>
+            </div>
+        </div>
+
+        <!-- Row 3: Roman numeral. data-correct="0" (index 0 = "ii") -->
+        <div class="widget-row" data-correct="0" data-fb="Right. In a major key, the chord built on scale degree 2 is a minor triad, so it gets a lowercase Roman numeral: ii." data-hint="What quality is the chord on scale degree 2 in a major key? Check whether that quality takes uppercase or lowercase.">
+            <div class="widget-row-prompt">3. In a major key, the diatonic triad built on scale degree 2 is labeled:</div>
+            <div class="widget-options">
+                <button data-choice="0">ii</button>
+                <button data-choice="1">II</button>
+                <button data-choice="2">ii&#176;</button>
+                <button data-choice="3">II+</button>
+            </div>
+        </div>
+
+        <!-- Row 4: scale degree. data-correct="2" (index 2 = "3 and 7") -->
+        <div class="widget-row" data-correct="2" data-fb="Correct. In a major scale, half steps fall between scale degrees 3-4 and 7-8. That is the defining feature of the W-W-H-W-W-W-H pattern." data-hint="Look at the W-W-H-W-W-W-H pattern. Where do the H steps fall?">
+            <div class="widget-row-prompt">4. In a major scale, natural half steps fall between scale degrees:</div>
+            <div class="widget-options">
+                <button data-choice="0">2 and 6</button>
+                <button data-choice="1">4 and 8</button>
+                <button data-choice="2">3 and 7</button>
+                <button data-choice="3">1 and 5</button>
+            </div>
+        </div>
+
+        <!-- Row 5: cadence type V-vi. data-correct="1" (index 1 = "Deceptive: V to vi") -->
+        <div class="widget-row" data-correct="1" data-fb="Correct. V moving to vi is the Deceptive Cadence. The listener expects tonic (I) but gets the submediant (vi) instead - a surprise that extends the phrase." data-hint="Which cadence type tricks the ear by going to vi instead of I?">
+            <div class="widget-row-prompt">5. The progression V &#8594; vi is an example of a:</div>
+            <div class="widget-options">
+                <button data-choice="0">Perfect Authentic Cadence</button>
+                <button data-choice="1">Deceptive Cadence</button>
+                <button data-choice="2">Half Cadence</button>
+                <button data-choice="3">Plagal Cadence</button>
+            </div>
+        </div>
+
+        <button class="widget-reset">Reset</button>
+    </div>
+
+    <!-- What you'll do next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Review your weakest area at musictheory.net</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Go to musictheory.net and do the exercises for the topic where you felt shakiest in this lesson: key signatures, triad construction, or interval ID. Aim for 90%. Screenshot your score.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 1 Self-Assessment (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Complete the Theory I Self-Assessment Checklist in Canvas. Rate each skill and identify two priority areas to strengthen before Module 2.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Every concept in Theory II builds on this layer: scales give you key centers, triads give you harmony, Roman numerals give you a language to describe it, and cadences give you form. If any of those four feel shaky, now is the time to fix them. Module 2 introduces minor keys, and it moves fast.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 1.01 &middot; Theory I Review: Fundamentals Refresher</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

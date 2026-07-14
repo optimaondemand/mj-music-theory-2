@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 4.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    .raised-chip { display:inline-block; min-width:22px; text-align:center; background:#6B4C9A; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 4</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 4.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Melodic Minor</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 4.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Melodic Minor and Three-Form Comparison</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Why does a minor scale change its notes depending on which direction it goes?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You already know natural and harmonic minor. The third form, melodic minor, solves a specific problem that arises when voices sing upward. Today you put all three forms side by side and understand exactly what each one does and why.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> construct ascending and descending melodic minor scales.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain why melodic minor uses different ascending and descending forms.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> compare all three forms of a minor scale side by side.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2 at viva.pressbooks.pub/openmusictheory: read <em>Minor Scales</em> (p. 111), the Melodic Minor section (p. 113), and <em>The Three Forms of Minor</em> (p. 114).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and staff paper (or a notation app such as MuseScore).</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE PROBLEM ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; THE PROBLEM WITH HARMONIC MINOR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Harmonic minor raises scale degree 7 to create a strong pull toward the tonic. That is great for chords. But for a melody moving upward through scale degrees 6 and 7, that raised 7 creates an <strong>augmented second</strong> (three half steps) between degrees 6 and 7, an awkward leap for a singing voice. Melodic minor solves this by also raising scale degree 6 when going up.</p>
+
+        <!-- VISUAL: augmented 2nd bracket diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; text-align:center; margin: 6px 0 14px;">
+          <svg viewBox="0 0 560 150" width="100%" style="max-width:560px;" role="img" aria-label="Harmonic minor scale degrees 5 through 8, showing the augmented second between degrees 6 and 7.">
+            <!-- degree labels -->
+            <g font-size="15" fill="#0E1C42" text-anchor="middle">
+              <text x="100" y="16">5 (E)</text>
+              <text x="200" y="16">6 (F)</text>
+              <text x="300" y="16">7 (G&#9839;)</text>
+              <text x="400" y="16">8 (A)</text>
+            </g>
+            <!-- bracket over the augmented 2nd, clear of the degree labels above -->
+            <path d="M 200 30 L 200 38 L 300 38 L 300 30" fill="none" stroke="#C0392B" stroke-width="2"/>
+            <text x="250" y="56" font-size="13" fill="#C0392B" text-anchor="middle">Aug 2nd (3 half steps)</text>
+            <!-- dots -->
+            <g fill="#1A6B3C">
+              <circle cx="100" cy="80" r="8"/>
+              <circle cx="200" cy="80" r="8"/>
+              <circle cx="400" cy="80" r="8"/>
+            </g>
+            <!-- raised degree 7 dot in purple -->
+            <circle cx="300" cy="80" r="8" fill="#6B4C9A"/>
+            <!-- connecting lines and step labels, clear of the dots below -->
+            <line x1="100" y1="95" x2="200" y2="95" stroke="#aaa" stroke-width="1.5"/>
+            <line x1="300" y1="95" x2="400" y2="95" stroke="#aaa" stroke-width="1.5"/>
+            <text x="150" y="112" font-size="12" fill="#666" text-anchor="middle">whole step</text>
+            <text x="350" y="112" font-size="12" fill="#666" text-anchor="middle">half step</text>
+            <text x="250" y="135" font-size="11" fill="#C0392B" text-anchor="middle">Awkward leap for voices</text>
+          </svg>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0;">The fix: raise scale degree 6 <em>as well</em>, so the leap becomes a smooth whole step. That is the ascending melodic minor.</p>
+    </div>
+
+    <!-- ===================== PART 2: THREE FORMS VISUAL ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 2 &middot; THE THREE FORMS OF A MINOR STACKED</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Here are all three forms in A minor. Green chips are unchanged notes. Purple chips show raised degrees. Watch what changes in each row.</p>
+
+        <!-- VISUAL: three-form comparison diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; margin: 6px 0 14px; overflow-x:auto;">
+          <svg viewBox="0 0 700 230" width="100%" style="max-width:700px; min-width:520px;" role="img" aria-label="Three forms of A minor stacked: Natural, Harmonic, and Melodic ascending and descending.">
+            <!-- Column headers for scale degrees -->
+            <g font-size="12" fill="#6b7a99" text-anchor="middle">
+              <text x="80" y="18">Form</text>
+              <text x="160" y="18">1 A</text>
+              <text x="215" y="18">2 B</text>
+              <text x="270" y="18">3 C</text>
+              <text x="325" y="18">4 D</text>
+              <text x="380" y="18">5 E</text>
+              <text x="435" y="18">6</text>
+              <text x="490" y="18">7</text>
+              <text x="545" y="18">8 A</text>
+              <text x="620" y="18">What changes</text>
+            </g>
+            <!-- ---- ROW 1: Natural minor ---- -->
+            <rect x="10" y="30" width="130" height="36" rx="5" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1"/>
+            <text x="75" y="52" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">Natural</text>
+            <!-- note chips: all green -->
+            <g font-size="13" text-anchor="middle">
+              <rect x="143" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="160" y="51" fill="#fff">A</text>
+              <rect x="198" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="215" y="51" fill="#fff">B</text>
+              <rect x="253" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="270" y="51" fill="#fff">C</text>
+              <rect x="308" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="325" y="51" fill="#fff">D</text>
+              <rect x="363" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="380" y="51" fill="#fff">E</text>
+              <rect x="418" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="435" y="51" fill="#fff">F</text>
+              <rect x="473" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="490" y="51" fill="#fff">G</text>
+              <rect x="528" y="33" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="545" y="51" fill="#fff">A</text>
+            </g>
+            <text x="620" y="51" font-size="12" fill="#1A6B3C" text-anchor="middle">Nothing</text>
+            <!-- ---- ROW 2: Harmonic minor ---- -->
+            <rect x="10" y="83" width="130" height="36" rx="5" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="1"/>
+            <text x="75" y="105" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">Harmonic</text>
+            <g font-size="13" text-anchor="middle">
+              <rect x="143" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="160" y="104" fill="#fff">A</text>
+              <rect x="198" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="215" y="104" fill="#fff">B</text>
+              <rect x="253" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="270" y="104" fill="#fff">C</text>
+              <rect x="308" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="325" y="104" fill="#fff">D</text>
+              <rect x="363" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="380" y="104" fill="#fff">E</text>
+              <rect x="418" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="435" y="104" fill="#fff">F</text>
+              <!-- raised 7 in purple -->
+              <rect x="473" y="86" width="34" height="28" rx="4" fill="#6B4C9A"/><text x="490" y="104" fill="#fff">G&#9839;</text>
+              <rect x="528" y="86" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="545" y="104" fill="#fff">A</text>
+            </g>
+            <text x="620" y="104" font-size="12" fill="#6B4C9A" text-anchor="middle">&#9839; deg 7</text>
+            <!-- ---- ROW 3: Melodic ascending ---- -->
+            <rect x="10" y="136" width="130" height="36" rx="5" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="1"/>
+            <text x="75" y="153" font-size="11" fill="#6B4C9A" text-anchor="middle" font-weight="bold">Melodic</text>
+            <text x="75" y="166" font-size="10" fill="#6B4C9A" text-anchor="middle">ascending</text>
+            <g font-size="13" text-anchor="middle">
+              <rect x="143" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="160" y="157" fill="#fff">A</text>
+              <rect x="198" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="215" y="157" fill="#fff">B</text>
+              <rect x="253" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="270" y="157" fill="#fff">C</text>
+              <rect x="308" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="325" y="157" fill="#fff">D</text>
+              <rect x="363" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="380" y="157" fill="#fff">E</text>
+              <!-- raised 6 and 7 in purple -->
+              <rect x="418" y="139" width="34" height="28" rx="4" fill="#6B4C9A"/><text x="435" y="157" fill="#fff">F&#9839;</text>
+              <rect x="473" y="139" width="34" height="28" rx="4" fill="#6B4C9A"/><text x="490" y="157" fill="#fff">G&#9839;</text>
+              <rect x="528" y="139" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="545" y="157" fill="#fff">A</text>
+            </g>
+            <text x="620" y="157" font-size="12" fill="#6B4C9A" text-anchor="middle">&#9839; deg 6 &amp; 7</text>
+            <!-- ---- ROW 4: Melodic descending ---- -->
+            <rect x="10" y="189" width="130" height="36" rx="5" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="1"/>
+            <text x="75" y="206" font-size="11" fill="#6B4C9A" text-anchor="middle" font-weight="bold">Melodic</text>
+            <text x="75" y="219" font-size="10" fill="#6B4C9A" text-anchor="middle">descending</text>
+            <g font-size="13" text-anchor="middle">
+              <rect x="528" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="545" y="210" fill="#fff">A</text>
+              <rect x="473" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="490" y="210" fill="#fff">G</text>
+              <rect x="418" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="435" y="210" fill="#fff">F</text>
+              <rect x="363" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="380" y="210" fill="#fff">E</text>
+              <rect x="308" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="325" y="210" fill="#fff">D</text>
+              <rect x="253" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="270" y="210" fill="#fff">C</text>
+              <rect x="198" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="215" y="210" fill="#fff">B</text>
+              <rect x="143" y="192" width="34" height="28" rx="4" fill="#1A6B3C"/><text x="160" y="210" fill="#fff">A</text>
+            </g>
+            <text x="620" y="210" font-size="12" fill="#1A6B3C" text-anchor="middle">Reverts to natural</text>
+          </svg>
+          <div style="font-size:13px; color:#666; margin-top:8px; text-align:center;">Purple chips = raised degrees. Descending melodic minor reverts completely to natural minor.</div>
+        </div>
+
+        <!-- Jazz note callout -->
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-top: 3px solid #1A6B3C; border-radius: 6px; padding: 14px 20px; margin: 14px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#127925; JAZZ NOTE</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">In jazz, the ascending form (raised 6 and 7) is used in <em>both</em> directions. Composers such as Miles Davis and John Coltrane use this "jazz melodic minor" or "acoustic scale" freely without switching back on the way down. The classical descending revert is mainly a Baroque and Classical-era convention.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: ASCENDING vs DESCENDING DETAIL ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 3 &middot; WHY TWO DIRECTIONS?</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Going up toward the tonic, a melody needs momentum, so the raised 7 (and raised 6 to avoid the awkward leap) works with that pull. Going <em>down</em> away from the tonic, there is no upward pull to create, so the natural minor version is smooth and relaxed. The scale literally changes its notes to match the direction of travel.</p>
+
+        <!-- VISUAL: ascending vs descending arrow diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; text-align:center; margin: 6px 0 4px; overflow-x:auto;">
+          <svg viewBox="0 0 620 160" width="100%" style="max-width:620px; min-width:460px;" role="img" aria-label="Ascending A melodic minor with raised 6 and 7 going up, then descending back to natural minor coming down.">
+            <!-- ASCENDING row -->
+            <text x="10" y="38" font-size="13" fill="#6B4C9A" font-weight="bold">Up&#8593;</text>
+            <g font-size="13" text-anchor="middle">
+              <rect x="40"  y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="56"  y="39" fill="#fff">A</text>
+              <rect x="82"  y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="98"  y="39" fill="#fff">B</text>
+              <rect x="124" y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="140" y="39" fill="#fff">C</text>
+              <rect x="166" y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="182" y="39" fill="#fff">D</text>
+              <rect x="208" y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="224" y="39" fill="#fff">E</text>
+              <rect x="250" y="22" width="38" height="26" rx="4" fill="#6B4C9A"/><text x="269" y="39" fill="#fff">F&#9839;</text>
+              <rect x="298" y="22" width="38" height="26" rx="4" fill="#6B4C9A"/><text x="317" y="39" fill="#fff">G&#9839;</text>
+              <rect x="346" y="22" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="362" y="39" fill="#fff">A</text>
+            </g>
+            <!-- arrow -->
+            <line x1="40" y1="55" x2="375" y2="55" stroke="#6B4C9A" stroke-width="2"/>
+            <polygon points="375,50 385,55 375,60" fill="#6B4C9A"/>
+            <!-- raised labels -->
+            <text x="269" y="70" font-size="11" fill="#6B4C9A" text-anchor="middle">raised 6</text>
+            <text x="317" y="70" font-size="11" fill="#6B4C9A" text-anchor="middle">raised 7</text>
+
+            <!-- DESCENDING row -->
+            <text x="10" y="110" font-size="13" fill="#1A6B3C" font-weight="bold">Down&#8595;</text>
+            <g font-size="13" text-anchor="middle">
+              <rect x="40"  y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="56"  y="111" fill="#fff">A</text>
+              <rect x="82"  y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="98"  y="111" fill="#fff">G</text>
+              <rect x="124" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="140" y="111" fill="#fff">F</text>
+              <rect x="166" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="182" y="111" fill="#fff">E</text>
+              <rect x="208" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="224" y="111" fill="#fff">D</text>
+              <rect x="250" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="266" y="111" fill="#fff">C</text>
+              <rect x="292" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="308" y="111" fill="#fff">B</text>
+              <rect x="334" y="94" width="32" height="26" rx="4" fill="#1A6B3C"/><text x="350" y="111" fill="#fff">A</text>
+            </g>
+            <!-- arrow -->
+            <line x1="375" y1="128" x2="40" y2="128" stroke="#1A6B3C" stroke-width="2"/>
+            <polygon points="40,123 30,128 40,133" fill="#1A6B3C"/>
+            <text x="205" y="150" font-size="12" fill="#1A6B3C" text-anchor="middle">Descending = natural minor (no raised degrees)</text>
+          </svg>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: VOCABULARY FLIP CARDS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128218; PART 4 &middot; KEY VOCABULARY</div>
+        <div style="font-size: 16px; color: #6B4C9A; margin: 0 0 8px;">&#9889; TAP EACH CARD to reveal the definition:</div>
+        <div class="flip-grid">
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Melodic Minor</strong><br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.55;">A form of minor that raises scale degrees 6 and 7 when ascending to eliminate the awkward augmented second created by harmonic minor. Descending, it reverts to natural minor.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Augmented Second</strong><br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.55;">An interval of three half steps. Found between the natural 6th and raised 7th of harmonic minor. Sounds and feels awkward in a stepwise melody; melodic minor eliminates it by raising the 6th as well.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Ascending Melodic Minor</strong><br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.55;">Raise both scale degrees 6 and 7. In A minor: A-B-C-D-E-F&#9839;-G&#9839;-A. Two whole steps below the tonic; sounds almost major in that region.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Descending Melodic Minor</strong><br><span style="font-size:14px;color:#666;">(tap to reveal)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.55;">Reverts to natural minor (no raised degrees). In A minor: A-G-F-E-D-C-B-A. No upward pull is needed when moving down, so the raised degrees are unnecessary.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 5: OW-SELECT PRACTICE ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; PART 5 &middot; CHECK YOUR UNDERSTANDING</div>
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 12px;">Work through each question in your head first, then tap your answer.</p>
+
+        <!-- ow-select widget. data-correct positions: 1, 3, 0, 2, 1 (scrambled across rows) -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; TRY IT &middot; THREE-FORM MINOR</div>
+          <div class="widget-question">Choose the correct answer for each question.</div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. The augmented second is the leap from natural 6 (F) to raised 7 (G&#9839;) in harmonic minor, a gap of three half steps." data-hint="Count the half steps between natural F and G&#9839;. That is 3, which is larger than a whole step.">
+            <div class="widget-row-prompt">1. In A harmonic minor, how many half steps separate natural scale degree 6 (F) from raised scale degree 7 (G&#9839;)?</div>
+            <div class="widget-options">
+              <button data-choice="0">2 (whole step)</button>
+              <button data-choice="1">3 (augmented 2nd)</button>
+              <button data-choice="2">4 (major 3rd)</button>
+              <button data-choice="3">1 (half step)</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. Ascending melodic minor raises both degrees 6 and 7. In A minor that gives you F&#9839; and G&#9839;." data-hint="Melodic minor needs two raised degrees going up to eliminate the augmented second.">
+            <div class="widget-row-prompt">2. Which scale degrees are raised in the <em>ascending</em> form of melodic minor?</div>
+            <div class="widget-options">
+              <button data-choice="0">Only degree 7</button>
+              <button data-choice="1">Degrees 5 and 7</button>
+              <button data-choice="2">Degrees 3 and 6</button>
+              <button data-choice="3">Degrees 6 and 7</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="0" data-fb="Correct. Descending melodic minor reverts entirely to natural minor. No raised degrees are needed going down." data-hint="Going downward there is no pull toward the tonic, so the classical form drops all raised degrees.">
+            <div class="widget-row-prompt">3. A melodic minor <em>descending</em> in A minor is: A-G-F-E-D-C-B-A. Which form does that match?</div>
+            <div class="widget-options">
+              <button data-choice="0">Natural minor</button>
+              <button data-choice="1">Harmonic minor</button>
+              <button data-choice="2">Dorian mode</button>
+              <button data-choice="3">Major scale</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. Jazz performers use the ascending form (raised 6 and 7) in both directions, without switching back on the way down." data-hint="Jazz does not switch forms between ascending and descending.">
+            <div class="widget-row-prompt">4. In jazz, how is melodic minor typically used?</div>
+            <div class="widget-options">
+              <button data-choice="0">Only natural minor is used</button>
+              <button data-choice="1">The descending form is used in both directions</button>
+              <button data-choice="2">The ascending form (raised 6 and 7) is used in both directions</button>
+              <button data-choice="3">Jazz does not use minor scales</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. E melodic minor ascending raises F to F&#9839; (degree 6) and D to D&#9839; (degree 7). Descending, it reverts to natural E minor: E-D-C-B-A-G-F&#9839;-E." data-hint="Apply the same rule: raise degrees 6 and 7 going up; revert to natural going down.">
+            <div class="widget-row-prompt">5. Write E melodic minor ascending. Which two notes change from E natural minor (E-F&#9839;-G-A-B-C-D-E)?</div>
+            <div class="widget-options">
+              <button data-choice="0">C and D stay the same; G is raised</button>
+              <button data-choice="1">C is raised to C&#9839; (deg 6) and D is raised to D&#9839; (deg 7)</button>
+              <button data-choice="2">F&#9839; is removed and G is raised</button>
+              <button data-choice="3">Only D is raised to D&#9839;</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Three-Form Scale Writing (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">In MuseScore or on staff paper, write all three forms of E minor, D minor, and G minor side by side. Submit a PDF or screenshot.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 4 Quiz (Canvas auto-graded)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">A short quiz on all three minor scale forms. Multiple attempts allowed.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Melodic minor raises both degrees 6 and 7 going <em>up</em> to create a smooth two-whole-step approach to the tonic. Going <em>down</em>, the urgency disappears, so it reverts to natural minor. That one direction-sensitive rule separates melodic minor from every other form.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 4.01 &middot; Melodic Minor</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

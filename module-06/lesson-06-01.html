@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 6.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    .rule-chip { display:inline-block; background:#C0392B; color:#fff; border-radius:5px; padding:2px 8px; font-size:13px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 6</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 6.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">SATB Voice Leading</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 6.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">SATB Voice Leading in Minor</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">When four voices sing together, why does it matter exactly how each one moves from note to note?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">SATB voice leading is one of the most precise skills in tonal theory. In minor, there is one extra concern beyond the standard rules: the raised leading tone in harmonic minor <em>must</em> resolve upward by half step. Get the rules right and four independent voices blend into a single coherent harmony.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> write a 4-voice SATB harmonic progression in a minor key following voice-leading rules.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> resolve the leading tone correctly in harmonic minor (upward by half step to i).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> avoid parallel fifths, parallel octaves, and voice crossing.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2: read <em>Roman Numerals and SATB Chord Construction</em> (p. 183) and the <em>Voice Leading</em> section (p. 190).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">MuseScore (or staff paper) for the practice at the end of the lesson.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: SATB SETUP ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; THE SATB GRAND STAFF</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>SATB</strong> stands for Soprano, Alto, Tenor, Bass, the four standard choral voices. In written exercises, Soprano and Alto share the treble staff (stems up for S, down for A); Tenor and Bass share the bass staff (stems up for T, down for B). Each voice stays within its own range.</p>
+
+        <!-- VISUAL: i-iv-V-i in A harmonic minor, SATB grand staff with leading tone arrow -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; text-align:center; margin: 6px 0 14px; overflow-x:auto;">
+          <svg viewBox="0 0 680 320" width="100%" style="max-width:680px; min-width:500px;" role="img" aria-label="SATB grand staff showing i-iv-V-i in A harmonic minor. G-sharp in the V chord soprano resolves up to A in the final i chord, marked with an arrow.">
+            <!-- brace and barline -->
+            <path d="M 38,30 Q 26,80 36,120 Q 26,170 38,220" fill="none" stroke="#0E1C42" stroke-width="2.5"/>
+            <line x1="48" y1="30" x2="48" y2="220" stroke="#0E1C42" stroke-width="2.5"/>
+
+            <!-- treble staff y: 30,46,62,78,94 -->
+            <g stroke="#0E1C42" stroke-width="1.5">
+              <line x1="48" y1="30" x2="620" y2="30"/>
+              <line x1="48" y1="46" x2="620" y2="46"/>
+              <line x1="48" y1="62" x2="620" y2="62"/>
+              <line x1="48" y1="78" x2="620" y2="78"/>
+              <line x1="48" y1="94" x2="620" y2="94"/>
+            </g>
+            <text x="55" y="84" font-size="68" fill="#0E1C42" style="font-family:serif;">&#119070;</text>
+
+            <!-- bass staff y: 140,156,172,188,204 -->
+            <g stroke="#0E1C42" stroke-width="1.5">
+              <line x1="48" y1="140" x2="620" y2="140"/>
+              <line x1="48" y1="156" x2="620" y2="156"/>
+              <line x1="48" y1="172" x2="620" y2="172"/>
+              <line x1="48" y1="188" x2="620" y2="188"/>
+              <line x1="48" y1="204" x2="620" y2="204"/>
+            </g>
+            <text x="55" y="175" font-size="58" fill="#0E1C42" style="font-family:serif;">&#119074;</text>
+
+            <!-- Key signature: 0 sharps (A minor natural, accidentals shown on chord) -->
+
+            <!-- CHORD 1: i = Am (A-C-E-A)
+                 S: A5 (treble, space 4 above top = ledger? use A at top space of treble = y=46 space between lines 4-5: y=38)
+                 Actually treble staff lines: line1=94, line2=78, line3=62, line4=46, line5=30. Space1=86, space2=70, space3=54, space4=38.
+                 Treble notes: A4=space1(86), B4=line1(78)... wait let me recalculate.
+                 Treble staff (bottom to top): line1 y=94(E4), space1 y=86(F4), line2 y=78(G4), space2 y=70(A4), line3 y=62(B4), space3 y=54(C5), line4 y=46(D5), space4 y=38(E5), line5 y=30(F5)
+                 S: A5 = ledger above (y=22); E5=space4=38; C5=space3=54; A4=space2=70
+                 A: C5=54, A4=70, E4... E4 = line1=94, A4=space2=70 -->
+            <!-- S=A4(space2=70 treble), A=E4(line1=94 treble), T=A3(space2=172 bass), B=A2(space/line bass) -->
+            <!-- Let's use simpler realistic voicing:
+                 Chord i (Am): S=E5(38), A=A4(70), T=E4(bass:below middle C, use treble ledger -- actually T reads bass staff: E3=bass line1=204?
+                 Bass staff lines: line1=204(G2), space1=196(A2), line2=188(B2), space2=180(C3), line3=172(D3), space3=164(E3), line4=156(F3), space4=148(G3), line5=140(A3)
+                 Tenor: reads bass clef, stems up. A3=line5=140, E3=space3=164, C3=space2=180
+                 Bass: reads bass clef, stems down. A2=space1=196, E2= below staff
+                 Let's just use simple note positions for visual clarity: -->
+
+            <!-- CHORD i: Am. S=E5(treble sp4=38,stem up to y=10), A=A4(treble sp2=70,stem down to y=105), T=A3(bass line5=140,stem up to y=115), B=A2(bass sp1=196,stem down to y=220) -->
+            <!-- Treble chord 1 (x=145) -->
+            <ellipse cx="148" cy="38" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="157" y1="38" x2="157" y2="12" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="148" cy="70" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="139" y1="70" x2="139" y2="104" stroke="#0E1C42" stroke-width="1.5"/>
+            <!-- Bass chord 1 (x=148) -->
+            <ellipse cx="148" cy="140" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="157" y1="140" x2="157" y2="115" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="148" cy="196" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="139" y1="196" x2="139" y2="215" stroke="#0E1C42" stroke-width="1.5"/>
+            <!-- Roman numeral -->
+            <text x="148" y="240" font-size="15" fill="#1A6B3C" text-anchor="middle" font-weight="bold">i</text>
+            <text x="148" y="255" font-size="11" fill="#666" text-anchor="middle">Am</text>
+
+            <!-- barline 1 -->
+            <line x1="200" y1="30" x2="200" y2="94" stroke="#0E1C42" stroke-width="1.5"/>
+            <line x1="200" y1="140" x2="200" y2="204" stroke="#0E1C42" stroke-width="1.5"/>
+
+            <!-- CHORD iv: Dm. S=F5(treble line5=30), A=A4(treble sp2=70), T=F3(bass line4=156), B=D3(bass sp2=180) -->
+            <ellipse cx="280" cy="30" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="289" y1="30" x2="289" y2="8" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="280" cy="70" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="271" y1="70" x2="271" y2="104" stroke="#0E1C42" stroke-width="1.5"/>
+            <!-- Bass chord iv: T=F3(line4=156), B=D3(line3=172, root of Dm) -->
+            <ellipse cx="280" cy="156" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="289" y1="156" x2="289" y2="130" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="280" cy="172" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="271" y1="172" x2="271" y2="210" stroke="#0E1C42" stroke-width="1.5"/>
+            <text x="280" y="240" font-size="15" fill="#1A6B3C" text-anchor="middle" font-weight="bold">iv</text>
+            <text x="280" y="255" font-size="11" fill="#666" text-anchor="middle">Dm</text>
+
+            <!-- barline 2 -->
+            <line x1="340" y1="30" x2="340" y2="94" stroke="#0E1C42" stroke-width="1.5"/>
+            <line x1="340" y1="140" x2="340" y2="204" stroke="#0E1C42" stroke-width="1.5"/>
+
+            <!-- CHORD V: E major (harmonic minor: G# as leading tone). S=E5(38), A=B4(treble line2=78 -- wait B4 is space3=54? let me fix: treble B4=line3? No: E4=line1=94,F4=sp1=86,G4=line2=78,A4=sp2=70,B4=line3=62,C5=sp3=54,D5=line4=46,E5=sp4=38,F5=line5=30
+            Actually: S=B4(line3=62, raised to... G#4 leading tone in V: G#4=line2=78 with #),
+            Let's simplify: S=G#5(approaching A5 by half step -- but that's high), let's use S=D5 going to E5...
+            Actually for a clear leading-tone resolution: use S=G#4(raised line2 treble with sharp, y=78) going to A4(sp2=70).
+            Chord V: E-G#-B. S=G#4(78,#), A=E5(38), T=B3(bass sp4=148), B=E3(bass sp3=164) -->
+            <!-- Actually let me just place clean, readable chords -->
+            <!-- V chord, x=420: S=G#4(treble line2=78), A=E5(treble sp4=38), T=B3(bass sp4=148), B=E3(bass sp3=164) -->
+            <text x="403" y="82" font-size="14" fill="#6B4C9A">&#9839;</text>
+            <ellipse cx="420" cy="78" rx="9" ry="6" fill="#6B4C9A"/>
+            <line x1="429" y1="78" x2="429" y2="50" stroke="#6B4C9A" stroke-width="1.5"/>
+            <ellipse cx="420" cy="38" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="411" y1="38" x2="411" y2="100" stroke="#0E1C42" stroke-width="1.5"/>
+            <!-- Bass V: T=B3(space above staff=124, chord fifth -- never double the leading tone), B=E3(sp3=164, root) -->
+            <ellipse cx="420" cy="124" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="429" y1="124" x2="429" y2="98" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="420" cy="164" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="411" y1="164" x2="411" y2="215" stroke="#0E1C42" stroke-width="1.5"/>
+            <text x="420" y="240" font-size="15" fill="#1A6B3C" text-anchor="middle" font-weight="bold">V</text>
+            <text x="420" y="255" font-size="11" fill="#666" text-anchor="middle">E (G&#9839;)</text>
+
+            <!-- Leading tone resolution arrow: G#4 -> A4 (treble: from y=78 x=420 to y=70 x=540) -->
+            <defs>
+              <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#C0392B"/>
+              </marker>
+            </defs>
+            <line x1="432" y1="75" x2="526" y2="68" stroke="#C0392B" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="4,3"/>
+            <text x="478" y="64" font-size="11" fill="#C0392B" text-anchor="middle">LT resolves up!</text>
+
+            <!-- barline 3 -->
+            <line x1="500" y1="30" x2="500" y2="94" stroke="#0E1C42" stroke-width="1.5"/>
+            <line x1="500" y1="140" x2="500" y2="204" stroke="#0E1C42" stroke-width="1.5"/>
+
+            <!-- CHORD i final: Am. S=A4(sp2=70), A=E5(38), T=A3(bass line5=140), B=A2(sp1=196) -->
+            <ellipse cx="540" cy="70" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="549" y1="70" x2="549" y2="44" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="540" cy="38" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="531" y1="38" x2="531" y2="100" stroke="#0E1C42" stroke-width="1.5"/>
+            <!-- Bass final i -->
+            <ellipse cx="540" cy="140" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="549" y1="140" x2="549" y2="115" stroke="#0E1C42" stroke-width="1.5"/>
+            <ellipse cx="540" cy="196" rx="9" ry="6" fill="#0E1C42"/>
+            <line x1="531" y1="196" x2="531" y2="216" stroke="#0E1C42" stroke-width="1.5"/>
+            <text x="540" y="240" font-size="15" fill="#1A6B3C" text-anchor="middle" font-weight="bold">i</text>
+            <text x="540" y="255" font-size="11" fill="#666" text-anchor="middle">Am</text>
+
+            <!-- final barline (double) -->
+            <line x1="610" y1="30" x2="610" y2="94" stroke="#0E1C42" stroke-width="1.5"/>
+            <line x1="615" y1="30" x2="615" y2="94" stroke="#0E1C42" stroke-width="3"/>
+            <line x1="610" y1="140" x2="610" y2="204" stroke="#0E1C42" stroke-width="1.5"/>
+            <line x1="615" y1="140" x2="615" y2="204" stroke="#0E1C42" stroke-width="3"/>
+
+            <!-- Voice labels -->
+            <text x="24" y="44" font-size="10" fill="#6B4C9A" text-anchor="middle">S</text>
+            <text x="24" y="82" font-size="10" fill="#6B4C9A" text-anchor="middle">A</text>
+            <text x="24" y="150" font-size="10" fill="#6B4C9A" text-anchor="middle">T</text>
+            <text x="24" y="195" font-size="10" fill="#6B4C9A" text-anchor="middle">B</text>
+
+            <!-- key label -->
+            <text x="250" y="280" font-size="13" fill="#666" text-anchor="middle">A harmonic minor: i &ndash; iv &ndash; V &ndash; i</text>
+            <text x="250" y="296" font-size="11" fill="#C0392B" text-anchor="middle">Purple note = G&#9839; (leading tone); red arrow = required half-step resolution to A</text>
+          </svg>
+        </div>
+
+        <!-- SATB ranges callout -->
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 10px 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#127932; SATB VOCAL RANGES (OMT p. 186)</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; text-align: center;">
+                <div style="background:#fff; border-radius:6px; padding:10px;"><div style="font-size:14px; color:#6B4C9A; font-weight:bold;">Soprano</div><div style="font-size:13px; color:#0E1C42;">E4 to G5</div></div>
+                <div style="background:#fff; border-radius:6px; padding:10px;"><div style="font-size:14px; color:#6B4C9A; font-weight:bold;">Alto</div><div style="font-size:13px; color:#0E1C42;">C4 to E5</div></div>
+                <div style="background:#fff; border-radius:6px; padding:10px;"><div style="font-size:14px; color:#6B4C9A; font-weight:bold;">Tenor</div><div style="font-size:13px; color:#0E1C42;">C3 to G4</div></div>
+                <div style="background:#fff; border-radius:6px; padding:10px;"><div style="font-size:14px; color:#6B4C9A; font-weight:bold;">Bass</div><div style="font-size:13px; color:#0E1C42;">E2 to C4</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: VOICE LEADING RULES CARD ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 2 &middot; THE VOICE-LEADING RULES CARD</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">These rules apply whenever you write SATB texture, whether in major or minor. Minor adds one extra rule about the leading tone.</p>
+
+        <!-- VISUAL: Rules card -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; margin: 6px 0 14px;">
+          <div style="font-size: 14px; font-weight: bold; color: #0E1C42; border-bottom: 2px solid #55C8E8; padding-bottom: 8px; margin-bottom: 14px;">SATB VOICE-LEADING RULES</div>
+
+          <div style="display: grid; grid-template-columns: 40px 1fr; gap: 10px 14px; align-items: start;">
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#1A6B3C; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:1;">1</div>
+            <div style="grid-row:1;">
+              <div style="font-size:16px; color:#0E1C42; font-weight:bold; margin-bottom:3px;">Move each voice as little as possible.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">Prefer common tones (stay on the same pitch) or steps. Leaps are allowed but should be rare and smooth.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#1A6B3C; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:2;">2</div>
+            <div style="grid-row:2;">
+              <div style="font-size:16px; color:#0E1C42; font-weight:bold; margin-bottom:3px;">Prefer contrary and oblique motion.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">When the bass moves one direction, the upper voices ideally move the other direction (contrary) or stay (oblique). Similar motion is weaker; parallel motion is risky.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#C0392B; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:3;">3</div>
+            <div style="grid-row:3;">
+              <div style="font-size:16px; color:#C0392B; font-weight:bold; margin-bottom:3px;">No parallel fifths or parallel octaves.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">Two voices cannot both move in the same direction and arrive at a perfect 5th (or perfect 8th/octave) consecutively. These erase voice independence.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#C0392B; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:4;">4</div>
+            <div style="grid-row:4;">
+              <div style="font-size:16px; color:#C0392B; font-weight:bold; margin-bottom:3px;">No voice crossing.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">The soprano must always be higher than the alto; the alto higher than the tenor; the tenor higher than the bass. Voices must not leapfrog each other.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#1A6B3C; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:5;">5</div>
+            <div style="grid-row:5;">
+              <div style="font-size:16px; color:#0E1C42; font-weight:bold; margin-bottom:3px;">Double the root in root-position chords.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">In a four-voice texture one note of each chord is duplicated. Default: double the root (the bass note). This stabilizes the harmony.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#C0392B; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:6;">6</div>
+            <div style="grid-row:6;">
+              <div style="font-size:16px; color:#C0392B; font-weight:bold; margin-bottom:3px;">Never double the leading tone.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">The leading tone (scale degree 7, raised in harmonic minor) has a strong pull to resolve. Doubling it forces two voices into the same resolution and creates parallel octaves. Avoid it.</div>
+            </div>
+
+            <div style="min-width:36px; height:36px; border-radius:50%; background:#6B4C9A; color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center; font-weight:bold; grid-row:7;">7</div>
+            <div style="grid-row:7;">
+              <div style="font-size:16px; color:#6B4C9A; font-weight:bold; margin-bottom:3px;">Minor extra: leading tone must resolve up by half step.</div>
+              <div style="font-size:14px; color:#444; line-height:1.5;">In harmonic minor, scale degree 7 (G&#9839; in A minor) must rise by half step to the tonic (A). Never let it skip down or stay in place.</div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: PARALLEL FIFTHS FORBIDDEN DIAGRAM ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 3 &middot; PARALLEL FIFTHS = FORBIDDEN</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Parallel fifths sound hollow and erase the sense that two independent voices are moving. The rule is absolute in classical tonal writing.</p>
+
+        <!-- VISUAL: before/after parallel fifths diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; text-align:center; margin: 6px 0 14px; overflow-x:auto;">
+          <svg viewBox="0 0 580 240" width="100%" style="max-width:580px; min-width:420px;" role="img" aria-label="Two-panel diagram. Left panel: forbidden parallel fifths where both voices move from C-G to D-A in the same direction. Right panel: allowed contrary motion where one voice moves up while the other moves down.">
+
+            <!-- LEFT panel: FORBIDDEN -->
+            <rect x="10" y="10" width="255" height="220" rx="8" fill="#FFF5F5" stroke="#C0392B" stroke-width="1.5"/>
+            <text x="132" y="30" font-size="13" fill="#C0392B" text-anchor="middle" font-weight="bold">&#10006; FORBIDDEN: Parallel 5ths</text>
+
+            <!-- Staff lines: y=60,72,84,96,108 -->
+            <g stroke="#0E1C42" stroke-width="1.2">
+              <line x1="30" y1="60" x2="245" y2="60"/>
+              <line x1="30" y1="72" x2="245" y2="72"/>
+              <line x1="30" y1="84" x2="245" y2="84"/>
+              <line x1="30" y1="96" x2="245" y2="96"/>
+              <line x1="30" y1="108" x2="245" y2="108"/>
+            </g>
+            <!-- chord 1: C(84) + G(60) -&gt; both upper notes -->
+            <ellipse cx="80" cy="84" rx="7" ry="5" fill="#C0392B"/>
+            <line x1="87" y1="84" x2="87" y2="65" stroke="#C0392B" stroke-width="1.2"/>
+            <ellipse cx="80" cy="60" rx="7" ry="5" fill="#C0392B"/>
+            <line x1="73" y1="60" x2="73" y2="112" stroke="#C0392B" stroke-width="1.2"/>
+            <text x="80" y="125" font-size="11" fill="#C0392B" text-anchor="middle">C-G (P5)</text>
+
+            <!-- chord 2: D(78) + A(56-off staff, use ledger) -->
+            <ellipse cx="165" cy="78" rx="7" ry="5" fill="#C0392B"/>
+            <line x1="172" y1="78" x2="172" y2="59" stroke="#C0392B" stroke-width="1.2"/>
+            <!-- A above staff: y=52 with ledger line -->
+            <line x1="157" y1="52" x2="173" y2="52" stroke="#C0392B" stroke-width="1.2"/>
+            <ellipse cx="165" cy="52" rx="7" ry="5" fill="#C0392B"/>
+            <line x1="158" y1="52" x2="158" y2="112" stroke="#C0392B" stroke-width="1.2"/>
+            <text x="165" y="125" font-size="11" fill="#C0392B" text-anchor="middle">D-A (P5)</text>
+
+            <!-- arrows showing same direction movement -->
+            <path d="M 90,80 L 152,76" stroke="#C0392B" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <path d="M 90,58 L 152,50" stroke="#C0392B" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <defs>
+              <marker id="arr2" markerWidth="7" markerHeight="7" refX="3" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#C0392B"/></marker>
+              <marker id="arr3" markerWidth="7" markerHeight="7" refX="3" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1A6B3C"/></marker>
+            </defs>
+            <text x="132" y="150" font-size="12" fill="#C0392B" text-anchor="middle">Both voices move UP.</text>
+            <text x="132" y="165" font-size="12" fill="#C0392B" text-anchor="middle">Two consecutive P5s = forbidden.</text>
+            <text x="132" y="185" font-size="13" fill="#C0392B" text-anchor="middle" font-weight="bold">Erases voice independence.</text>
+
+            <!-- RIGHT panel: ALLOWED -->
+            <rect x="315" y="10" width="255" height="220" rx="8" fill="#F0FAF4" stroke="#1A6B3C" stroke-width="1.5"/>
+            <text x="442" y="30" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">&#10003; ALLOWED: Contrary Motion</text>
+
+            <!-- same staff -->
+            <g stroke="#0E1C42" stroke-width="1.2">
+              <line x1="330" y1="60" x2="555" y2="60"/>
+              <line x1="330" y1="72" x2="555" y2="72"/>
+              <line x1="330" y1="84" x2="555" y2="84"/>
+              <line x1="330" y1="96" x2="555" y2="96"/>
+              <line x1="330" y1="108" x2="555" y2="108"/>
+            </g>
+            <!-- chord 1: same C-G -->
+            <ellipse cx="380" cy="84" rx="7" ry="5" fill="#1A6B3C"/>
+            <line x1="387" y1="84" x2="387" y2="65" stroke="#1A6B3C" stroke-width="1.2"/>
+            <ellipse cx="380" cy="60" rx="7" ry="5" fill="#1A6B3C"/>
+            <line x1="373" y1="60" x2="373" y2="112" stroke="#1A6B3C" stroke-width="1.2"/>
+            <text x="380" y="125" font-size="11" fill="#1A6B3C" text-anchor="middle">C-G (P5)</text>
+
+            <!-- chord 2: upper stays, lower moves up (oblique), or upper moves down -->
+            <!-- Upper: moves to F(90), Lower: moves to G(84) -- P4, not P5, so fine -->
+            <ellipse cx="470" cy="90" rx="7" ry="5" fill="#1A6B3C"/>
+            <line x1="477" y1="90" x2="477" y2="65" stroke="#1A6B3C" stroke-width="1.2"/>
+            <ellipse cx="470" cy="72" rx="7" ry="5" fill="#1A6B3C"/>
+            <line x1="463" y1="72" x2="463" y2="112" stroke="#1A6B3C" stroke-width="1.2"/>
+            <text x="470" y="125" font-size="11" fill="#1A6B3C" text-anchor="middle">F-C (P5 avoided)</text>
+
+            <!-- arrows: lower goes up, upper goes down = contrary -->
+            <path d="M 390,82 L 458,88" stroke="#1A6B3C" stroke-width="1.5" marker-end="url(#arr3)"/>
+            <path d="M 390,58 L 460,70" stroke="#1A6B3C" stroke-width="1.5" marker-end="url(#arr3)"/>
+            <text x="442" y="150" font-size="12" fill="#1A6B3C" text-anchor="middle">Voices move in opposite directions</text>
+            <text x="442" y="165" font-size="12" fill="#1A6B3C" text-anchor="middle">or obliquely. Interval changes.</text>
+            <text x="442" y="185" font-size="13" fill="#1A6B3C" text-anchor="middle" font-weight="bold">Voice independence preserved.</text>
+          </svg>
+        </div>
+
+        <div style="background: #FFF5F5; border-left: 5px solid #C0392B; border-radius: 6px; padding: 14px 20px; margin: 10px 0;">
+            <div style="font-size: 11px; color: #C0392B; margin-bottom: 6px;">&#9888; AUGMENTED 2ND AVOIDANCE (minor extra)</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.6;">Do not write a melodic augmented 2nd (from natural scale degree 6 to raised scale degree 7) in any single voice. If a voice must pass through both scale degrees 6 and 7, use melodic minor (raise degree 6 as well) to make it a smooth whole step.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: OW-SELECT PRACTICE ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; PART 4 &middot; CHECK YOUR UNDERSTANDING</div>
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 12px;">Answer each question on your own first, then check.</p>
+
+        <!-- ow-select. Scrambled data-correct: 2, 0, 3, 1, 2, 0 -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; TRY IT &middot; SATB VOICE LEADING IN MINOR</div>
+          <div class="widget-question">Select the correct answer for each item.</div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. SATB stands for Soprano, Alto, Tenor, Bass. S and A share the treble staff; T and B share the bass staff." data-hint="Think about the four standard choral voices in order from highest to lowest.">
+            <div class="widget-row-prompt">1. SATB stands for:</div>
+            <div class="widget-options">
+              <button data-choice="0">Strong, Ascending, Tonal, Bass</button>
+              <button data-choice="1">Scale, Alto, Tenor, Baritone</button>
+              <button data-choice="2">Soprano, Alto, Tenor, Bass</button>
+              <button data-choice="3">Soprano, Alto, Treble, Baritone</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="0" data-fb="Correct. The leading tone (raised scale degree 7) in harmonic minor must resolve upward by half step to the tonic (i)." data-hint="The leading tone has a strong upward pull. The rule tells you exactly which direction it must go.">
+            <div class="widget-row-prompt">2. In A harmonic minor, G&#9839; (the leading tone) must resolve:</div>
+            <div class="widget-options">
+              <button data-choice="0">Upward by half step to A</button>
+              <button data-choice="1">Downward by half step to G&#9838;</button>
+              <button data-choice="2">Upward by a whole step to B</button>
+              <button data-choice="3">It can go anywhere</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. In root-position chords, double the root (the bass note) to stabilize the harmony. Never double the leading tone, as that would force two voices to resolve and create parallel octaves." data-hint="Which note provides the most stable foundation to double? And which note must you avoid doubling due to its obligatory resolution?">
+            <div class="widget-row-prompt">3. In root-position SATB chords: double the ____ and never double the ____.</div>
+            <div class="widget-options">
+              <button data-choice="0">fifth / root</button>
+              <button data-choice="1">third / fifth</button>
+              <button data-choice="2">leading tone / root</button>
+              <button data-choice="3">root / leading tone</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. Parallel fifths occur when two voices move in the same direction and land on a perfect 5th consecutively. This erases voice independence and is forbidden in tonal SATB writing." data-hint="Parallel fifths involve two consecutive perfect 5ths created by two voices moving in the same direction.">
+            <div class="widget-row-prompt">4. Parallel fifths are forbidden because:</div>
+            <div class="widget-options">
+              <button data-choice="0">They sound too bright for minor keys</button>
+              <button data-choice="1">They erase voice independence by making two voices move in the same direction to identical intervals consecutively</button>
+              <button data-choice="2">They only work in major keys</button>
+              <button data-choice="3">They always involve the leading tone</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. An augmented 2nd in a single voice (from natural 6 to raised 7) is forbidden in SATB writing. To pass through both, raise scale degree 6 as well (melodic minor in that voice)." data-hint="Think about what happens if a single voice moves from natural F to G-sharp in A harmonic minor.">
+            <div class="widget-row-prompt">5. In A harmonic minor, a voice that needs to move through both scale degree 6 (F) and raised scale degree 7 (G&#9839;) should:</div>
+            <div class="widget-options">
+              <button data-choice="0">Skip over the augmented 2nd with a larger leap</button>
+              <button data-choice="1">Use natural minor in that voice instead</button>
+              <button data-choice="2">Raise scale degree 6 to F&#9839; as well, using the melodic minor form in that voice</button>
+              <button data-choice="3">Double the note to avoid the problem</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>SATB Voice Leading Exercise (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">In MuseScore, write i-iv-V-i in A harmonic minor in four-voice SATB texture. Check all seven rules from the card. Submit a PDF. Teacher will review for voice-leading correctness.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 6 Voice Leading Quiz (Canvas auto-graded)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">A short quiz identifying voice-leading errors and rules. Multiple attempts allowed.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">In SATB voice leading, every voice moves as little as possible, and no two voices arrive at a perfect 5th or octave by moving the same direction. In minor, there is one additional hard rule: the raised leading tone (scale degree 7) must resolve upward by half step to the tonic, every time, no exceptions.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 6.01 &middot; SATB Voice Leading</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

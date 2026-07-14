@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 8.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    .chord-chip { display:inline-block; background:#6B4C9A; color:#fff; border-radius:5px; padding:3px 10px; font-size:14px; margin:0 2px; font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 8</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 8.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Tonicization in Minor Keys</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 8.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Borrowed Harmony: Tonicization in Minor Keys</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">How can a piece in A minor suddenly feel like it is in C major for a moment -- and then return home?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You already know how secondary dominants tonicize chords in major keys. The same tool works in minor -- you just need to know which chords are the common targets. Today you will build and resolve secondary dominants to III, VI, and VII in a minor key, and you will learn to spot them by their chromatic note.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> build secondary dominants to III, VI, and VII in a minor key.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> resolve each secondary dominant correctly to its target chord.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify a tonicization in a score by locating the chromatic (applied leading-tone) note.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2 at viva.pressbooks.pub/openmusictheory: read <em>Tonicization</em> and <em>Tonicizing III, VI, VII in Minor</em>.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook -- you will write out secondary dominant chords as you work through the examples.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE CONCEPT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; THE CONCEPT: SECONDARY DOMINANTS IN MINOR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">A <strong>secondary dominant</strong> is a dominant 7th chord built to target a chord other than the home tonic. You already know this in major keys. In minor keys, the concept is identical, but the most common targets shift. In a minor key, the three most common chords to tonicize are:</p>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
+            <div style="background:#E7F4EC; border-left:4px solid #2A9D5C; border-radius:7px; padding:14px 16px; text-align:center;">
+                <div style="font-size:22px; font-weight:bold; color:#1A6B3C; margin-bottom:4px;">III</div>
+                <div style="font-size:14px; color:#1a2340;">The relative major</div>
+                <div style="font-size:13px; color:#666; margin-top:4px;">Most common tonicization in minor</div>
+            </div>
+            <div style="background:#EFEAF6; border-left:4px solid #6B4C9A; border-radius:7px; padding:14px 16px; text-align:center;">
+                <div style="font-size:22px; font-weight:bold; color:#6B4C9A; margin-bottom:4px;">VI</div>
+                <div style="font-size:14px; color:#1a2340;">The submediant major</div>
+                <div style="font-size:13px; color:#666; margin-top:4px;">Creates a warm harmonic turn</div>
+            </div>
+            <div style="background:#FFF3E2; border-left:4px solid #B8860B; border-radius:7px; padding:14px 16px; text-align:center;">
+                <div style="font-size:22px; font-weight:bold; color:#B8860B; margin-bottom:4px;">VII</div>
+                <div style="font-size:14px; color:#1a2340;">The subtonic major</div>
+                <div style="font-size:13px; color:#666; margin-top:4px;">Common in Baroque and Classical</div>
+            </div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; THE KEY TO SPOTTING THEM</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">Most secondary dominants contain a <strong>chromatic note</strong> -- a pitch that does not belong in the home key. That chromatic note is the <strong>applied leading tone</strong>: it rises by half step to the root of the target chord. Find the chromatic note, and you have usually found the tonicization -- except for V7/III, a special case you will meet next.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: RESOLUTION DIAGRAM V7/III ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 2 &middot; V7/III IN A MINOR -- THE MOST IMPORTANT CASE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">In A minor, the most common secondary dominant is <strong>V7/III</strong>. The target chord is C major (III -- the relative major). C major's own dominant is G, so the secondary dominant is <strong>G7</strong> (G&ndash;B&ndash;D&ndash;F). Here is the surprise: every one of those notes -- G, B, D, F -- already belongs to the A natural minor scale. No accidental is needed at all.</p>
+
+        <!-- VISUAL: V7/III resolution diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; margin: 6px 0 16px; overflow-x:auto;">
+            <div style="font-size:13px; color:#6B4C9A; margin-bottom:14px; font-weight:bold;">V7/III in A minor: G7 resolving to C major (III)</div>
+            <svg viewBox="0 0 600 200" width="100%" style="max-width:600px;" role="img" aria-label="Secondary dominant resolution diagram. G7 chord (G, B, D, F) resolves to C major (C, E, G). An arrow shows B rising by half step to C.">
+                <!-- Chord boxes -->
+                <!-- G7 box -->
+                <rect x="30" y="30" width="180" height="140" rx="10" fill="#EFEAF6" stroke="#8A6FBF" stroke-width="2"/>
+                <text x="120" y="55" font-size="14" font-weight="bold" fill="#6B4C9A" text-anchor="middle" font-family="Segoe UI,sans-serif">V7/III</text>
+                <text x="120" y="74" font-size="18" font-weight="bold" fill="#0E1C42" text-anchor="middle" font-family="Segoe UI,sans-serif">G7</text>
+
+                <!-- G7 chord tones listed -->
+                <g font-size="14" font-family="Segoe UI,sans-serif" text-anchor="middle">
+                    <text x="120" y="100" fill="#1a2340">G</text>
+                    <text x="120" y="118" fill="#8A1F16" font-weight="bold">B</text>
+                    <text x="120" y="136" fill="#1a2340">D</text>
+                    <text x="120" y="154" fill="#1a2340">F</text>
+                </g>
+
+                <!-- Arrow -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#2A9D5C"/>
+                    </marker>
+                </defs>
+                <line x1="215" y1="115" x2="355" y2="115" stroke="#2A9D5C" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+                <!-- Arrow label: leading tone -->
+                <text x="285" y="107" font-size="12" fill="#1A6B3C" text-anchor="middle" font-family="Segoe UI,sans-serif">B rises</text>
+                <text x="285" y="120" font-size="12" fill="#1A6B3C" text-anchor="middle" font-family="Segoe UI,sans-serif">by half step</text>
+
+                <!-- Half step arrow from B to C -->
+                <line x1="215" y1="118" x2="355" y2="100" stroke="#8A1F16" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+
+                <!-- C major box -->
+                <rect x="360" y="30" width="180" height="140" rx="10" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="2"/>
+                <text x="450" y="55" font-size="14" font-weight="bold" fill="#1A6B3C" text-anchor="middle" font-family="Segoe UI,sans-serif">III</text>
+                <text x="450" y="74" font-size="18" font-weight="bold" fill="#0E1C42" text-anchor="middle" font-family="Segoe UI,sans-serif">C major</text>
+                <g font-size="14" font-family="Segoe UI,sans-serif" text-anchor="middle">
+                    <text x="450" y="100" fill="#1A6B3C" font-weight="bold">C</text>
+                    <text x="450" y="118" fill="#1a2340">E</text>
+                    <text x="450" y="136" fill="#1a2340">G</text>
+                </g>
+            </svg>
+            <div style="font-size:13px; color:#666; margin-top:8px; line-height:1.6;">B is the leading tone into C, but unlike the other two cases in this module, B already belongs to A natural minor -- G7 needs zero accidentals. That is because the diatonic VII chord in natural minor (built on G) is already a major triad, so it already functions as the applied dominant of III. The 7th of G7 (the note F) falls by step to E.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: COMMON SECONDARY DOMINANTS TABLE ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 3 &middot; THE THREE COMMON SECONDARY DOMINANTS IN A MINOR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Here are the three most-used secondary dominants in A minor. In each case, the chromatic note is the clue that identifies the tonicization:</p>
+
+        <!-- VISUAL: small table of V7/III, V7/VI, V7/VII -->
+        <div style="overflow-x:auto; margin-bottom:16px;">
+            <table style="width:100%; border-collapse:collapse; min-width:520px;">
+                <thead>
+                    <tr style="background:#EEF1F8;">
+                        <th style="padding:10px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Label</th>
+                        <th style="padding:10px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Chord (in A minor)</th>
+                        <th style="padding:10px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Chord tones</th>
+                        <th style="padding:10px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Chromatic clue</th>
+                        <th style="padding:10px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Resolves to</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid #E8EDF4;">
+                        <td style="padding:10px 12px; font-size:15px; font-weight:bold; color:#6B4C9A;">V7/III</td>
+                        <td style="padding:10px 12px; font-size:15px; color:#1a2340;"><strong>G7</strong></td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1a2340;">G &ndash; <span style="color:#1A6B3C; font-weight:bold;">B</span> &ndash; D &ndash; F</td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1A6B3C; font-weight:bold;">None -- already diatonic (B resolves to C)</td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1A6B3C; font-weight:bold;">C major (III)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4; background:#FAFBFC;">
+                        <td style="padding:10px 12px; font-size:15px; font-weight:bold; color:#6B4C9A;">V7/VI</td>
+                        <td style="padding:10px 12px; font-size:15px; color:#1a2340;"><strong>C7</strong></td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1a2340;">C &ndash; E &ndash; G &ndash; <span style="color:#8A1F16; font-weight:bold;">B&#9837;</span></td>
+                        <td style="padding:10px 12px; font-size:14px; color:#8A1F16; font-weight:bold;">B&#9837; (applied leading tone to F)</td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1A6B3C; font-weight:bold;">F major (VI)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 12px; font-size:15px; font-weight:bold; color:#6B4C9A;">V7/VII</td>
+                        <td style="padding:10px 12px; font-size:15px; color:#1a2340;"><strong>D7</strong></td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1a2340;">D &ndash; <span style="color:#8A1F16; font-weight:bold;">F&#9839;</span> &ndash; A &ndash; C</td>
+                        <td style="padding:10px 12px; font-size:14px; color:#8A1F16; font-weight:bold;">F&#9839; (applied leading tone to G)</td>
+                        <td style="padding:10px 12px; font-size:14px; color:#1A6B3C; font-weight:bold;">G major (VII)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cue card: spot the tonicization -->
+        <div style="background:#FFF8E1; border-left:5px solid #B8860B; border-radius:7px; padding:16px 20px; margin-top:8px;">
+            <div style="font-size:13px; color:#B8860B; font-weight:bold; margin-bottom:10px;">&#128161; SPOT THE TONICIZATION: THREE-STEP CUE CARD</div>
+            <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:8px;">
+                <div style="min-width:26px; height:26px; border-radius:50%; background:#B8860B; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:bold;">1</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.55;">Find the <strong>chromatic note</strong> -- the pitch that does not belong in the home key's natural minor scale.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:8px;">
+                <div style="min-width:26px; height:26px; border-radius:50%; background:#B8860B; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:bold;">2</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.55;">That chromatic note is the <strong>applied leading tone</strong>. It rises by half step -- that half step lands on the <strong>root of the target chord</strong>.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:26px; height:26px; border-radius:50%; background:#B8860B; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:bold;">3</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.55;">Name the secondary dominant as <strong>V7/[target chord Roman numeral]</strong> in the home key.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== WIDGET: ow-select practice ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#9997;&#65039; PART 4 &middot; PRACTICE: IDENTIFY THE TONICIZATION</div>
+
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 8px;">Use the table and cue card above. Work out your answer first, then tap.</p>
+
+        <!-- ow-select, correct-answer positions: row1=3, row2=0, row3=2, row4=1 -->
+        <div class="optima-widget ow-select">
+            <div class="widget-kicker">&#9889; TRY IT &middot; SECONDARY DOMINANTS IN A MINOR</div>
+            <div class="widget-question">Identify the chromatic note or label for each case in A minor.</div>
+
+            <div class="widget-row" data-correct="1" data-fb="Correct. G7 (G-B-D-F) is entirely diatonic to A natural minor -- no accidental required. That is because the VII chord (G major) is already the applied dominant of III." data-hint="Look at each of the four notes in G7. Are any of them outside the A natural minor scale (A-B-C-D-E-F-G)?">
+                <div class="widget-row-prompt">1. Which secondary dominant in A minor needs no accidental at all, because every one of its notes is already in A natural minor?</div>
+                <div class="widget-options">
+                    <button data-choice="0">V7/VI (C7)</button>
+                    <button data-choice="1">V7/III (G7)</button>
+                    <button data-choice="2">V7/VII (D7)</button>
+                    <button data-choice="3">None of them -- all secondary dominants need an accidental</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="0" data-fb="Correct. C7 (C-E-G-Bb) is V7/VI in A minor. The Bb is the chromatic note leading up by half step to B-natural, which is part of F major (VI)." data-hint="Which secondary dominant uses C7 and has a Bb as its chromatic note? Use the table above.">
+                <div class="widget-row-prompt">2. Which label correctly names the chord C7 (C&ndash;E&ndash;G&ndash;B&#9837;) in A minor?</div>
+                <div class="widget-options">
+                    <button data-choice="0">V7/VI</button>
+                    <button data-choice="1">V7/III</button>
+                    <button data-choice="2">V7/VII</button>
+                    <button data-choice="3">V7/V</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="2" data-fb="Correct. F-sharp is not in A natural minor. In D7 it acts as the applied leading tone rising by half step to G, the root of G major (VII)." data-hint="Which note in D7 does not belong in A natural minor? Check the key signature -- A natural minor has no sharps.">
+                <div class="widget-row-prompt">3. In D7 (D&ndash;F&#9839;&ndash;A&ndash;C) functioning as V7/VII in A minor, which note is the applied leading tone?</div>
+                <div class="widget-options">
+                    <button data-choice="0">D</button>
+                    <button data-choice="1">A</button>
+                    <button data-choice="2">F&#9839;</button>
+                    <button data-choice="3">C</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="1" data-fb="Correct. The leading tone B in G7 rises by half step to C -- the root of the target chord C major. That is always the rule: the leading tone resolves up by half step, even when (as here) it needed no accidental to begin with." data-hint="Think about what the leading tone does: it rises by half step. B rises by half step to which note?">
+                <div class="widget-row-prompt">4. When V7/III (G7) resolves in A minor, the leading tone B rises by half step to&hellip;</div>
+                <div class="widget-options">
+                    <button data-choice="0">A</button>
+                    <button data-choice="1">C</button>
+                    <button data-choice="2">D</button>
+                    <button data-choice="3">G</button>
+                </div>
+            </div>
+
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Secondary Dominant Construction Practice (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Build and label V7/III, V7/VI, and V7/VII in D minor, then write the resolution for each.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 8 Tonicization Check (Canvas quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on secondary dominant ID and construction in minor. Retakes allowed.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Tonicization Discussion (Canvas discussion)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Reflect on whether V7/III in minor feels like a true key change or a passing harmonic color.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">The chromatic note is always the clue. Find the pitch that does not belong in the home key's natural minor scale -- that is the applied leading tone. Follow it upward by half step, and you land on the root of the tonicized chord.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 8.01 &middot; Tonicization in Minor Keys</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

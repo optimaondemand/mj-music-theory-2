@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 5.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 5</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 5.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Minor Keys &amp; the Circle</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 5.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Minor Key Signatures and the Circle of Fifths</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">If two keys share the same key signature, how do you tell which one the music is actually in?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Minor keys borrow their key signatures from major keys. That means a single key signature can belong to two different keys. Today you learn the relative major/minor relationship, read the inner ring of the Circle of Fifths, and develop the ear-and-eye strategies for deciding major or minor.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify minor key signatures for all keys with up to 4 sharps and 4 flats.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> use the Circle of Fifths to find relative major and minor keys.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> determine whether a piece is in major or minor from score and listening context.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2 at viva.pressbooks.pub/openmusictheory: read <em>Minor Key Signatures</em> (p. 117), <em>Minor Keys and the Circle of Fifths</em> (p. 118), and <em>Major or Minor?</em> (p. 119).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and headphones for any listening examples your facilitator links in Canvas.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: RELATIVE RELATIONSHIP ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; THE RELATIVE MAJOR/MINOR PAIR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Every major key has a <strong>relative minor</strong> that shares its exact key signature. The relative minor's tonic is <strong>scale degree 6 of the major scale</strong>, which is the same as going <em>down three half steps</em> from the major tonic. Flip the relationship: from the minor tonic, go <em>up three half steps</em> to find the relative major.</p>
+
+        <!-- VISUAL: relative major/minor pair diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; text-align:center; margin: 6px 0 14px;">
+          <svg viewBox="0 0 560 200" width="100%" style="max-width:560px;" role="img" aria-label="Relative major minor pair. C major and A minor share a key signature of zero sharps or flats. A is scale degree 6 of C, three half steps below C.">
+            <!-- C major box -->
+            <rect x="30" y="20" width="200" height="80" rx="8" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="2"/>
+            <text x="130" y="50" font-size="22" fill="#1A6B3C" text-anchor="middle" font-weight="bold">C Major</text>
+            <text x="130" y="74" font-size="14" fill="#1A6B3C" text-anchor="middle">0 sharps / 0 flats</text>
+            <text x="130" y="92" font-size="12" fill="#1A6B3C" text-anchor="middle">C-D-E-F-G-A-B-C</text>
+
+            <!-- A minor box -->
+            <rect x="330" y="20" width="200" height="80" rx="8" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="2"/>
+            <text x="430" y="50" font-size="22" fill="#6B4C9A" text-anchor="middle" font-weight="bold">A Minor</text>
+            <text x="430" y="74" font-size="14" fill="#6B4C9A" text-anchor="middle">0 sharps / 0 flats</text>
+            <text x="430" y="92" font-size="12" fill="#6B4C9A" text-anchor="middle">A-B-C-D-E-F-G-A</text>
+
+            <!-- arrows -->
+            <line x1="230" y1="60" x2="325" y2="60" stroke="#0E1C42" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="278" y="52" font-size="11" fill="#0E1C42" text-anchor="middle">Same key sig</text>
+
+            <!-- down arrow from C to A -->
+            <text x="130" y="130" font-size="13" fill="#1A6B3C" text-anchor="middle">deg 6 = A</text>
+            <text x="130" y="148" font-size="12" fill="#666" text-anchor="middle">down 3 half steps</text>
+            <path d="M 130 155 L 130 170 L 430 170 L 430 107" fill="none" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <!-- up arrow from A to C -->
+            <text x="430" y="130" font-size="13" fill="#6B4C9A" text-anchor="middle">up 3 half steps</text>
+            <text x="430" y="148" font-size="12" fill="#666" text-anchor="middle">to find rel. major</text>
+
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#6B4C9A"/>
+              </marker>
+            </defs>
+          </svg>
+          <div style="font-size:13px; color:#666; margin-top:8px;">A is scale degree 6 of C major. Both share zero sharps and zero flats.</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0;">Quick rule for any major key: count up to scale degree 6 (or down 3 half steps) to reach the relative minor tonic. The key signature stays identical.</p>
+    </div>
+
+    <!-- ===================== PART 2: CIRCLE OF FIFTHS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 2 &middot; THE CIRCLE OF FIFTHS WITH THE MINOR RING</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The Circle of Fifths has two rings: the outer ring (major keys in green) and the inner ring (their relative minor keys in purple). Each minor key sits directly inside its relative major at the same clock position, sharing the same key signature. Moving clockwise adds sharps; moving counter-clockwise adds flats.</p>
+
+        <!-- VISUAL: Circle of Fifths SVG with minor ring -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; text-align:center; margin: 6px 0 14px;">
+          <svg viewBox="0 0 500 500" width="100%" style="max-width:500px;" role="img" aria-label="Circle of Fifths. Outer ring shows major keys, inner ring shows relative minor keys, each with the number of sharps or flats.">
+            <!-- Background circle -->
+            <circle cx="250" cy="250" r="230" fill="#F4F6FA" stroke="#D0D9E8" stroke-width="1"/>
+
+            <!-- Outer ring (major keys): green segments, labels at r=190 -->
+            <!-- Key positions at 12 clock positions, starting top = C (0), going clockwise: G(1#), D(2#), A(3#), E(4#), B/Cb(5#/7b), F#/Gb(6#/6b), Db/C#(5b/7#), Ab(4b), Eb(3b), Bb(2b), F(1b) -->
+
+            <!-- Outer major ring labels (radius 185 from center) -->
+            <g font-size="16" font-weight="bold" text-anchor="middle">
+              <!-- C (top, 0 sharps) -->
+              <text x="250" y="76" fill="#1A6B3C">C</text>
+              <text x="250" y="92" font-size="11" fill="#1A6B3C" font-weight="normal">0</text>
+              <!-- G (1 sharp, 30 deg) -->
+              <text x="339" y="101" fill="#1A6B3C">G</text>
+              <text x="348" y="116" font-size="11" fill="#1A6B3C" font-weight="normal">1&#9839;</text>
+              <!-- D (2 sharps, 60 deg) -->
+              <text x="399" y="172" fill="#1A6B3C">D</text>
+              <text x="403" y="188" font-size="11" fill="#1A6B3C" font-weight="normal">2&#9839;</text>
+              <!-- A (3 sharps, 90 deg) -->
+              <text x="424" y="255" fill="#1A6B3C">A</text>
+              <text x="424" y="271" font-size="11" fill="#1A6B3C" font-weight="normal">3&#9839;</text>
+              <!-- E (4 sharps, 120 deg) -->
+              <text x="399" y="338" fill="#1A6B3C">E</text>
+              <text x="399" y="354" font-size="11" fill="#1A6B3C" font-weight="normal">4&#9839;</text>
+              <!-- B (5 sharps, 150 deg) -->
+              <text x="339" y="407" fill="#1A6B3C">B</text>
+              <text x="334" y="422" font-size="11" fill="#1A6B3C" font-weight="normal">5&#9839;</text>
+              <!-- F#/Gb (6 sharps, 180 deg / bottom) -->
+              <text x="250" y="440" fill="#1A6B3C">F&#9839;</text>
+              <text x="250" y="456" font-size="11" fill="#1A6B3C" font-weight="normal">6&#9839;</text>
+              <!-- Db (5 flats, 210 deg) -->
+              <text x="162" y="407" fill="#1A6B3C">D&#9837;</text>
+              <text x="160" y="422" font-size="11" fill="#1A6B3C" font-weight="normal">5&#9837;</text>
+              <!-- Ab (4 flats, 240 deg) -->
+              <text x="99" y="338" fill="#1A6B3C">A&#9837;</text>
+              <text x="95" y="354" font-size="11" fill="#1A6B3C" font-weight="normal">4&#9837;</text>
+              <!-- Eb (3 flats, 270 deg) -->
+              <text x="72" y="255" fill="#1A6B3C">E&#9837;</text>
+              <text x="70" y="271" font-size="11" fill="#1A6B3C" font-weight="normal">3&#9837;</text>
+              <!-- Bb (2 flats, 300 deg) -->
+              <text x="99" y="172" fill="#1A6B3C">B&#9837;</text>
+              <text x="97" y="188" font-size="11" fill="#1A6B3C" font-weight="normal">2&#9837;</text>
+              <!-- F (1 flat, 330 deg) -->
+              <text x="162" y="101" fill="#1A6B3C">F</text>
+              <text x="160" y="116" font-size="11" fill="#1A6B3C" font-weight="normal">1&#9837;</text>
+            </g>
+
+            <!-- Inner minor ring labels (radius 120 from center) -->
+            <!-- Minor keys: Am(0), Em(1#), Bm(2#), F#m(3#), C#m(4#), G#m(5#), D#m/Ebm(6#), Bbm(5b), Fm(4b), Cm(3b), Gm(2b), Dm(1b) -->
+            <g font-size="14" font-weight="bold" text-anchor="middle">
+              <!-- Am (top, 0) -->
+              <text x="250" y="150" fill="#6B4C9A">Am</text>
+              <text x="250" y="165" font-size="10" fill="#6B4C9A" font-weight="normal">0</text>
+              <!-- Em (1#, 30 deg) -->
+              <text x="310" y="172" fill="#6B4C9A">Em</text>
+              <text x="319" y="186" font-size="10" fill="#6B4C9A" font-weight="normal">1&#9839;</text>
+              <!-- Bm (2#, 60 deg) -->
+              <text x="348" y="220" fill="#6B4C9A">Bm</text>
+              <text x="353" y="234" font-size="10" fill="#6B4C9A" font-weight="normal">2&#9839;</text>
+              <!-- F#m (3#, 90 deg) -->
+              <text x="366" y="255" fill="#6B4C9A">F&#9839;m</text>
+              <text x="368" y="269" font-size="10" fill="#6B4C9A" font-weight="normal">3&#9839;</text>
+              <!-- C#m (4#, 120 deg) -->
+              <text x="348" y="290" fill="#6B4C9A">C&#9839;m</text>
+              <text x="348" y="304" font-size="10" fill="#6B4C9A" font-weight="normal">4&#9839;</text>
+              <!-- G#m (5#, 150 deg) -->
+              <text x="310" y="335" fill="#6B4C9A">G&#9839;m</text>
+              <text x="306" y="349" font-size="10" fill="#6B4C9A" font-weight="normal">5&#9839;</text>
+              <!-- D#m / bottom (6#, 180 deg) -->
+              <text x="250" y="368" fill="#6B4C9A">D&#9839;m</text>
+              <text x="250" y="382" font-size="10" fill="#6B4C9A" font-weight="normal">6&#9839;</text>
+              <!-- Bbm (5b, 210 deg) -->
+              <text x="191" y="335" fill="#6B4C9A">B&#9837;m</text>
+              <text x="188" y="349" font-size="10" fill="#6B4C9A" font-weight="normal">5&#9837;</text>
+              <!-- Fm (4b, 240 deg) -->
+              <text x="148" y="290" fill="#6B4C9A">Fm</text>
+              <text x="146" y="304" font-size="10" fill="#6B4C9A" font-weight="normal">4&#9837;</text>
+              <!-- Cm (3b, 270 deg) -->
+              <text x="128" y="255" fill="#6B4C9A">Cm</text>
+              <text x="126" y="269" font-size="10" fill="#6B4C9A" font-weight="normal">3&#9837;</text>
+              <!-- Gm (2b, 300 deg) -->
+              <text x="148" y="220" fill="#6B4C9A">Gm</text>
+              <text x="146" y="234" font-size="10" fill="#6B4C9A" font-weight="normal">2&#9837;</text>
+              <!-- Dm (1b, 330 deg) -->
+              <text x="191" y="172" fill="#6B4C9A">Dm</text>
+              <text x="190" y="186" font-size="10" fill="#6B4C9A" font-weight="normal">1&#9837;</text>
+            </g>
+
+            <!-- Center label -->
+            <circle cx="250" cy="250" r="60" fill="#FFFFFF" stroke="#D0D9E8" stroke-width="1"/>
+            <text x="250" y="244" font-size="12" fill="#0E1C42" text-anchor="middle" font-weight="bold">Circle</text>
+            <text x="250" y="260" font-size="12" fill="#0E1C42" text-anchor="middle" font-weight="bold">of Fifths</text>
+            <text x="250" y="276" font-size="10" fill="#1A6B3C" text-anchor="middle">outer = major</text>
+            <text x="250" y="290" font-size="10" fill="#6B4C9A" text-anchor="middle">inner = minor</text>
+
+            <!-- Legend: clockwise/counter-clockwise arrows -->
+            <text x="440" y="38" font-size="11" fill="#1A6B3C" text-anchor="middle">+&#9839; clockwise</text>
+            <text x="60" y="38" font-size="11" fill="#6B4C9A" text-anchor="middle">+&#9837; counter</text>
+          </svg>
+          <div style="font-size:13px; color:#666; margin-top:8px;">Green = major key (outer ring). Purple = relative minor (inner ring). Each pair shares the same key signature.</div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 14px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; SHARP SIDE PAIRS (0 to 4 sharps)</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.7;">
+              C major / Am (0) &nbsp;|&nbsp; G major / Em (1&#9839;) &nbsp;|&nbsp; D major / Bm (2&#9839;) &nbsp;|&nbsp; A major / F&#9839;m (3&#9839;) &nbsp;|&nbsp; E major / C&#9839;m (4&#9839;)
+            </div>
+        </div>
+        <div style="background: #EFEAF6; border-left: 5px solid #6B4C9A; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 8px;">&#128161; FLAT SIDE PAIRS (1 to 4 flats)</div>
+            <div style="font-size: 16px; color: #0E1C42; line-height: 1.7;">
+              F major / Dm (1&#9837;) &nbsp;|&nbsp; B&#9837; major / Gm (2&#9837;) &nbsp;|&nbsp; E&#9837; major / Cm (3&#9837;) &nbsp;|&nbsp; A&#9837; major / Fm (4&#9837;)
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: MAJOR OR MINOR DECISION CARD ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; PART 3 &middot; MAJOR OR MINOR? HOW TO DECIDE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">When you see a key signature, you have two candidates (major and its relative minor). These four questions help you decide which one applies:</p>
+
+        <!-- VISUAL: Decision card with 4 checks -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px; margin: 6px 0 14px;">
+          <div style="font-size: 14px; font-weight: bold; color: #0E1C42; margin-bottom: 14px; border-bottom: 2px solid #55C8E8; padding-bottom: 8px;">MAJOR OR MINOR? DECISION CARD</div>
+
+          <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;">
+            <div style="min-width: 32px; height: 32px; border-radius: 50%; background: #1A6B3C; color: #fff; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">1</div>
+            <div>
+              <div style="font-size: 16px; color: #0E1C42; font-weight: bold; margin-bottom: 4px;">Which pitch sounds like home?</div>
+              <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">Listen for the pitch the music keeps returning to or ending on. That is the tonic. If it matches the key signature's major key, you are in major; if it matches the relative minor, you are in minor.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;">
+            <div style="min-width: 32px; height: 32px; border-radius: 50%; background: #1A6B3C; color: #fff; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">2</div>
+            <div>
+              <div style="font-size: 16px; color: #0E1C42; font-weight: bold; margin-bottom: 4px;">What is the final cadence chord?</div>
+              <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">The last chord almost always resolves to the tonic. A major chord at the end suggests major; a minor chord suggests minor.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;">
+            <div style="min-width: 32px; height: 32px; border-radius: 50%; background: #1A6B3C; color: #fff; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">3</div>
+            <div>
+              <div style="font-size: 16px; color: #0E1C42; font-weight: bold; margin-bottom: 4px;">Is the tonic chord major or minor?</div>
+              <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">In a two-sharp key signature (D major / B minor), the chord built on D is major, the chord built on B is minor. Which one does the piece use most as its home chord?</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 32px; height: 32px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">4</div>
+            <div>
+              <div style="font-size: 16px; color: #0E1C42; font-weight: bold; margin-bottom: 4px;">Raised-7 accidental? Strong clue for minor.</div>
+              <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">In harmonic minor the raised scale degree 7 appears throughout the score as an accidental. If you keep seeing a &#9839; that is not in the key signature on the pitch that is one step below the home pitch, the piece is almost certainly in minor.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflect widget (ow-reflect) -->
+        <div class="optima-widget ow-reflect">
+          <div class="widget-kicker">&#9889; QUICK REFLECTION</div>
+          <div class="widget-question">You open a piece with a key signature of two flats (B&#9837; and E&#9837;). The final measure ends on a G minor chord. Which key is the piece most likely in?</div>
+          <div class="widget-options">
+            <button data-response="Correct thinking. B&#9837; major and G minor share the key signature of two flats. A G minor chord at the final cadence strongly suggests G minor. The raised 7th (F&#9839;) appearing as an accidental throughout would confirm it.">G minor, because the final chord is a minor chord on G, which is the relative minor of B&#9837; major.</button>
+            <button data-response="Review: B&#9837; major would end on a B&#9837; major chord, not G minor. The final chord here is G minor, which points to G minor as the tonic.">B&#9837; major, because the key signature has two flats.</button>
+            <button data-response="Dm is the relative minor of F major (one flat), not two flats. With two flats, your candidates are B&#9837; major and G minor.">D minor, because the key signature has flats.</button>
+          </div>
+          <div class="widget-feedback"></div>
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: OW-SELECT PRACTICE ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; PART 4 &middot; CHECK YOUR UNDERSTANDING</div>
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 12px;">Work through each question before tapping an answer.</p>
+
+        <!-- ow-select. Scrambled data-correct: 3, 0, 2, 1, 3 -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; TRY IT &middot; MINOR KEYS AND THE CIRCLE</div>
+          <div class="widget-question">Select the correct answer for each item.</div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. The relative minor's tonic is scale degree 6 of the major scale, which is the same as going down three half steps from the major tonic." data-hint="Count down from the major tonic: one, two, three half steps. Where do you land?">
+            <div class="widget-row-prompt">1. To find the relative minor of any major key, go down how many half steps from the major tonic?</div>
+            <div class="widget-options">
+              <button data-choice="0">2 half steps</button>
+              <button data-choice="1">4 half steps</button>
+              <button data-choice="2">5 half steps</button>
+              <button data-choice="3">3 half steps</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="0" data-fb="Correct. E minor is the relative minor of G major. Both have a key signature of one sharp (F&#9839;)." data-hint="Find G major on the circle, then look at the inner ring directly inside it.">
+            <div class="widget-row-prompt">2. What is the relative minor of G major (1 sharp)?</div>
+            <div class="widget-options">
+              <button data-choice="0">E minor</button>
+              <button data-choice="1">D minor</button>
+              <button data-choice="2">B minor</button>
+              <button data-choice="3">A minor</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. A minor key signature looks identical to its relative major. The raised degrees in harmonic or melodic minor appear as accidentals in the score, not in the key signature." data-hint="Minor key signatures are borrowed from their relative major. The raised 6 and 7 are not in the key signature.">
+            <div class="widget-row-prompt">3. A minor key signature contains the raised scale degree 7 used in harmonic minor.</div>
+            <div class="widget-options">
+              <button data-choice="0">True, it is always shown in the key signature</button>
+              <button data-choice="1">Sometimes, depending on the style</button>
+              <button data-choice="2">False, raised degrees appear as accidentals in the score, not the key signature</button>
+              <button data-choice="3">True, only in classical music</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. B minor shares two sharps with D major. Its tonic is B, which is scale degree 6 of D major." data-hint="D major has two sharps. Which minor key is inside D on the circle?">
+            <div class="widget-row-prompt">4. Which minor key shares a key signature of two sharps with D major?</div>
+            <div class="widget-options">
+              <button data-choice="0">A minor</button>
+              <button data-choice="1">B minor</button>
+              <button data-choice="2">F&#9839; minor</button>
+              <button data-choice="3">E minor</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. An accidental raising scale degree 7 throughout the score is a reliable signal of harmonic minor, and therefore of a minor key." data-hint="The raised 7 in harmonic minor does not belong to the key signature, so it shows up repeatedly as an accidental in the score.">
+            <div class="widget-row-prompt">5. While reading a score with one flat, you notice F&#9839; appearing as an accidental throughout. This is a clue that the piece is in:</div>
+            <div class="widget-options">
+              <button data-choice="0">F major</button>
+              <button data-choice="1">B&#9837; major</button>
+              <button data-choice="2">C major</button>
+              <button data-choice="3">D minor (raised 7th = C&#9839; clue)</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Minor Key Signature Practice (musictheory.net)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Complete the Key Signature Identification exercises for minor keys. Aim for 90% and upload your score screenshot in Canvas.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 5 Minor Key Quiz (Canvas auto-graded)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on relative major/minor pairs and the Circle. Multiple attempts allowed.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">A minor key's signature is borrowed from its relative major. To find the relative minor, go down three half steps from the major tonic (or up to scale degree 6). When a key signature could be either, listen for the home pitch, check the final chord, and watch for the raised-7 accidental as a minor clue.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 5.01 &middot; Minor Keys &amp; the Circle</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

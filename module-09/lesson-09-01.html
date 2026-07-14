@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 9.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    .chord-chip { display:inline-block; background:#6B4C9A; color:#fff; border-radius:5px; padding:3px 10px; font-size:14px; margin:0 2px; font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 9</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 9.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Modal Mixture</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 9.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Borrowing from the Shadows: Modal Mixture</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">A piece is clearly in a major key -- then one chord arrives and everything darkens. The major key is still home, but something else just walked in.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">That darkening chord is almost certainly a <strong>borrowed chord</strong> from the parallel minor. This technique is called <strong>modal mixture</strong>. The composer keeps the major key as home but imports one or more chords from the parallel minor for color and emotional depth. It is one of the most powerful tools in tonal harmony, and you hear it in pop, rock, gospel, hymns, and film scores every day.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify borrowed chords from the parallel minor in a major-key context.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> build and label the most common mixture chords: iv, &#9837;VI, &#9837;VII in a major key.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain the emotional effect of modal mixture and connect it to music you have already heard.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2 at viva.pressbooks.pub/openmusictheory: read <em>Modal Mixture</em> (p. 458).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and a pencil -- you will label chord progressions as you go.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE CONCEPT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; WHAT IS MODAL MIXTURE?</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;"><strong>Modal mixture</strong> means borrowing chords from the <strong>parallel minor</strong> (or major) while the piece stays in the other mode. When a piece is in C major and the composer uses a chord from C minor, that chord is <strong>borrowed</strong>. The tonic stays on C. Only the quality of one or more chords changes.</p>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The <strong>tell</strong> is &#9837;6 -- the flatted sixth scale degree. Every borrowed chord from the parallel minor introduces &#9837;6 or another lowered pitch. In C major, &#9837;6 = A&#9837;. When you see or hear A&#9837; in a C major passage, a borrowed chord is nearby.</p>
+
+        <!-- VISUAL: Borrowed chord diagram in C major -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px; margin: 6px 0 16px; overflow-x:auto;">
+            <div style="font-size:13px; color:#6B4C9A; margin-bottom:14px; font-weight:bold;">CHORDS BORROWED FROM C MINOR INTO C MAJOR</div>
+            <div style="display:grid; grid-template-columns: repeat(5,1fr); gap:10px; min-width:500px;">
+                <!-- iv -->
+                <div style="background:#1a1a2e; border-radius:8px; padding:12px 10px; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:4px;">iv</div>
+                    <div style="font-size:15px; color:#E8D9F5; margin-bottom:6px;">F minor</div>
+                    <div style="font-size:13px; color:#aaa; line-height:1.5;">F &ndash; <span style="color:#FFD700; font-weight:bold;">A&#9837;</span> &ndash; C</div>
+                    <div style="font-size:11px; color:#FFD700; margin-top:6px;">&#9837;6 = tell</div>
+                </div>
+                <!-- bVI -->
+                <div style="background:#2a1a3e; border-radius:8px; padding:12px 10px; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:4px;">&#9837;VI</div>
+                    <div style="font-size:15px; color:#E8D9F5; margin-bottom:6px;">A&#9837; major</div>
+                    <div style="font-size:13px; color:#aaa; line-height:1.5;"><span style="color:#FFD700; font-weight:bold;">A&#9837;</span> &ndash; C &ndash; E&#9837;</div>
+                    <div style="font-size:11px; color:#FFD700; margin-top:6px;">&#9837;6 = root</div>
+                </div>
+                <!-- bVII -->
+                <div style="background:#0e2a1e; border-radius:8px; padding:12px 10px; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:4px;">&#9837;VII</div>
+                    <div style="font-size:15px; color:#C8F0D5; margin-bottom:6px;">B&#9837; major</div>
+                    <div style="font-size:13px; color:#aaa; line-height:1.5;"><span style="color:#7CFC00; font-weight:bold;">B&#9837;</span> &ndash; D &ndash; F</div>
+                    <div style="font-size:11px; color:#7CFC00; margin-top:6px;">&#9837;7 borrowed</div>
+                </div>
+                <!-- bIII -->
+                <div style="background:#1e1a0e; border-radius:8px; padding:12px 10px; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:4px;">&#9837;III</div>
+                    <div style="font-size:15px; color:#F5E8C8; margin-bottom:6px;">E&#9837; major</div>
+                    <div style="font-size:13px; color:#aaa; line-height:1.5;"><span style="color:#FFD700; font-weight:bold;">E&#9837;</span> &ndash; G &ndash; <span style="color:#FFD700;">B&#9837;</span></div>
+                    <div style="font-size:11px; color:#FFD700; margin-top:6px;">&#9837;3 + &#9837;7</div>
+                </div>
+                <!-- ii dim -->
+                <div style="background:#2a0a0a; border-radius:8px; padding:12px 10px; text-align:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:4px;">ii&#176;</div>
+                    <div style="font-size:15px; color:#F5C8C8; margin-bottom:6px;">D diminished</div>
+                    <div style="font-size:13px; color:#aaa; line-height:1.5;">D &ndash; F &ndash; <span style="color:#FFD700; font-weight:bold;">A&#9837;</span></div>
+                    <div style="font-size:11px; color:#FFD700; margin-top:6px;">&#9837;6 = top note</div>
+                </div>
+            </div>
+            <div style="font-size:13px; color:#666; margin-top:10px; line-height:1.6;">Each chord comes from C natural minor (C D E&#9837; F G A&#9837; B&#9837;). The &#9837;6 (A&#9837;) appears in all but &#9837;VII, making it the most reliable "borrowed chord" signal.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: iv AS PREDOMINANT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 2 &middot; THE MINOR iv -- A DARKENING PREDOMINANT</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The most emotionally powerful mixture chord is <strong>iv</strong> -- the minor subdominant. In C major, that is <strong>F minor (F&ndash;A&#9837;&ndash;C)</strong>. It typically appears in the <strong>predominant position</strong>, just before a cadential chord (V or the cadential 6/4), creating a darkening effect right before the resolution.</p>
+
+        <!-- VISUAL: iv resolving as predominant -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px; margin: 6px 0 16px; overflow-x:auto;">
+            <div style="font-size:13px; color:#1A6B3C; margin-bottom:12px; font-weight:bold;">iv AS PREDOMINANT IN C MAJOR (I &rarr; iv &rarr; V &rarr; I)</div>
+            <div style="display:flex; align-items:center; gap:0; min-width:400px; justify-content:center;">
+                <!-- I -->
+                <div style="text-align:center; padding:12px 20px; background:#E7F4EC; border:2px solid #2A9D5C; border-radius:8px;">
+                    <div style="font-size:22px; font-weight:bold; color:#1A6B3C;">I</div>
+                    <div style="font-size:14px; color:#1a2340;">C major</div>
+                    <div style="font-size:12px; color:#666;">home</div>
+                </div>
+                <div style="font-size:22px; color:#D0D9E8; padding:0 8px;">&rarr;</div>
+                <!-- iv -->
+                <div style="text-align:center; padding:12px 20px; background:#1a1a2e; border:2px solid #8A6FBF; border-radius:8px; position:relative;">
+                    <div style="font-size:22px; font-weight:bold; color:#fff;">iv</div>
+                    <div style="font-size:14px; color:#E8D9F5;">F minor</div>
+                    <div style="font-size:12px; color:#FFD700;">A&#9837; darkens</div>
+                    <div style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:10px; color:#6B4C9A; white-space:nowrap;">borrowed!</div>
+                </div>
+                <div style="font-size:22px; color:#D0D9E8; padding:0 8px;">&rarr;</div>
+                <!-- V -->
+                <div style="text-align:center; padding:12px 20px; background:#FFF3E2; border:2px solid #B8860B; border-radius:8px;">
+                    <div style="font-size:22px; font-weight:bold; color:#B8860B;">V</div>
+                    <div style="font-size:14px; color:#1a2340;">G major</div>
+                    <div style="font-size:12px; color:#666;">tension</div>
+                </div>
+                <div style="font-size:22px; color:#D0D9E8; padding:0 8px;">&rarr;</div>
+                <!-- I -->
+                <div style="text-align:center; padding:12px 20px; background:#E7F4EC; border:2px solid #2A9D5C; border-radius:8px;">
+                    <div style="font-size:22px; font-weight:bold; color:#1A6B3C;">I</div>
+                    <div style="font-size:14px; color:#1a2340;">C major</div>
+                    <div style="font-size:12px; color:#666;">resolution</div>
+                </div>
+            </div>
+            <div style="font-size:13px; color:#666; margin-top:10px; line-height:1.6;">The &#9837;6 (A&#9837;) in the iv chord should resolve <strong>downward by step to G</strong> (scale degree 5) when the progression moves to V. This voice-leading rule keeps the borrowed chord from sounding jarring.</div>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; VOICE-LEADING RULE</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">The &#9837;6 in any borrowed chord resolves <strong>downward by step</strong> to scale degree 5. In C major: A&#9837; &rarr; G. Never use &#9837;6 in a way that forces it to resolve upward -- that creates an awkward augmented 2nd or an uncharacteristic sound.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: YOU HAVE HEARD THIS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127928; PART 3 &middot; YOU HAVE HEARD THIS BEFORE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 16px 0;">Modal mixture is everywhere in the music you already know. The &#9837;VI and &#9837;VII borrowed chords are especially common in rock and pop because they add Mixolydian and minor-mode color without leaving major:</p>
+
+        <!-- VISUAL: you have heard this panel -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:16px;">
+            <div style="background:#1a1a2e; border-left:5px solid #8A6FBF; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#E8D9F5; font-weight:bold; margin-bottom:8px;">&#9837;VI in rock / pop / film</div>
+                <div style="font-size:15px; color:#aaa; line-height:1.7;">In C major: <strong style="color:#fff;">A&#9837; major (&#9837;VI)</strong>. Common chord in anthemic rock, power ballads, and epic film scores. The abrupt shift to this chord creates a sense of grandeur or heartbreak. Think of the big "lift" moment in many pop songs.</div>
+            </div>
+            <div style="background:#0e2a1e; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#C8F0D5; font-weight:bold; margin-bottom:8px;">&#9837;VII in rock / folk</div>
+                <div style="font-size:15px; color:#aaa; line-height:1.7;">In C major: <strong style="color:#fff;">B&#9837; major (&#9837;VII)</strong>. This chord comes from Mixolydian coloring as well as borrowed from minor. It appears in classic rock, folk-rock, and country -- a "cool" lowered chord that still feels major and energetic.</div>
+            </div>
+            <div style="background:#2a0e0e; border-left:5px solid #C0392B; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#F5C8C8; font-weight:bold; margin-bottom:8px;">iv in pop / gospel / hymns</div>
+                <div style="font-size:15px; color:#aaa; line-height:1.7;">In C major: <strong style="color:#fff;">F minor (iv)</strong>. Creates a deeply emotional, often bittersweet moment. Very common in gospel and contemporary Christian music, pop bridges, and film scoring at emotional climaxes.</div>
+            </div>
+            <div style="background:#1a1a0a; border-left:5px solid #B8860B; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#F5E8C8; font-weight:bold; margin-bottom:8px;">&#9837;VI &rarr; &#9837;VII &rarr; I (the "epic" cadence)</div>
+                <div style="font-size:15px; color:#aaa; line-height:1.7;">Borrowed &#9837;VI to &#9837;VII to I is one of the most recognizable cadential formulas in rock and film. It creates a dramatic, powerful buildup to the tonic. You have heard it in countless movie trailers and rock anthems.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== WIDGET: ow-select ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#9997;&#65039; PART 4 &middot; PRACTICE: IDENTIFY THE BORROWED CHORD</div>
+
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 8px;">Use the borrowed-chord diagram and the voice-leading rule above. Work out your answer, then tap.</p>
+
+        <!-- ow-select, correct-answer positions: row1=2, row2=0, row3=3, row4=1, row5=2 -->
+        <div class="optima-widget ow-select">
+            <div class="widget-kicker">&#9889; TRY IT &middot; MODAL MIXTURE IN C MAJOR</div>
+            <div class="widget-question">Identify the borrowed chord or describe its role.</div>
+
+            <div class="widget-row" data-correct="2" data-fb="Correct. F minor (F-Ab-C) is iv in C major -- the minor subdominant borrowed from C parallel minor. The A-flat is the flat-6 tell." data-hint="The chord F-A-flat-C has a lowered third (A-flat) compared to F major. What borrowed chord in C major matches this?">
+                <div class="widget-row-prompt">1. In C major, a chord spelled F&ndash;A&#9837;&ndash;C is the borrowed chord&hellip;</div>
+                <div class="widget-options">
+                    <button data-choice="0">&#9837;VII (B&#9837; major)</button>
+                    <button data-choice="1">&#9837;VI (A&#9837; major)</button>
+                    <button data-choice="2">iv (F minor)</button>
+                    <button data-choice="3">ii&#176; (D diminished)</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="0" data-fb="Correct. A-flat major (Ab-C-Eb) is flat-VI in C major. Its root, A-flat, is the flat-6 of the C major scale -- the clearest signal of a borrowed chord." data-hint="Which borrowed chord has A-flat as its root? That note is flat-6 in C major.">
+                <div class="widget-row-prompt">2. In C major, the chord A&#9837;&ndash;C&ndash;E&#9837; is labeled&hellip;</div>
+                <div class="widget-options">
+                    <button data-choice="0">&#9837;VI</button>
+                    <button data-choice="1">iv</button>
+                    <button data-choice="2">&#9837;III</button>
+                    <button data-choice="3">&#9837;VII</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="3" data-fb="Correct. B-flat major (Bb-D-F) is flat-VII in C major, borrowed from C natural minor. It is the subtonic chord -- very common in rock and folk." data-hint="In C major, which borrowed chord has B-flat as its root? B-flat is flat-7 in C major.">
+                <div class="widget-row-prompt">3. In C major, the chord B&#9837;&ndash;D&ndash;F is labeled&hellip;</div>
+                <div class="widget-options">
+                    <button data-choice="0">&#9837;III</button>
+                    <button data-choice="1">&#9837;VI</button>
+                    <button data-choice="2">iv</button>
+                    <button data-choice="3">&#9837;VII</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="1" data-fb="Correct. The flat-6 (A-flat in C major) is the tell for borrowed chords. When you see A-flat in a C major passage, a chord from C parallel minor is being used." data-hint="What note signals that a chord is borrowed from the parallel minor in C major? Think about the 'tell' discussed in Part 1.">
+                <div class="widget-row-prompt">4. In C major, which pitch is the strongest signal that a borrowed chord is present?</div>
+                <div class="widget-options">
+                    <button data-choice="0">B&#9838;</button>
+                    <button data-choice="1">A&#9837;</button>
+                    <button data-choice="2">F&#9839;</button>
+                    <button data-choice="3">D&#9837;</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="2" data-fb="Correct. The flat-6 (A-flat) in a borrowed chord resolves downward by step to G (scale degree 5) when moving to V. Resolving it upward creates an awkward augmented 2nd." data-hint="Think about the voice-leading rule for flat-6 in Part 2. Which direction does it move, and which note does it land on?">
+                <div class="widget-row-prompt">5. In C major, when iv (F minor) moves to V (G major), the note A&#9837; should resolve&hellip;</div>
+                <div class="widget-options">
+                    <button data-choice="0">Up by half step to A&#9838;</button>
+                    <button data-choice="1">Stay the same (A&#9837;)</button>
+                    <button data-choice="2">Down by step to G</button>
+                    <button data-choice="3">Down by a third to F</button>
+                </div>
+            </div>
+
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Modal Mixture Practice (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Identify and label borrowed chords in two given progressions, then build iv and &#9837;VI in a new key.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 9 Modal Mixture Check (Canvas quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on borrowed chord identification and labeling. Retakes allowed.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Modal Mixture Discussion (Canvas discussion)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Find a pop or rock song with modal mixture and describe the effect.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Q1 Assessment: Minor Keys, Modes, and Modal Mixture (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">The Quarter 1 major written assessment -- covers all of Q1. See your Canvas assignment for the full prompt and rubric.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Modal mixture keeps the same tonic but imports a chord from the parallel mode. The &#9837;6 is the tell -- when you see or hear that lowered sixth scale degree, a borrowed chord is at work. The minor iv before a cadence is the most emotionally potent version. &#9837;VI and &#9837;VII are rock and pop staples. Find &#9837;6, and you have found the mixture.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 9.01 &middot; Modal Mixture</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

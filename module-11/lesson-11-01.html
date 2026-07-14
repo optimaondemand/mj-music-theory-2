@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 11.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    /* cadence gallery card table */
+    .cadence-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .cadence-table th { background: #0E1C42; color: #fff; padding: 9px 12px; text-align: left; }
+    .cadence-table td { padding: 8px 12px; border-bottom: 1px solid #E2E7F0; vertical-align: top; }
+    .cadence-table tr:nth-child(even) td { background: #F7F8FC; }
+    .cadence-table tr:nth-child(odd) td { background: #FFFFFF; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 11</div>
+        <div style="font-size: 12px; color: #666;">Advanced Cadences and Phrase Endings</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 11.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Advanced Cadences</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 11.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Advanced Cadences and Phrase Endings</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">How do composers control when a phrase feels finished, partially resolved, or deliberately avoided?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You already know the four basic cadence types. Today you extend that vocabulary with three more: the cadential 6/4 (which strengthens any authentic cadence), the Phrygian half cadence (a distinctive minor-key sound), and the evaded cadence (which refuses to arrive). Along the way you build the complete cadence gallery you will need for analysis and composition.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> write a cadential 6/4 (i 6/4 &ndash; V &ndash; i or I 6/4 &ndash; V &ndash; I) and explain why it belongs to the dominant function.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize the Phrygian half cadence (iv6 &ndash; V) by its stepwise descending bass.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify all seven cadence types from a chord progression and label each correctly.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2: <em>Introduction to Harmony, Cadences, and Phrase Endings</em> (p. 376); <em>Strengthening Endings with V7</em> (p. 385); <em>Cadential 6/4</em> (p. 401); <em>Cadences in Minor</em> (pp. 407&ndash;410).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your notebook and staff paper (or MuseScore) for the cadence-writing practice.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Headphones for listening to short Bach examples demonstrating the cadential 6/4 and Phrygian half cadence.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: CADENTIAL 6/4 ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 1 &middot; THE CADENTIAL 6/4</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The cadential 6/4 (labeled <strong>Cad. 6/4</strong> or <strong>I&#x2076;&#x2084;</strong>) is a tonic chord in second inversion placed directly before V. It uses the notes of the tonic triad, but it does <em>not</em> function as a tonic chord. It belongs to the <strong>dominant function</strong>, acting as a decoration of V. The 6th and 4th above the bass each resolve downward by step over the same bass note.</p>
+
+        <!-- VISUAL 1: Cadential 6/4 diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 18px; margin: 6px 0 18px; overflow-x: auto;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 14px; text-align: center;">The Cadential 6/4 in C major: I&#x2076;&#x2084; &ndash; V &ndash; I</div>
+          <svg viewBox="0 0 680 280" width="100%" style="min-width:460px; max-width:680px;" role="img" aria-label="Three chord columns: I 6/4 (cadential), V, and I. The bass note G is the same for I 6/4 and V. Arrows show the 6th resolving from E down to D over V, and the 4th resolving from C down to B over V. Both bass notes are G.">
+
+            <!-- Box 1: I 6/4 -->
+            <rect x="20" y="20" width="170" height="180" rx="8" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="2"/>
+            <text x="105" y="42" font-size="14" fill="#6B4C9A" text-anchor="middle" font-weight="bold">I &#x2076;&#x2084; (Cad. 6/4)</text>
+            <text x="105" y="58" font-size="12" fill="#6B4C9A" text-anchor="middle">C major / second inversion</text>
+            <!-- stacked notes: bottom to top = G, C, E -->
+            <rect x="36" y="68" width="60" height="26" rx="4" fill="#C0392B"/>
+            <text x="66" y="85" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">E (6th)</text>
+            <rect x="36" y="100" width="60" height="26" rx="4" fill="#8A1F16"/>
+            <text x="66" y="117" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">C (4th)</text>
+            <rect x="36" y="132" width="60" height="26" rx="4" fill="#4A2F72"/>
+            <text x="66" y="149" font-size="14" fill="#fff" text-anchor="middle">G (bass)</text>
+            <!-- label -->
+            <text x="105" y="175" font-size="11" fill="#6B4C9A" text-anchor="middle">Bass = scale deg. 5 (G)</text>
+            <text x="105" y="191" font-size="11" fill="#6B4C9A" text-anchor="middle">Tonic notes: DOMINANT function</text>
+
+            <!-- Arrow 1-->
+            <line x1="193" y1="110" x2="237" y2="110" stroke="#0E1C42" stroke-width="2" marker-end="url(#ar11)"/>
+            <defs><marker id="ar11" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#0E1C42"/></marker></defs>
+
+            <!-- Box 2: V -->
+            <rect x="242" y="20" width="170" height="180" rx="8" fill="#FDECEC" stroke="#C0392B" stroke-width="2"/>
+            <text x="327" y="42" font-size="14" fill="#C0392B" text-anchor="middle" font-weight="bold">V</text>
+            <text x="327" y="58" font-size="12" fill="#C0392B" text-anchor="middle">G major triad</text>
+            <!-- stacked notes: bottom to top = G, B, D -->
+            <rect x="258" y="68" width="60" height="26" rx="4" fill="#2A9D5C"/>
+            <text x="288" y="85" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">D (5th)</text>
+            <rect x="258" y="100" width="60" height="26" rx="4" fill="#2A9D5C"/>
+            <text x="288" y="117" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">B (3rd)</text>
+            <rect x="258" y="132" width="60" height="26" rx="4" fill="#1A6B3C"/>
+            <text x="288" y="149" font-size="14" fill="#fff" text-anchor="middle">G (bass)</text>
+            <text x="327" y="175" font-size="11" fill="#C0392B" text-anchor="middle">Bass = scale deg. 5 (G)</text>
+            <text x="327" y="191" font-size="11" fill="#C0392B" text-anchor="middle">SAME bass note as I 6/4</text>
+
+            <!-- Arrow 2-->
+            <line x1="415" y1="110" x2="455" y2="110" stroke="#0E1C42" stroke-width="2" marker-end="url(#ar12)"/>
+            <defs><marker id="ar12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#0E1C42"/></marker></defs>
+
+            <!-- Box 3: I -->
+            <rect x="460" y="20" width="170" height="180" rx="8" fill="#E7F4EC" stroke="#2A9D5C" stroke-width="2"/>
+            <text x="545" y="42" font-size="14" fill="#1A6B3C" text-anchor="middle" font-weight="bold">I</text>
+            <text x="545" y="58" font-size="12" fill="#1A6B3C" text-anchor="middle">C major triad</text>
+            <rect x="476" y="68" width="60" height="26" rx="4" fill="#2A9D5C"/>
+            <text x="506" y="85" font-size="14" fill="#fff" text-anchor="middle">G (5th)</text>
+            <rect x="476" y="100" width="60" height="26" rx="4" fill="#2A9D5C"/>
+            <text x="506" y="117" font-size="14" fill="#fff" text-anchor="middle">E (3rd)</text>
+            <rect x="476" y="132" width="60" height="26" rx="4" fill="#1A6B3C"/>
+            <text x="506" y="149" font-size="14" fill="#fff" text-anchor="middle">C (root)</text>
+            <text x="545" y="175" font-size="11" fill="#1A6B3C" text-anchor="middle">Tonic arrival</text>
+
+            <!-- Resolution arrows: 6th (E) resolves to D; 4th (C) resolves to B -->
+            <!-- E (y=81 in box1, x=97) to D (y=81 in box2, x=258) -->
+            <path d="M 97,81 C 160,60 200,60 257,81" stroke="#C0392B" stroke-width="2.2" fill="none" stroke-dasharray="5,3" marker-end="url(#ar13)"/>
+            <defs><marker id="ar13" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#C0392B"/></marker></defs>
+            <text x="177" y="52" font-size="11" fill="#C0392B" text-anchor="middle" font-weight="bold">6 &rarr; 5 (E &rarr; D, down by step)</text>
+
+            <!-- C (y=113 in box1) to B (y=113 in box2) -->
+            <path d="M 97,113 C 160,136 200,136 257,113" stroke="#8A1F16" stroke-width="2.2" fill="none" stroke-dasharray="5,3" marker-end="url(#ar14)"/>
+            <defs><marker id="ar14" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8A1F16"/></marker></defs>
+            <text x="177" y="148" font-size="11" fill="#8A1F16" text-anchor="middle" font-weight="bold">4 &rarr; 3 (C &rarr; B, down by step)</text>
+
+            <!-- Same bass label -->
+            <rect x="230" y="218" width="220" height="30" rx="6" fill="#FFF3CD" stroke="#e6ac00" stroke-width="1.5"/>
+            <text x="340" y="238" font-size="12" fill="#7a5900" text-anchor="middle" font-weight="bold">&#9888; Same bass note G throughout I&#x2076;&#x2084; and V</text>
+
+            <text x="340" y="268" font-size="11" fill="#666" text-anchor="middle">The cadential 6/4 prolongs V: despite tonic notes, it is dominant function.</text>
+          </svg>
+        </div>
+
+        <div style="background: #FDECEC; border-left: 5px solid #C0392B; border-radius: 6px; padding: 14px 20px; margin: 10px 0 14px;">
+            <div style="font-size: 11px; color: #8A1F16; margin-bottom: 8px;">&#9888; THE KEY INSIGHT</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">The cadential 6/4 looks like a tonic chord (it uses C, E, G in C major) but it <strong>functions as part of V</strong>. The bass note stays on scale degree 5 (G), and the 6th and 4th above it resolve downward. Think of it as an ornament on V, not as a stable I. When you analyze it, label it Cad. 6/4 or V&#x2076;&#x2084;, not as I.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: PHRYGIAN HALF CADENCE ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 2 &middot; THE PHRYGIAN HALF CADENCE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The Phrygian half cadence is a minor-mode cadence where the phrase ends on V, approached by iv6 (the minor subdominant in first inversion). Its signature is the <strong>stepwise descending bass</strong>: scale degree &#9397; steps down by a half step to scale degree &#9396; (5). That half-step drop in the bass is what gives it the Phrygian sound. Bach used it constantly in slow movements and inner phrase endings.</p>
+
+        <!-- VISUAL 2: Phrygian half cadence iv6-V -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 18px; margin: 6px 0 18px; overflow-x: auto;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 14px; text-align: center;">Phrygian Half Cadence: iv6 &ndash; V (in A minor)</div>
+          <svg viewBox="0 0 560 240" width="100%" style="min-width:380px; max-width:560px;" role="img" aria-label="Two chord boxes: iv6 (Dm in first inversion, bass on F, scale degree 6) and V (E major triad, bass on E, scale degree 5). Arrow shows the bass stepping down from F to E, labeled half step, Phrygian motion.">
+
+            <!-- Box 1: iv6 in A minor = Dm/F -->
+            <rect x="30" y="20" width="200" height="160" rx="8" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="2"/>
+            <text x="130" y="42" font-size="14" fill="#6B4C9A" text-anchor="middle" font-weight="bold">iv 6 = Dm/F</text>
+            <text x="130" y="58" font-size="12" fill="#6B4C9A" text-anchor="middle">D minor, first inversion</text>
+            <!-- Notes bottom to top: F (bass=scale deg 6), A, D -->
+            <rect x="46" y="68" width="70" height="26" rx="4" fill="#6B4C9A"/>
+            <text x="81" y="85" font-size="14" fill="#fff" text-anchor="middle">D (root)</text>
+            <rect x="46" y="100" width="70" height="26" rx="4" fill="#6B4C9A"/>
+            <text x="81" y="117" font-size="14" fill="#fff" text-anchor="middle">A (5th)</text>
+            <rect x="46" y="132" width="70" height="26" rx="4" fill="#C0392B"/>
+            <text x="81" y="149" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">F (bass) &#9397;</text>
+            <text x="130" y="175" font-size="11" fill="#6B4C9A" text-anchor="middle">Bass = scale degree &#9397; (F)</text>
+
+            <!-- Bass step-down arrow: F to E -->
+            <path d="M 116,145 Q 280,200 444,145" stroke="#C0392B" stroke-width="3" fill="none" stroke-dasharray="7,4" marker-end="url(#ar21)"/>
+            <defs><marker id="ar21" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#C0392B"/></marker></defs>
+            <text x="280" y="218" font-size="12" fill="#C0392B" text-anchor="middle" font-weight="bold">Bass steps DOWN by half step: &#9397; &rarr; &#9396; (F &rarr; E)</text>
+            <text x="280" y="232" font-size="11" fill="#666" text-anchor="middle">This Phrygian bass motion is the defining feature of this cadence.</text>
+
+            <!-- connecting arrow between boxes -->
+            <line x1="233" y1="110" x2="327" y2="110" stroke="#0E1C42" stroke-width="2" marker-end="url(#ar22)"/>
+            <defs><marker id="ar22" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#0E1C42"/></marker></defs>
+
+            <!-- Box 2: V in A minor = E major -->
+            <rect x="330" y="20" width="200" height="160" rx="8" fill="#FDECEC" stroke="#C0392B" stroke-width="2"/>
+            <text x="430" y="42" font-size="14" fill="#C0392B" text-anchor="middle" font-weight="bold">V = E major</text>
+            <text x="430" y="58" font-size="12" fill="#C0392B" text-anchor="middle">Raised &#9397; from harmonic minor</text>
+            <!-- Notes: E, G#, B -->
+            <rect x="346" y="68" width="70" height="26" rx="4" fill="#C0392B"/>
+            <text x="381" y="85" font-size="14" fill="#fff" text-anchor="middle">B (5th)</text>
+            <rect x="346" y="100" width="70" height="26" rx="4" fill="#C0392B"/>
+            <text x="381" y="117" font-size="14" fill="#fff" text-anchor="middle">G&#9839; (3rd)</text>
+            <rect x="346" y="132" width="70" height="26" rx="4" fill="#8A1F16"/>
+            <text x="381" y="149" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">E (bass) &#9396;</text>
+            <text x="430" y="175" font-size="11" fill="#C0392B" text-anchor="middle">Bass = scale degree &#9396; (E)</text>
+
+            <!-- HALF CADENCE label -->
+            <rect x="330" y="186" width="200" height="24" rx="5" fill="#FFF3CD" stroke="#e6ac00" stroke-width="1"/>
+            <text x="430" y="202" font-size="12" fill="#7a5900" text-anchor="middle" font-weight="bold">Half Cadence: phrase ends on V</text>
+          </svg>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Three things to remember about the Phrygian half cadence: (1) it only occurs in <strong>minor keys</strong>; (2) the bass <strong>descends</strong> by a half step into V (scale degree 6 to 5, a semitone in minor); (3) despite landing on V, it is still a <strong>half cadence</strong> because the phrase ends without reaching i. Bach used it at the end of inner phrases and at fermatas in slow movements.</p>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 10px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; WHY THE NAME?</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">The Phrygian mode has a half step from scale degree 1 up to 2, giving it a distinctive descending minor-second motion at the bottom. The iv6-V cadence in minor creates that same descending half step in the bass (&#9397; to &#9396;), evoking the modal color even in a tonal context.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: CADENCE GALLERY ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127930; PART 3 &middot; THE COMPLETE CADENCE GALLERY</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">You now have the full vocabulary. Study the gallery below, then use the flip cards to test yourself. The chord motion column shows the essential harmonic motion; the key detail is what that motion means for the sense of arrival or departure.</p>
+
+        <!-- VISUAL 3: Cadence gallery card -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:16px; margin: 6px 0 18px; overflow-x: auto;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 12px; text-align: center;">Cadence Gallery = Complete Reference</div>
+          <table class="cadence-table">
+            <thead>
+              <tr>
+                <th style="width:22%;">Name</th>
+                <th style="width:28%;">Chord Motion</th>
+                <th style="width:16%;">Sense of Arrival</th>
+                <th>Key Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Perfect Authentic (PAC)</strong></td>
+                <td>V (root pos.) &rarr; I (root pos.)</td>
+                <td style="color:#1A6B3C; font-weight:bold;">Full, strong</td>
+                <td>Both chords in root position; melody ends on scale degree 1. Strongest possible ending.</td>
+              </tr>
+              <tr>
+                <td><strong>Imperfect Authentic (IAC)</strong></td>
+                <td>V &rarr; I (inversion or melody on 3/5)</td>
+                <td style="color:#2A9D5C;">Partial</td>
+                <td>Authentic motion but melody does not end on 1, or one chord is inverted. Still resolves to I but feels less final.</td>
+              </tr>
+              <tr>
+                <td><strong>Half Cadence (HC)</strong></td>
+                <td>Any chord &rarr; V</td>
+                <td style="color:#C0392B;">Open, question</td>
+                <td>Phrase ends on V. Feels unfinished; listener expects continuation. Can be approached from I, ii, IV, or iv.</td>
+              </tr>
+              <tr>
+                <td><strong>Phrygian Half Cadence</strong></td>
+                <td>iv6 &rarr; V (minor only)</td>
+                <td style="color:#C0392B;">Open, dark color</td>
+                <td>Bass descends by half step (scale deg. &#9397; to &#9396;). Only in minor keys. Characteristic of Baroque music; Bach uses it constantly.</td>
+              </tr>
+              <tr>
+                <td><strong>Plagal (PC)</strong></td>
+                <td>IV &rarr; I (or iv &rarr; i in minor)</td>
+                <td style="color:#2A9D5C;">Soft, settled</td>
+                <td>The "amen" cadence. Softer than authentic; no leading tone. iv-i in minor sounds modal and archaic.</td>
+              </tr>
+              <tr>
+                <td><strong>Deceptive (DC)</strong></td>
+                <td>V &rarr; vi (major) or V &rarr; VI (minor)</td>
+                <td style="color:#6B4C9A;">Surprise</td>
+                <td>V seems about to resolve to I but moves to vi instead. Extends the phrase by denying expected resolution.</td>
+              </tr>
+              <tr>
+                <td><strong>Evaded Cadence</strong></td>
+                <td>V &rarr; unexpected harmony (often I&#x2076; or V&#x2077;)</td>
+                <td style="color:#6B4C9A;">Denied</td>
+                <td>The dominant sets up a cadence expectation but sidesteps it entirely. The phrase is forced to continue; creates momentum or tension.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Notice that the PAC, IAC, and deceptive cadences all begin with V. What separates them is where V goes. The half cadence and Phrygian half cadence both <em>end</em> on V. The plagal cadence is the only one that never touches V at all.</p>
+    </div>
+
+    <!-- ===================== PART 4: FLIP CARDS - cadence ID ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127928; PART 4 &middot; IDENTIFY THE CADENCE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Read each chord progression. Name the cadence type in your notebook. Then tap the card to check.</p>
+
+        <div style="font-size: 16px; color: #6B4C9A; margin: 10px 0 8px;">&#9889; TAP EACH CARD to reveal the cadence name:</div>
+        <div class="flip-grid">
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In C major: <strong>G major (root pos.) &rarr; C major (root pos.)</strong><br>Melody ends on C (scale degree 1).<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">PAC</span><br><strong>Perfect Authentic Cadence.</strong> V in root position to I in root position; melody on scale degree 1. The strongest ending.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In A minor: <strong>Dm/F (iv6) &rarr; E major (V)</strong><br>Bass moves F down to E.<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip" style="background:#6B4C9A;">Phrygian HC</span><br><strong>Phrygian Half Cadence.</strong> iv6 to V; bass descends by half step (scale deg. 6 to 5). Minor keys only.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In G major: <strong>D7 (V7) &rarr; E minor (vi)</strong><br>Phrase seemed about to end but did not.<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip" style="background:#C0392B;">Deceptive</span><br><strong>Deceptive Cadence.</strong> V resolves to vi instead of I. The listener expects a full close but gets a surprise.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In E minor: <strong>Am (iv) &rarr; Em (i)</strong><br>Soft, "amen" feeling.<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip">Plagal</span><br><strong>Plagal Cadence in minor (iv-i).</strong> The minor subdominant resolving to minor tonic; softer and more archaic than V-i.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In D major: <strong>I 6/4 &rarr; A major (V) &rarr; D major (I)</strong><br>The first chord uses D, F&#9839;, A over bass A.<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip" style="background:#8A1F16;">Cad. 6/4 + PAC</span><br><strong>Cadential 6/4 leading to a PAC.</strong> The I 6/4 decorates V; the 6th (F#) resolves to the 5th (E) and the 4th (D) resolves to the 3rd (C#) over the same bass note A.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+          <div class="optima-widget" style="margin:0;">
+            <div class="ow-flip" tabindex="0">
+              <div class="ow-flip-front" style="font-size:16px;color:#0E1C42;">In F major: <strong>C major (V) &rarr; F major/A (I&#x2076;)</strong><br>V sidesteps; phrase must continue.<br><span style="font-size:13px;color:#666;">(tap to check)</span></div>
+              <div class="ow-flip-back" style="font-size:15px;line-height:1.6;"><span class="note-chip" style="background:#6B4C9A;">Evaded</span><br><strong>Evaded Cadence.</strong> V moves to I in first inversion (I&#x2076;) rather than root-position I. The cadence is denied; the phrase is forced to push forward.</div>
+            </div>
+            <button class="widget-reset">Reset</button>
+          </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 5: CHECK IT (ow-reflect) ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 14px;">&#9997;&#65039; PART 5 &middot; REFLECT ON THE CADENTIAL 6/4</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The cadential 6/4 raises an important conceptual question. Before you move to the quiz, use this reflection widget to work through your thinking.</p>
+
+        <!-- ow-reflect: single reflection question with three response options -->
+        <div class="optima-widget ow-reflect">
+          <div class="widget-kicker">&#128172; REFLECT &middot; FUNCTION VS. SPELLING</div>
+          <div class="widget-question">The cadential 6/4 uses the notes of the tonic chord (C, E, G in C major) yet it belongs to the dominant function. Which statement best captures why that is possible in tonal music?</div>
+          <div class="widget-options">
+            <button data-response="Good start. Context does matter, but the cadential 6/4 is not random: it is specifically the second-inversion tonic chord placed on scale degree 5 in the bass before V. The function comes from that specific placement and the voice-leading resolutions that follow, not just from surrounding chords in general.">A chord's function depends on the chords around it, so any chord can function as anything depending on context.</button>
+            <button data-response="Exactly right. Harmonic function is not just about the pitches in a chord; it is about how those pitches behave. The cadential 6/4 sits on scale degree 5 in the bass and moves with the behavior of a dominant chord (its upper voices resolve downward into V). The spelling (C-E-G) is tonic, but the behavior and placement make it dominant function.">Harmonic function is determined by behavior and placement in the progression, not only by the pitches in the chord. The cadential 6/4 behaves like a dominant chord even though it uses tonic pitches.</button>
+            <button data-response="Not quite. This explanation would mean the cadential 6/4 simply cannot exist, but it does. The distinction is that Roman numerals can track both spelling (what notes are in the chord) and function (what role the chord plays). Analysts label the cadential 6/4 as Cad. 6/4 or V 6/4 precisely to mark that its function is dominant, overriding what its spelling suggests.">Roman numerals only describe chord spelling, so labeling I 6/4 as dominant is a contradiction in terms and should be avoided.</button>
+          </div>
+          <div class="widget-feedback"></div>
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== WHAT YOU'LL DO NEXT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Cadence Writing Practice (Canvas Assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Write two four-chord progressions in MuseScore: one using a cadential 6/4 leading to a PAC, and one using a Phrygian half cadence in a minor key. Submit as PDF for completion credit.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 11 Advanced Cadences Quiz (Canvas)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded, multiple attempts allowed. Covers all seven cadence types plus cadential 6/4 function and the Phrygian half cadence bass motion.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">The cadential 6/4 looks like a tonic chord but functions as <strong>dominant</strong> because the 6th resolves down to 5 and the 4th resolves down to 3 over the same bass note. The Phrygian half cadence (iv6 &ndash; V) is identified by its <strong>stepwise descending bass</strong> from scale degree &#9397; to &#9396; in minor. Together with PAC, IAC, half, plagal, deceptive, and evaded cadences, you now have the complete vocabulary for analyzing how any phrase in tonal music ends.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 11.01 &middot; Advanced Cadences</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

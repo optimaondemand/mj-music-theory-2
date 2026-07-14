@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 7.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 7</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 7.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Diatonic Modes</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 7.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Seven Scales in One: The Diatonic Modes</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Why does Celtic folk music feel so different from metal, even when both avoid a straightforward major sound?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The answer is often one note. The white keys of the piano contain seven complete scales hidden inside the C major scale. Each one starts on a different note, and each has one characteristic pitch that gives it its own personality. These are the diatonic modes, and musicians in folk, jazz, rock, and film all use them every day.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> name all seven diatonic modes and the white-key starting pitch of each.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify the characteristic note that sets each mode apart from major or natural minor.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> connect three or more modes to the musical styles that use them.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2, free at viva.pressbooks.pub/openmusictheory: read the <em>Introduction to Diatonic Modes</em> and <em>Diatonic Modes and Scales</em> chapters.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and a pencil for the practice exercises.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE SEVEN MODES ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127925; PART 1 &middot; THE SEVEN MODES AND THEIR WHITE-KEY SCALES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">The C major scale uses only white keys: C D E F G A B. If you start that same set of white keys on a different note, you get a different scale with a different arrangement of half steps and whole steps. Each of these is a <strong>diatonic mode</strong>. There are seven modes, one for each note of the major scale.</p>
+
+        <!-- VISUAL: all seven modes table / diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px; margin: 6px 0 16px; overflow-x:auto;">
+            <div style="font-size: 13px; color: #6B4C9A; margin-bottom: 12px; font-weight: bold; letter-spacing: 0.3px;">ALL SEVEN DIATONIC MODES (white-key forms from C major)</div>
+            <table style="width:100%; border-collapse:collapse; min-width:560px;">
+                <thead>
+                    <tr style="background:#EEF1F8;">
+                        <th style="padding:9px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Mode</th>
+                        <th style="padding:9px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Starts on</th>
+                        <th style="padding:9px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Scale (white keys)</th>
+                        <th style="padding:9px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Sounds like&hellip;</th>
+                        <th style="padding:9px 12px; text-align:left; font-size:13px; color:#0E1C42; border-bottom:2px solid #D0D9E8;">Characteristic note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid #E8EDF4;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Ionian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>C</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">C D E F G A B</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">= Major scale</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;">None (this IS major)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4; background:#FAFBFC;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Dorian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>D</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">D E F G A B C</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">Minor + raised &#9839;6</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;"><strong>Raised 6th</strong> (B in D Dorian)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Phrygian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>E</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">E F G A B C D</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">Minor + &#9837;2</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;"><strong>Lowered 2nd</strong> (F in E Phrygian)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4; background:#FAFBFC;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Lydian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>F</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">F G A B C D E</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">Major + &#9839;4</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;"><strong>Raised 4th</strong> (B in F Lydian)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Mixolydian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>G</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">G A B C D E F</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">Major + &#9837;7</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;"><strong>Lowered 7th</strong> (F in G Mixolydian)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #E8EDF4; background:#FAFBFC;">
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Aeolian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>A</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">A B C D E F G</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">= Natural minor</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;">None (this IS natural minor)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:9px 12px; font-size:15px; font-weight:bold; color:#1A6B3C;">Locrian</td>
+                        <td style="padding:9px 12px; font-size:15px; color:#1a2340;"><strong>B</strong></td>
+                        <td style="padding:9px 12px; font-size:14px; color:#1a2340; font-family:monospace;">B C D E F G A</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#666;">Minor + &#9837;2 <em>and</em> &#9837;5</td>
+                        <td style="padding:9px 12px; font-size:14px; color:#6B4C9A;"><strong>Lowered 2nd AND 5th</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 0 0 10px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128161; THE KEY IDEA</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">Same white keys, seven different starting points, seven different characters. The <strong>characteristic note</strong> is the one pitch that cannot be in the nearby major or minor scale. That single note changes everything.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: BRIGHT TO DARK SPECTRUM ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127775; PART 2 &middot; THE BRIGHT-TO-DARK SPECTRUM</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 16px 0;">Composers and musicians often think of modes on a spectrum from <strong>bright</strong> (lots of raised pitches, major-like) to <strong>dark</strong> (lots of lowered pitches, minor or more). Here is where each mode falls:</p>
+
+        <!-- VISUAL: bright-to-dark spectrum bar -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 16px; text-align:center; margin: 6px 0 16px; overflow-x:auto;">
+            <svg viewBox="0 0 700 120" width="100%" style="max-width:700px;" role="img" aria-label="Bright to dark spectrum. From left to right: Lydian (brightest, raised 4), Ionian (major), Mixolydian (lowered 7), Dorian, Aeolian (natural minor), Phrygian, Locrian (darkest).">
+                <!-- gradient bar -->
+                <defs>
+                    <linearGradient id="specGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#FFD700; stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#8A6FBF; stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#1a1a2e; stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="20" y="45" width="660" height="28" rx="14" fill="url(#specGrad)" />
+
+                <!-- Mode labels above bar -->
+                <g font-size="12" text-anchor="middle" font-family="Segoe UI,sans-serif">
+                    <text x="60"  y="32" fill="#B8860B" font-weight="bold">Lydian</text>
+                    <text x="155" y="32" fill="#1A6B3C" font-weight="bold">Ionian</text>
+                    <text x="260" y="32" fill="#2A7A4A">Mixolydian</text>
+                    <text x="360" y="32" fill="#6B4C9A">Dorian</text>
+                    <text x="455" y="32" fill="#5A3A8A">Aeolian</text>
+                    <text x="560" y="32" fill="#8A1F16">Phrygian</text>
+                    <text x="645" y="32" fill="#3a0a0a">Locrian</text>
+                </g>
+                <!-- tick marks -->
+                <g stroke="#fff" stroke-width="2">
+                    <line x1="60"  y1="45" x2="60"  y2="73"/>
+                    <line x1="155" y1="45" x2="155" y2="73"/>
+                    <line x1="260" y1="45" x2="260" y2="73"/>
+                    <line x1="360" y1="45" x2="360" y2="73"/>
+                    <line x1="455" y1="45" x2="455" y2="73"/>
+                    <line x1="560" y1="45" x2="560" y2="73"/>
+                    <line x1="645" y1="45" x2="645" y2="73"/>
+                </g>
+                <!-- labels below -->
+                <g font-size="11" text-anchor="middle" fill="#666" font-family="Segoe UI,sans-serif">
+                    <text x="20"  y="98">&#9728;&#65039; Brightest</text>
+                    <text x="680" y="98">&#127761; Darkest</text>
+                </g>
+                <!-- raised 4 / lowered 7 etc -->
+                <g font-size="10" text-anchor="middle" fill="#fff" font-family="Segoe UI,sans-serif">
+                    <text x="60"  y="63">&#9839;4</text>
+                    <text x="155" y="63">major</text>
+                    <text x="260" y="63">&#9837;7</text>
+                    <text x="360" y="63">&#9837;6 raised</text>
+                    <text x="455" y="63">nat. minor</text>
+                    <text x="560" y="63">&#9837;2</text>
+                    <text x="645" y="63">&#9837;2+&#9837;5</text>
+                </g>
+            </svg>
+            <div style="font-size:13px; color:#666; margin-top:8px;">Lydian is the brightest mode (an extra raised pitch above major). Locrian is the darkest (two extra lowered pitches below natural minor).</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: CHARACTERISTIC NOTES FLIP CARDS ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; PART 3 &middot; CHARACTERISTIC NOTES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 8px 0;">Each mode has one note that sets it apart. Think of the characteristic note as the mode's "fingerprint." Tap each card to see what makes each mode distinct.</p>
+        <div style="font-size: 16px; color: #6B4C9A; margin: 6px 0 10px;">&#9889; TAP A CARD to reveal the characteristic note:</div>
+
+        <div class="flip-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="optima-widget" style="margin:0;">
+                <div class="ow-flip" tabindex="0">
+                    <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Dorian</strong><br><span style="font-size:13px;color:#666;">(tap to reveal)</span></div>
+                    <div class="ow-flip-back" style="font-size:14px;line-height:1.6;"><span class="note-chip">&#9839;6</span><br>Raised 6th vs. natural minor. Makes it sound hopeful despite being minor. (Example: B natural in D Dorian)</div>
+                </div>
+                <button class="widget-reset">Reset</button>
+            </div>
+            <div class="optima-widget" style="margin:0;">
+                <div class="ow-flip" tabindex="0">
+                    <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Phrygian</strong><br><span style="font-size:13px;color:#666;">(tap to reveal)</span></div>
+                    <div class="ow-flip-back" style="font-size:14px;line-height:1.6;"><span class="note-chip">&#9837;2</span><br>Lowered 2nd. The half-step drop right at the start creates a tense, exotic sound. (Example: F natural in E Phrygian)</div>
+                </div>
+                <button class="widget-reset">Reset</button>
+            </div>
+            <div class="optima-widget" style="margin:0;">
+                <div class="ow-flip" tabindex="0">
+                    <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Lydian</strong><br><span style="font-size:13px;color:#666;">(tap to reveal)</span></div>
+                    <div class="ow-flip-back" style="font-size:14px;line-height:1.6;"><span class="note-chip">&#9839;4</span><br>Raised 4th vs. major. Creates a dreamy, floating, ethereal quality. (Example: B natural in F Lydian)</div>
+                </div>
+                <button class="widget-reset">Reset</button>
+            </div>
+            <div class="optima-widget" style="margin:0;">
+                <div class="ow-flip" tabindex="0">
+                    <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Mixolydian</strong><br><span style="font-size:13px;color:#666;">(tap to reveal)</span></div>
+                    <div class="ow-flip-back" style="font-size:14px;line-height:1.6;"><span class="note-chip">&#9837;7</span><br>Lowered 7th vs. major. Gives a blues-rock feel; sounds major but with an edge. (Example: F natural in G Mixolydian)</div>
+                </div>
+                <button class="widget-reset">Reset</button>
+            </div>
+            <div class="optima-widget" style="margin:0;">
+                <div class="ow-flip" tabindex="0">
+                    <div class="ow-flip-front" style="font-size:17px;color:#0E1C42;"><strong>Locrian</strong><br><span style="font-size:13px;color:#666;">(tap to reveal)</span></div>
+                    <div class="ow-flip-back" style="font-size:14px;line-height:1.6;"><span class="note-chip">&#9837;2</span> <span class="note-chip">&#9837;5</span><br>Both the 2nd AND 5th are lowered. The diminished 5th above the tonic makes it extremely unstable. Rarely used as a tonal center.</div>
+                </div>
+                <button class="widget-reset">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: MUSICAL USES ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127932; PART 4 &middot; WHERE YOU HEAR THE MODES</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 16px 0;">Modes are not just a theory exercise. Real musicians choose them because of how they feel. Here is where each mode appears most often in the world of music:</p>
+
+        <!-- VISUAL: Musical uses panel -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:16px;">
+            <div style="background:#E7F4EC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#1A6B3C; font-weight:bold; margin-bottom:6px;">&#127932; DORIAN</div>
+                <div style="font-size:15px; color:#1a2340; line-height:1.6;">Folk, Celtic, jazz. The raised 6th keeps it from feeling gloomy; it has a warm, hopeful minor quality. Think of Irish fiddle tunes and many jazz standards.</div>
+            </div>
+            <div style="background:#F9EFF8; border-left:5px solid #8A1F16; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#8A1F16; font-weight:bold; margin-bottom:6px;">&#127918; PHRYGIAN</div>
+                <div style="font-size:15px; color:#1a2340; line-height:1.6;">Flamenco, Spanish guitar, extreme metal. The &#9837;2 creates intense, almost menacing tension right from the first note.</div>
+            </div>
+            <div style="background:#FFF8E1; border-left:5px solid #B8860B; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#B8860B; font-weight:bold; margin-bottom:6px;">&#127776; LYDIAN</div>
+                <div style="font-size:15px; color:#1a2340; line-height:1.6;">Film music and jazz. The &#9839;4 sounds otherworldly and wide open. Film composers use it constantly for magical or expansive scenes.</div>
+            </div>
+            <div style="background:#E8F4FD; border-left:5px solid #2471A3; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:13px; color:#2471A3; font-weight:bold; margin-bottom:6px;">&#127928; MIXOLYDIAN</div>
+                <div style="font-size:15px; color:#1a2340; line-height:1.6;">Rock, country, Celtic. Sounds major but with a cool &#9837;7 that gives blues and rock guitar its distinctive edge. Used in countless rock anthems.</div>
+            </div>
+        </div>
+        <div style="background: #E7F4EC; border-left: 5px solid #1A6B3C; border-radius: 6px; padding: 12px 18px;">
+            <div style="font-size:15px; color:#0E1C42; line-height:1.65;"><strong>Ionian</strong> = everyday major. <strong>Aeolian</strong> = everyday natural minor. These are the home bases; the other five are the modes that add color and character.</div>
+        </div>
+    </div>
+
+    <!-- ===================== WIDGET: ow-select practice ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#9997;&#65039; PART 5 &middot; PRACTICE: MODE CHECK</div>
+
+        <p style="font-size: 16px; color:#1a2340; line-height:1.6; margin:0 0 8px;">Use the table and the cards above. Decide your answer in your head first, then tap.</p>
+
+        <!-- ow-select, correct-answer positions: row1=1, row2=3, row3=0, row4=2, row5=1 -->
+        <div class="optima-widget ow-select">
+            <div class="widget-kicker">&#9889; TRY IT &middot; IDENTIFY THE MODE</div>
+            <div class="widget-question">Which mode fits the description?</div>
+
+            <div class="widget-row" data-correct="1" data-fb="Correct. Dorian is the minor mode with a raised 6th, giving it that warm, hopeful folk sound." data-hint="This mode sounds like minor but one note is raised -- the 6th degree. Think Celtic and jazz.">
+                <div class="widget-row-prompt">1. A scale that sounds minor but has a <em>raised 6th</em> -- used often in folk and Celtic music.</div>
+                <div class="widget-options">
+                    <button data-choice="0">Phrygian</button>
+                    <button data-choice="1">Dorian</button>
+                    <button data-choice="2">Mixolydian</button>
+                    <button data-choice="3">Aeolian</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="3" data-fb="Correct. Lydian is the major mode with a raised 4th -- the characteristic note that creates that dreamy, film-score sound." data-hint="This mode sounds bright -- brighter than major. One note is raised above the normal major scale.">
+                <div class="widget-row-prompt">2. A scale that sounds <em>brighter than major</em> because of a raised 4th -- heard in film scores.</div>
+                <div class="widget-options">
+                    <button data-choice="0">Ionian</button>
+                    <button data-choice="1">Dorian</button>
+                    <button data-choice="2">Aeolian</button>
+                    <button data-choice="3">Lydian</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="0" data-fb="Correct. Mixolydian is major with a lowered 7th -- the defining sound of blues-rock and country guitar." data-hint="This mode uses a major scale but flattens the 7th degree. Very common in rock and country.">
+                <div class="widget-row-prompt">3. A scale that sounds major but has a <em>lowered 7th</em> -- used constantly in rock and country.</div>
+                <div class="widget-options">
+                    <button data-choice="0">Mixolydian</button>
+                    <button data-choice="1">Locrian</button>
+                    <button data-choice="2">Phrygian</button>
+                    <button data-choice="3">Ionian</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="2" data-fb="Correct. Phrygian has both a lowered 2nd, giving it that tense half-step drop right from the tonic -- the sound of flamenco and extreme metal." data-hint="This mode starts with a half step up from the tonic, creating extreme tension. Think flamenco.">
+                <div class="widget-row-prompt">4. A minor-sounding scale with a <em>lowered 2nd</em> -- used in flamenco and metal music.</div>
+                <div class="widget-options">
+                    <button data-choice="0">Aeolian</button>
+                    <button data-choice="1">Dorian</button>
+                    <button data-choice="2">Phrygian</button>
+                    <button data-choice="3">Lydian</button>
+                </div>
+            </div>
+
+            <div class="widget-row" data-correct="1" data-fb="Correct. Locrian has both a lowered 2nd AND a lowered 5th, making its tonic triad diminished -- the most unstable of all modes." data-hint="This mode has TWO characteristic lowered pitches -- the 2nd and the 5th. It is the darkest mode.">
+                <div class="widget-row-prompt">5. The <em>darkest mode</em> -- it has a lowered 2nd AND a lowered 5th, making it extremely unstable.</div>
+                <div class="widget-options">
+                    <button data-choice="0">Phrygian</button>
+                    <button data-choice="1">Locrian</button>
+                    <button data-choice="2">Dorian</button>
+                    <button data-choice="3">Mixolydian</button>
+                </div>
+            </div>
+
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- What You'll Do Next (purple) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Mode Construction Practice (Canvas assignment)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Write out three modes from a given root, label the characteristic note, and upload your work.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 7 Modes Check (Canvas quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on mode identification, construction, and characteristic notes. Retakes allowed.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Modes Discussion (Canvas discussion)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Compare Dorian and Aeolian by ear and identify what makes them feel different.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Every mode is the C major scale starting on a different white key. The <strong>characteristic note</strong> is the one pitch that sets it apart from plain major or plain minor. Learn the characteristic note for each mode, and you can identify and build any of the seven from any starting pitch.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 7.01 &middot; Diatonic Modes</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

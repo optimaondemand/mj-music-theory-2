@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M/J Music Theory 2 - Lesson 13.01</title>
+    <style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* music note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    </style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #f0f4fa; border-bottom: 1px solid #dde3ef; padding: 10px 34px; display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: #4a5568;">
+    <span>Q2 &middot; Module 13</span>
+    <span>|</span>
+    <span>Lesson 13.01</span>
+    <span>|</span>
+    <span>Topic: Species Counterpoint</span>
+    <span>|</span>
+    <span>About 40 min</span>
+</div>
+
+<!-- ===== BODY ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- Title strip -->
+    <div style="margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #6B4C9A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 13px; color: #6B4C9A; font-weight: 600; margin-bottom: 2px;">LESSON 13.01</div>
+        <div style="font-size: 26px; color: #0E1C42; font-weight: 700; line-height: 1.2;">Species Counterpoint: All Five Species</div>
+    </div>
+
+    <!-- Today's Focus card -->
+    <div style="border-top: 4px solid #1A6B3C; background: #E7F4EC; border-radius: 8px; padding: 18px 22px; margin-bottom: 18px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px;">&#127891; TODAY'S FOCUS</div>
+        <div style="font-size: 16px; color: #0E1C42; line-height: 1.6;">
+            How does adding one rule at a time &ndash; from a single consonant note to tied dissonances to completely free mixing &ndash; build a composer toward writing truly expressive two-voice music?
+        </div>
+    </div>
+
+    <!-- Objectives card -->
+    <div style="border-top: 4px solid #1A6B3C; background: #ffffff; border: 1px solid #c3dfc8; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 18px 22px; margin-bottom: 18px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px;">&#127919; OBJECTIVES</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div style="min-width: 28px; height: 28px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">1</div>
+                <div style="font-size: 15px; color: #0E1C42; line-height: 1.5; padding-top: 3px;">Write a correct first-, second-, and third-species counterpoint to a given cantus firmus.</div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div style="min-width: 28px; height: 28px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">2</div>
+                <div style="font-size: 15px; color: #0E1C42; line-height: 1.5; padding-top: 3px;">Explain the function of each species in terms of how it treats dissonance.</div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div style="min-width: 28px; height: 28px; background: #1A6B3C; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">3</div>
+                <div style="font-size: 15px; color: #0E1C42; line-height: 1.5; padding-top: 3px;">Identify the characteristic treatment of dissonance in fourth-species counterpoint, including the preparation, suspension, and resolution.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materials card -->
+    <div style="border-top: 4px solid #1A6B3C; background: #ffffff; border: 1px solid #c3dfc8; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 16px 22px; margin-bottom: 28px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px;">&#128218; MATERIALS</div>
+        <ul style="margin: 0; padding-left: 20px; font-size: 15px; color: #0E1C42; line-height: 1.7;">
+            <li>Open Music Theory (OMT), pp. 202&ndash;233</li>
+            <li>Notebook and staff paper, or MuseScore (or another notation app)</li>
+            <li>Headphones</li>
+        </ul>
+    </div>
+
+    <!-- ===== PART 1: FIRST SPECIES ===== -->
+    <div style="border-top: 4px solid #1A6B3C; background: #ffffff; border: 1px solid #dde3ef; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 22px 26px; margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 14px;">&#127926; PART 1 &middot; FIRST SPECIES: NOTE AGAINST NOTE</div>
+
+        <!-- Visual 1: First Species Diagram -->
+        <div style="margin-bottom: 20px;">
+            <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+                <!-- Background -->
+                <rect x="0" y="0" width="620" height="230" rx="8" fill="#F8F9FC" stroke="#D9CEEC" stroke-width="1"/>
+
+                <!-- Title -->
+                <text x="310" y="22" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1A6B3C" font-weight="600" letter-spacing="0.5">FIRST SPECIES: ONE NOTE ABOVE EACH CANTUS FIRMUS NOTE</text>
+
+                <!-- Column x positions -->
+                <!-- Cols at x=70, 170, 270, 370, 470 -->
+
+                <!-- Upper voice label -->
+                <text x="12" y="72" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42" font-weight="600">CP</text>
+                <!-- Lower voice label -->
+                <text x="12" y="152" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#1A6B3C" font-weight="600">CF</text>
+
+                <!-- Upper row note blocks (navy) -->
+                <!-- C D E F E -->
+                <rect x="48" y="50" width="70" height="36" rx="6" fill="#0E1C42"/>
+                <text x="83" y="73" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">C</text>
+
+                <rect x="148" y="50" width="70" height="36" rx="6" fill="#0E1C42"/>
+                <text x="183" y="73" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">D</text>
+
+                <rect x="248" y="50" width="70" height="36" rx="6" fill="#0E1C42"/>
+                <text x="283" y="73" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">E</text>
+
+                <rect x="348" y="50" width="70" height="36" rx="6" fill="#0E1C42"/>
+                <text x="383" y="73" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">F</text>
+
+                <rect x="448" y="50" width="70" height="36" rx="6" fill="#0E1C42"/>
+                <text x="483" y="73" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">E</text>
+
+                <!-- Interval labels (between rows) -->
+                <text x="83" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-weight="600">P1</text>
+                <text x="183" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-weight="600">3rd</text>
+                <text x="283" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-weight="600">3rd</text>
+                <text x="383" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-weight="600">3rd</text>
+                <text x="483" y="104" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-weight="600">P1</text>
+
+                <!-- Motion arrows (purple) -->
+                <!-- Note 1-2: CF goes down (C to B), CP goes up (C to D) = contrary -->
+                <line x1="118" y1="90" x2="148" y2="90" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <!-- Arrow up for CP 1-2 -->
+                <polygon points="145,60 150,68 155,60" fill="#6B4C9A"/>
+                <!-- Arrow down for CF 1-2 -->
+                <polygon points="145,138 150,130 155,138" fill="#6B4C9A"/>
+
+                <!-- Note 2-3: CF B to C (up), CP D to E (up) = similar motion -->
+                <!-- Note 3-4: CF C to D (up), CP E to F (up) = similar motion -->
+                <!-- Note 4-5: CF D to C (down), CP F to E (down) -->
+
+                <!-- Contrary motion arrow indicator for col 1-2 -->
+                <text x="133" y="95" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#6B4C9A">&#8597;</text>
+
+                <!-- Lower row note blocks (green) -->
+                <!-- C B C D C -->
+                <rect x="48" y="118" width="70" height="36" rx="6" fill="#1A6B3C"/>
+                <text x="83" y="141" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">C</text>
+
+                <rect x="148" y="118" width="70" height="36" rx="6" fill="#1A6B3C"/>
+                <text x="183" y="141" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">B</text>
+
+                <rect x="248" y="118" width="70" height="36" rx="6" fill="#1A6B3C"/>
+                <text x="283" y="141" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">C</text>
+
+                <rect x="348" y="118" width="70" height="36" rx="6" fill="#1A6B3C"/>
+                <text x="383" y="141" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">D</text>
+
+                <rect x="448" y="118" width="70" height="36" rx="6" fill="#1A6B3C"/>
+                <text x="483" y="141" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#FFFFFF" font-weight="700">C</text>
+
+                <!-- Legend -->
+                <rect x="48" y="178" width="14" height="14" rx="3" fill="#0E1C42"/>
+                <text x="68" y="190" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">Counterpoint (CP)</text>
+                <rect x="200" y="178" width="14" height="14" rx="3" fill="#1A6B3C"/>
+                <text x="220" y="190" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#1A6B3C">Cantus Firmus (CF)</text>
+                <rect x="370" y="178" width="14" height="14" rx="3" fill="#6B4C9A"/>
+                <text x="390" y="190" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A">Interval / Motion</text>
+
+                <!-- Caption -->
+                <text x="310" y="215" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">All consonances; contrary motion preferred; begin and end on P1, P5, or P8</text>
+            </svg>
+        </div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 14px 0;">
+            First species is the strictest form: you write exactly one note above (or below) each note of the cantus firmus. Every single note must form a consonant interval with the cantus firmus. No exceptions.
+        </p>
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 14px 0;">
+            The permitted consonances are: perfect unison (P1), major and minor thirds (3rd), perfect fifth (P5), major and minor sixths (6th), and perfect octave (P8). All other intervals &ndash; seconds, fourths, sevenths &ndash; are dissonant and not allowed in first species.
+        </p>
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 14px 0;">
+            Additional rules: begin and end on P1, P5, or P8. Avoid parallel perfect fifths and parallel perfect octaves between any two adjacent notes.
+        </p>
+
+        <!-- Key Point callout -->
+        <div style="background: #E7F4EC; border-left: 4px solid #2A9D5C; border-radius: 6px; padding: 14px 18px; margin-top: 14px;">
+            <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; font-weight: 600;">KEY POINT</div>
+            <div style="font-size: 15px; color: #0E1C42; line-height: 1.6;">
+                The most important motion type in counterpoint is contrary motion: when the cantus firmus moves up, your counterpoint moves down, and vice versa. This independence between voices is what counterpoint is all about. Contrary motion prevents parallel fifths and octaves naturally and creates a sense of two genuine voices rather than one melody with a shadow.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PART 2: ALL FIVE SPECIES ===== -->
+    <div style="border-top: 4px solid #1A6B3C; background: #ffffff; border: 1px solid #dde3ef; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 22px 26px; margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 14px;">&#127926; PART 2 &middot; THE FIVE SPECIES</div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 16px 0;">
+            Each species adds one new technique to your toolkit. Think of them as five steps on a ladder, moving from the strictest rules to the most expressive freedom.
+        </p>
+
+        <!-- Visual 2: Five-Species Ladder -->
+        <div style="margin-bottom: 22px; overflow-x: auto;">
+            <svg viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:640px; display:block; margin:0 auto;">
+                <rect x="0" y="0" width="640" height="310" rx="8" fill="#F8F9FC" stroke="#D9CEEC" stroke-width="1"/>
+
+                <!-- Header row -->
+                <rect x="8" y="10" width="624" height="34" rx="4" fill="#0E1C42"/>
+                <text x="90" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#55C8E8" font-weight="700">Species</text>
+                <text x="210" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#55C8E8" font-weight="700">Notes per CF Note</text>
+                <text x="360" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#55C8E8" font-weight="700">Dissonance Rule</text>
+                <text x="520" y="32" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#55C8E8" font-weight="700">Device</text>
+
+                <!-- Row 1: First Species -->
+                <rect x="8" y="48" width="624" height="46" rx="0" fill="#D8F0DD"/>
+                <rect x="8" y="48" width="5" height="46" fill="#1A6B3C"/>
+                <text x="90" y="67" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42" font-weight="700">First Species</text>
+                <text x="90" y="84" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#1A6B3C">Strictest</text>
+                <text x="235" y="75" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">1 (whole notes)</text>
+                <text x="362" y="75" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">No dissonance allowed</text>
+                <text x="512" y="75" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#1A6B3C" font-weight="600">Contrary motion</text>
+
+                <!-- Row 2: Second Species -->
+                <rect x="8" y="98" width="624" height="46" rx="0" fill="#EBF7EF"/>
+                <rect x="8" y="98" width="5" height="46" fill="#2A9D5C"/>
+                <text x="90" y="118" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42" font-weight="700">Second Species</text>
+                <text x="235" y="122" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">2 (half notes)</text>
+                <text x="362" y="114" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">Beat 1 = consonance</text>
+                <text x="362" y="130" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">Beat 2 may be dissonant</text>
+                <text x="512" y="122" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#2A9D5C" font-weight="600">Passing tone</text>
+
+                <!-- Row 3: Third Species -->
+                <rect x="8" y="148" width="624" height="46" rx="0" fill="#FFF7E6"/>
+                <rect x="8" y="148" width="5" height="46" fill="#E08A00"/>
+                <text x="90" y="168" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42" font-weight="700">Third Species</text>
+                <text x="235" y="172" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">4 (quarter notes)</text>
+                <text x="362" y="164" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">More passing and neighbor</text>
+                <text x="362" y="180" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">tones allowed</text>
+                <text x="512" y="172" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#E08A00" font-weight="600">Neighbor tone</text>
+
+                <!-- Row 4: Fourth Species -->
+                <rect x="8" y="198" width="624" height="46" rx="0" fill="#EFEAF6"/>
+                <rect x="8" y="198" width="5" height="46" fill="#6B4C9A"/>
+                <text x="90" y="218" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42" font-weight="700">Fourth Species</text>
+                <text x="235" y="222" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">Tied across barline</text>
+                <text x="362" y="214" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">Dissonance ON strong beat</text>
+                <text x="362" y="230" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">resolves down by step</text>
+                <text x="512" y="222" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#6B4C9A" font-weight="600">Suspension</text>
+
+                <!-- Row 5: Fifth Species -->
+                <rect x="8" y="248" width="624" height="46" rx="0" fill="#F4F0FA"/>
+                <rect x="8" y="248" width="5" height="46" fill="#8A6FBF"/>
+                <text x="90" y="268" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42" font-weight="700">Fifth Species (Florid)</text>
+                <text x="90" y="285" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A">Most expressive</text>
+                <text x="235" y="272" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0E1C42">Mixed (all species)</text>
+                <text x="362" y="264" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">All techniques combined</text>
+                <text x="362" y="280" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0E1C42">freely</text>
+                <text x="512" y="272" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#8A6FBF" font-weight="600">Free composition</text>
+            </svg>
+        </div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 12px 0;">
+            <strong>Second species</strong> gives you two half notes against each whole note of the cantus firmus. The note on beat 1 must be consonant. The note on beat 2 may be a passing tone &ndash; a dissonance that steps smoothly between two consonances.
+        </p>
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 12px 0;">
+            <strong>Third species</strong> increases motion to four quarter notes per cantus firmus note. In addition to passing tones, you may now use neighbor tones: a note that steps away from a consonance and immediately steps back to it. This creates melodic decoration without losing harmonic stability.
+        </p>
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 12px 0;">
+            <strong>Fourth species</strong> introduces the most expressive device: the suspension. You tie a note over the barline into a strong beat where it creates a dissonance, then resolve it down by step. We will cover this in detail in Part 3.
+        </p>
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 18px 0;">
+            <strong>Fifth species (florid counterpoint)</strong> combines all four previous species freely. Long notes mark structural moments; shorter note values carry motion and expression. Fifth species is the closest counterpoint comes to actual free composition, and it is the foundation of two-voice writing in the Baroque period.
+        </p>
+
+        <!-- Widget 1: ow-flip vocabulary cards (6 cards, each with own Reset) -->
+        <div class="optima-widget" style="border-left: 5px solid #6B4C9A;">
+            <div class="widget-kicker">&#9889; SPECIES VOCABULARY &middot; TAP EACH CARD TO FLIP</div>
+            <p style="font-size: 14px; color: #0E1C42; margin: 0 0 14px 0;">Tap a card to reveal the definition. Tap again to flip back.</p>
+            <div class="flip-grid">
+
+                <!-- Card 1: First Species -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">First Species</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">Note against note. All consonances. Use contrary motion. Begin and end on P1, P5, or P8. No parallel fifths or octaves.</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+                <!-- Card 2: Second Species -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">Second Species</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">Two notes per CF note. Beat 1 must be a consonance. Beat 2 may be a passing tone (a stepwise dissonance connecting two consonances).</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+                <!-- Card 3: Third Species -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">Third Species</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">Four notes per CF note. Adds neighbor tones: dissonances that step away from a consonance and immediately return to it. Greater melodic variety.</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+                <!-- Card 4: Fourth Species -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">Fourth Species</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">Suspensions: tie a consonance over the barline so it becomes a dissonance on the strong beat, then resolve down by step. Labels: 4-3, 7-6, 9-8, 2-1.</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+                <!-- Card 5: Fifth Species -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">Fifth Species (Florid)</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">Combines all four species. Use long notes at structural points; shorter notes for motion. The most expressive and musically free form of counterpoint.</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+                <!-- Card 6: Cantus Firmus -->
+                <div>
+                    <div class="ow-flip">
+                        <div class="ow-flip-front">
+                            <div style="font-size: 16px; font-weight: 700; color: #0E1C42; margin-bottom: 6px;">Cantus Firmus</div>
+                            <div style="font-size: 12px; color: #6B4C9A;">Tap to reveal</div>
+                        </div>
+                        <div class="ow-flip-back">
+                            <div style="font-size: 14px; color: #0E1C42; line-height: 1.6;">The given melody in whole notes against which you write your counterpoint. Latin: "fixed song." All species are written above or below the cantus firmus.</div>
+                        </div>
+                    </div>
+                    <button class="widget-reset" onclick="(function(btn){ var card = btn.previousElementSibling; card.classList.remove('flipped'); })(this)">Reset</button>
+                </div>
+
+            </div><!-- end flip-grid -->
+        </div><!-- end widget 1 -->
+
+    </div><!-- end Part 2 -->
+
+    <!-- ===== PART 3: SUSPENSIONS IN DEPTH ===== -->
+    <div style="border-top: 4px solid #1A6B3C; background: #ffffff; border: 1px solid #dde3ef; border-top: 4px solid #1A6B3C; border-radius: 8px; padding: 22px 26px; margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 14px;">&#127926; PART 3 &middot; FOURTH SPECIES: SUSPENSIONS</div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 16px 0;">
+            The suspension is the most expressive device in species counterpoint. Instead of resolving a dissonance immediately, you hold a consonant note across the barline into a strong beat where it becomes dissonant &ndash; and then, and only then, you resolve it. That delay is what gives suspensions their emotional power.
+        </p>
+
+        <!-- Visual 3: Suspension Diagram -->
+        <div style="margin-bottom: 22px;">
+            <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+                <rect x="0" y="0" width="600" height="220" rx="8" fill="#F8F9FC" stroke="#D9CEEC" stroke-width="1"/>
+
+                <!-- Title -->
+                <text x="300" y="22" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#6B4C9A" font-weight="600" letter-spacing="0.5">4-3 SUSPENSION: PREPARATION &ndash; SUSPENSION &ndash; RESOLUTION</text>
+
+                <!-- Three column panels -->
+                <!-- Preparation -->
+                <rect x="15" y="35" width="170" height="140" rx="6" fill="#D8F0DD" stroke="#2A9D5C" stroke-width="1.5"/>
+                <text x="100" y="56" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1A6B3C" font-weight="700" letter-spacing="0.3">PREPARATION</text>
+                <text x="100" y="72" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#1A6B3C">Weak beat</text>
+                <!-- Note block -->
+                <rect x="60" y="82" width="80" height="40" rx="6" fill="#1A6B3C"/>
+                <text x="100" y="107" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#FFFFFF" font-weight="700">4th</text>
+                <text x="100" y="138" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1A6B3C">Consonant &#10003;</text>
+                <text x="100" y="157" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">note sounds</text>
+                <text x="100" y="170" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">at this point</text>
+
+                <!-- Arrow + tie line between Preparation and Suspension -->
+                <!-- Tie arc -->
+                <path d="M 185 102 Q 215 88 245 102" stroke="#0E1C42" stroke-width="2" fill="none"/>
+                <text x="215" y="84" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#0E1C42">tie</text>
+                <!-- Barline -->
+                <line x1="215" y1="60" x2="215" y2="175" stroke="#0E1C42" stroke-width="2.5"/>
+                <text x="215" y="186" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#0E1C42">barline</text>
+
+                <!-- Suspension -->
+                <rect x="245" y="35" width="170" height="140" rx="6" fill="#FDECEC" stroke="#C0392B" stroke-width="1.5"/>
+                <text x="330" y="56" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#C0392B" font-weight="700" letter-spacing="0.3">SUSPENSION</text>
+                <text x="330" y="72" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#C0392B">Strong beat</text>
+                <!-- Note block red -->
+                <rect x="290" y="82" width="80" height="40" rx="6" fill="#C0392B"/>
+                <text x="330" y="107" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#FFFFFF" font-weight="700">4th</text>
+                <text x="330" y="138" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#C0392B">Dissonant &#10007;</text>
+                <text x="330" y="157" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">same pitch held</text>
+                <text x="330" y="170" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">over barline</text>
+
+                <!-- Arrow: Suspension to Resolution -->
+                <line x1="415" y1="102" x2="435" y2="102" stroke="#6B4C9A" stroke-width="2"/>
+                <polygon points="432,97 440,102 432,107" fill="#6B4C9A"/>
+                <text x="427" y="118" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#6B4C9A">down</text>
+                <text x="427" y="129" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="9" fill="#6B4C9A">by step</text>
+
+                <!-- Resolution -->
+                <rect x="430" y="35" width="155" height="140" rx="6" fill="#D8F0DD" stroke="#2A9D5C" stroke-width="1.5"/>
+                <text x="507" y="56" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1A6B3C" font-weight="700" letter-spacing="0.3">RESOLUTION</text>
+                <text x="507" y="72" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#1A6B3C">Weak beat</text>
+                <!-- Note block green -->
+                <rect x="467" y="82" width="80" height="40" rx="6" fill="#1A6B3C"/>
+                <text x="507" y="107" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#FFFFFF" font-weight="700">3rd</text>
+                <text x="507" y="138" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1A6B3C">Consonant &#10003;</text>
+                <text x="507" y="157" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">steps DOWN</text>
+                <text x="507" y="170" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#555" font-style="italic">from the 4th</text>
+
+                <!-- Caption -->
+                <text x="300" y="203" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#6B4C9A" font-style="italic">The 4th is prepared as a consonance, tied over the barline into a strong beat as a dissonance, then resolved down by step to the 3rd.</text>
+            </svg>
+        </div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 14px 0;">
+            Every suspension has three stages:
+        </p>
+        <ol style="font-size: 15px; color: #0E1C42; line-height: 1.8; margin: 0 0 16px 0; padding-left: 22px;">
+            <li><strong>Preparation:</strong> The note sounds on a weak beat as a consonance. There is no surprise yet.</li>
+            <li><strong>Suspension:</strong> That same note is held (or tied) into the following strong beat. At that moment, because the cantus firmus has moved, it forms a dissonance. This clash is the emotional tension.</li>
+            <li><strong>Resolution:</strong> The suspended note steps down by one step to a consonance. The tension releases. This step downward is not optional &ndash; it is a strict rule.</li>
+        </ol>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.7; margin: 0 0 16px 0;">
+            Suspensions are labeled with two numbers counting intervals above the bass: the interval of the suspension followed by the interval of the resolution.
+        </p>
+
+        <!-- Suspension labels table -->
+        <div style="overflow-x: auto; margin-bottom: 18px;">
+            <table style="width:100%; border-collapse: collapse; font-size: 14px; color: #0E1C42;">
+                <thead>
+                    <tr style="background: #0E1C42; color: #FFFFFF;">
+                        <th style="padding: 10px 14px; text-align: left;">Label</th>
+                        <th style="padding: 10px 14px; text-align: left;">Suspension Interval</th>
+                        <th style="padding: 10px 14px; text-align: left;">Resolves To</th>
+                        <th style="padding: 10px 14px; text-align: left;">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #EFEAF6; border-bottom: 1px solid #D9CEEC;">
+                        <td style="padding: 10px 14px; font-weight: 700; color: #6B4C9A;">4-3</td>
+                        <td style="padding: 10px 14px;">4th above bass (dissonant)</td>
+                        <td style="padding: 10px 14px;">3rd above bass</td>
+                        <td style="padding: 10px 14px; font-style: italic;">Most common</td>
+                    </tr>
+                    <tr style="background: #FFFFFF; border-bottom: 1px solid #D9CEEC;">
+                        <td style="padding: 10px 14px; font-weight: 700; color: #6B4C9A;">7-6</td>
+                        <td style="padding: 10px 14px;">7th above bass (dissonant)</td>
+                        <td style="padding: 10px 14px;">6th above bass</td>
+                        <td style="padding: 10px 14px; font-style: italic;">Very common in two voices</td>
+                    </tr>
+                    <tr style="background: #EFEAF6; border-bottom: 1px solid #D9CEEC;">
+                        <td style="padding: 10px 14px; font-weight: 700; color: #6B4C9A;">9-8</td>
+                        <td style="padding: 10px 14px;">9th above bass (dissonant)</td>
+                        <td style="padding: 10px 14px;">8th above bass (octave)</td>
+                        <td style="padding: 10px 14px; font-style: italic;">Creates strong arrival</td>
+                    </tr>
+                    <tr style="background: #FFFFFF;">
+                        <td style="padding: 10px 14px; font-weight: 700; color: #6B4C9A;">2-1</td>
+                        <td style="padding: 10px 14px;">2nd above bass (dissonant)</td>
+                        <td style="padding: 10px 14px;">Unison</td>
+                        <td style="padding: 10px 14px; font-style: italic;">Less common; use carefully</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Point -->
+        <div style="background: #E7F4EC; border-left: 4px solid #2A9D5C; border-radius: 6px; padding: 14px 18px; margin-top: 6px;">
+            <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; font-weight: 600;">KEY POINT</div>
+            <div style="font-size: 15px; color: #0E1C42; line-height: 1.6;">
+                Suspensions resolve DOWN by step, always. Moving up by step, or leaping in any direction, breaks the rule. The downward resolution is what gives the suspension its sense of release and arrival.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PART 4: CHECK YOUR UNDERSTANDING ===== -->
+    <div style="border-top: 4px solid #6B4C9A; background: #ffffff; border: 1px solid #D9CEEC; border-top: 4px solid #6B4C9A; border-radius: 8px; padding: 22px 26px; margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #6B4C9A; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 14px;">&#9997;&#65039; PART 4 &middot; CHECK YOUR UNDERSTANDING</div>
+
+        <p style="font-size: 15px; color: #0E1C42; line-height: 1.6; margin: 0 0 16px 0;">
+            Before you tap each question, write your answer in your notebook or on staff paper. Then check it here.
+        </p>
+
+        <!-- Widget 2: ow-select 5 questions -->
+        <div class="optima-widget ow-select">
+            <div class="widget-kicker">&#128161; CHECK IT &middot; SELECT YOUR ANSWER FOR EACH QUESTION</div>
+
+            <!-- Q1 -->
+            <div class="widget-row" data-correct="1">
+                <div class="widget-row-prompt">1. In first-species counterpoint, which types of intervals are allowed?</div>
+                <div class="widget-options">
+                    <button data-choice="0" data-fb="Not quite. Passing tones are a feature of second species. First species allows only consonances." data-hint="First species is the strictest. What is the one rule about every single note?">Passing tones and neighbor tones</button>
+                    <button data-choice="1" data-fb="Correct. First species is strictly consonant. Every note against the cantus firmus must form a consonant interval.">Consonances only</button>
+                    <button data-choice="2" data-fb="Not quite. Dissonances on strong beats are the feature of fourth species (suspensions). First species allows only consonances." data-hint="First species is the strictest. What is the one rule about every single note?">Dissonances on strong beats</button>
+                    <button data-choice="3" data-fb="Not quite. First species is stricter than that. Parallel octaves are forbidden, but so are all dissonances." data-hint="First species is the strictest. What is the one rule about every single note?">Any interval except parallel octaves</button>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="widget-row" data-correct="3">
+                <div class="widget-row-prompt">2. In fourth species, the suspension resolves...</div>
+                <div class="widget-options">
+                    <button data-choice="0" data-fb="Not quite. Upward resolution is not allowed. The suspension must resolve down by step." data-hint="Remember the three stages: Preparation, Suspension, Resolution. Which direction does resolution always go?">Up by step</button>
+                    <button data-choice="1" data-fb="Not quite. Resolution moves by step, not by a third. The suspension must resolve down by one step." data-hint="Remember the three stages: Preparation, Suspension, Resolution. Which direction does resolution always go?">Down by a third</button>
+                    <button data-choice="2" data-fb="Not quite. Leaping out of a suspension is not allowed. The resolution must be a single step downward." data-hint="Remember the three stages: Preparation, Suspension, Resolution. Which direction does resolution always go?">By leaping to a consonance</button>
+                    <button data-choice="3" data-fb="Correct. The suspension always resolves down by step. Moving up or leaping breaks the rule.">Down by step</button>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="widget-row" data-correct="0">
+                <div class="widget-row-prompt">3. Which species uses four notes against each cantus firmus note?</div>
+                <div class="widget-options">
+                    <button data-choice="0" data-fb="Correct. Third species uses four notes (quarter notes) against each whole note of the cantus firmus. This allows passing tones and neighbor tones.">Third species</button>
+                    <button data-choice="1" data-fb="Not quite. First species uses one note per cantus firmus note." data-hint="Count the notes: 1st=1, 2nd=2, 3rd=?, 4th=tied. Which species gets the most notes per CF note?">First species</button>
+                    <button data-choice="2" data-fb="Not quite. Second species uses two notes per cantus firmus note." data-hint="Count the notes: 1st=1, 2nd=2, 3rd=?, 4th=tied. Which species gets the most notes per CF note?">Second species</button>
+                    <button data-choice="3" data-fb="Not quite. Fourth species ties a note over the barline rather than adding four new notes per cantus firmus note." data-hint="Count the notes: 1st=1, 2nd=2, 3rd=?, 4th=tied. Which species gets the most notes per CF note?">Fourth species</button>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="widget-row" data-correct="2">
+                <div class="widget-row-prompt">4. What makes fifth species (florid counterpoint) different from the others?</div>
+                <div class="widget-options">
+                    <button data-choice="0" data-fb="Not quite. That description fits first species, not fifth. Fifth species combines all four earlier species." data-hint="Florid means 'flowery' or 'free.' What does fifth species borrow from the earlier species?">It allows only consonances</button>
+                    <button data-choice="1" data-fb="Not quite. Suspensions are the feature of fourth species. Fifth species uses all devices, not just suspensions." data-hint="Florid means 'flowery' or 'free.' What does fifth species borrow from the earlier species?">It uses only suspensions</button>
+                    <button data-choice="2" data-fb="Correct. Fifth species is florid because it mixes note values and techniques from all four species. It is the most free and expressive.">It combines elements of all four previous species freely</button>
+                    <button data-choice="3" data-fb="Not quite. Four notes per CF note describes third species. Fifth species mixes all note values and techniques." data-hint="Florid means 'flowery' or 'free.' What does fifth species borrow from the earlier species?">It requires four notes against each CF note</button>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="widget-row" data-correct="1">
+                <div class="widget-row-prompt">5. The number label "4-3" on a suspension means...</div>
+                <div class="widget-options">
+                    <button data-choice="0" data-fb="Not quite. The numbers in suspension labels count intervals above the bass, not note quantities." data-hint="The numbers in suspension labels count something above the bass. What interval becomes what interval?">The counterpoint has 4 notes then 3 notes</button>
+                    <button data-choice="1" data-fb="Correct. The numbers count intervals above the bass. The 4th (a dissonant suspension) resolves down by step to the 3rd (a consonance).">The 4th above the bass resolves down to the 3rd above the bass</button>
+                    <button data-choice="2" data-fb="Not quite. The numbers refer to intervals above the bass, not to beat counts or duration." data-hint="The numbers in suspension labels count something above the bass. What interval becomes what interval?">The suspension lasts 4 beats and resolves on beat 3</button>
+                    <button data-choice="3" data-fb="Not quite. The numbers describe the intervals involved in the suspension and resolution, not the length of the cantus firmus." data-hint="The numbers in suspension labels count something above the bass. What interval becomes what interval?">The cantus firmus is 4 measures long</button>
+                </div>
+            </div>
+
+            <button class="widget-reset">Reset All Questions</button>
+        </div><!-- end ow-select widget -->
+
+    </div><!-- end Part 4 -->
+
+    <!-- ===== WHAT YOU'LL DO NEXT ===== -->
+    <div style="border-top: 4px solid #6B4C9A; background: #EFEAF6; border-radius: 8px; padding: 18px 22px; margin-bottom: 22px;">
+        <div style="font-size: 11px; color: #6B4C9A; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px;">&#128190; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div style="min-width: 26px; height: 26px; background: #6B4C9A; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">1</div>
+                <div style="font-size: 15px; color: #0E1C42; line-height: 1.6; padding-top: 2px;">
+                    <strong>Species Counterpoint Practice</strong> &ndash; Using staff paper or MuseScore, write a 6-to-8-note first-species counterpoint above the following cantus firmus: whole notes C &ndash; D &ndash; E &ndash; D &ndash; C. Submit a photo of your staff paper or your MuseScore file in Canvas. A genuine attempt earns full credit.
+                </div>
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <div style="min-width: 26px; height: 26px; background: #6B4C9A; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0;">2</div>
+                <div style="font-size: 15px; color: #0E1C42; line-height: 1.6; padding-top: 2px;">
+                    <strong>Module 13 Species Counterpoint Check</strong> &ndash; Canvas quiz, auto-graded, multiple attempts allowed. Complete after finishing the practice exercise.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== WRAP-UP ===== -->
+    <div style="border-top: 4px solid #1A6B3C; background: #E7F4EC; border-radius: 8px; padding: 18px 22px; margin-bottom: 28px;">
+        <div style="font-size: 11px; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; font-weight: 600;">&#127775; THE ONE THING TO REMEMBER</div>
+        <div style="font-size: 16px; color: #0E1C42; line-height: 1.7;">
+            Suspensions are the heart of fourth species: a consonance is <strong>prepared</strong> on a weak beat, <strong>held</strong> across the barline so it becomes a dissonance on the strong beat, and then <strong>resolved down by step</strong> to a consonance. That three-part sequence &ndash; preparation, suspension, resolution &ndash; is the pattern to carry with you into all your counterpoint writing.
+        </div>
+    </div>
+
+</div><!-- end body wrapper -->
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 5px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 13px; color: #55C8E8; margin-bottom: 4px;">Optima Academy Online &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 12px; color: #a0aec0; margin-bottom: 4px;">Lesson 13.01 &middot; Species Counterpoint</div>
+    <div style="font-size: 11px; color: #718096;">&copy; Optima Academy Online. All rights reserved. For enrolled student use only.</div>
+</div>
+
+</div><!-- end canvas-frame -->
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+</body>
+</html>

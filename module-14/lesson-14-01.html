@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 14.01 &ndash; Modal Schemas in Pop and Folk | M/J Music Theory 2</title>
+<style>
+body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+.canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+.widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+.widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+.widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+.widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+.widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+.widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+.widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+.widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+.widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+.widget-feedback.show { display: block; }
+.row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+.row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+.row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+.widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+.widget-reset:hover { background: #F0EAF7; }
+.ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+.ow-flip .ow-flip-back { display: none; color: #1a2340; }
+.ow-flip.flipped .ow-flip-front { display: none; }
+.ow-flip.flipped .ow-flip-back { display: block; }
+.flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+.note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+
+/* Layout helpers */
+.optima-header { background: #0E1C42; border-bottom: 4px solid #55C8E8; padding: 18px 28px; display: flex; align-items: center; gap: 18px; }
+.optima-header .owl-mark { width: 44px; height: 44px; background: #55C8E8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.optima-header .hd-school { color: #55C8E8; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.optima-header .hd-course { color: #FFFFFF; font-size: 19px; font-weight: 700; letter-spacing: 0.5px; }
+.meta-strip { background: #F0F2F8; border-bottom: 1px solid #D5DAE8; display: flex; flex-wrap: wrap; }
+.meta-cell { padding: 9px 22px; font-size: 13px; color: #4A5478; border-right: 1px solid #D5DAE8; }
+.meta-cell:last-child { border-right: none; }
+.meta-cell strong { color: #0E1C42; }
+.body-wrap { padding: 24px 34px; }
+.title-strip { border-left: 5px solid #0E1C42; padding: 10px 18px; margin-bottom: 22px; background: #F8F9FC; }
+.title-strip .lesson-kicker { font-size: 11px; color: #7A84A0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.title-strip .lesson-title { font-size: 26px; font-weight: 700; color: #0E1C42; line-height: 1.2; margin-bottom: 2px; }
+.title-strip .lesson-sub { font-size: 14px; color: #55C8E8; font-weight: 600; letter-spacing: 0.3px; }
+.card-green { border-top: 4px solid #1A6B3C; border-radius: 8px; background: #E7F4EC; padding: 18px 22px; margin: 18px 0; }
+.card-purple { border-top: 4px solid #6B4C9A; border-radius: 8px; background: #EFEAF6; padding: 18px 22px; margin: 18px 0; }
+.card-navy { border-top: 4px solid #0E1C42; border-radius: 8px; background: #F0F2F8; padding: 18px 22px; margin: 18px 0; }
+.section-head { font-size: 15px; font-weight: 700; color: #1A6B3C; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.section-head-purple { font-size: 15px; font-weight: 700; color: #6B4C9A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.section-head-navy { font-size: 15px; font-weight: 700; color: #0E1C42; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.objectives-list { list-style: none; margin: 0; padding: 0; }
+.objectives-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; font-size: 15px; color: #1a2340; line-height: 1.55; }
+.obj-circle { width: 28px; height: 28px; background: #1A6B3C; color: #fff; border-radius: 50%; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.content-section { border-top: 4px solid #1A6B3C; border-radius: 8px; background: #ffffff; padding: 22px 26px; margin: 22px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+.content-section h3 { font-size: 18px; color: #1A6B3C; margin-top: 0; margin-bottom: 14px; }
+p { font-size: 15px; color: #1a2340; line-height: 1.65; margin: 0 0 12px 0; }
+.vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+@media (max-width: 640px) { .vocab-grid { grid-template-columns: 1fr; } }
+.vocab-card { background: #F8F9FC; border: 1px solid #D5DAE8; border-radius: 6px; padding: 12px 16px; }
+.vocab-term { font-size: 14px; font-weight: 700; color: #0E1C42; margin-bottom: 4px; }
+.vocab-def { font-size: 13px; color: #4A5478; line-height: 1.5; }
+.key-point { background: #E7F4EC; border-left: 4px solid #2A9D5C; border-radius: 4px; padding: 12px 16px; margin: 12px 0; font-size: 15px; color: #1a2340; line-height: 1.6; }
+.key-point-purple { background: #EFEAF6; border-left: 4px solid #6B4C9A; border-radius: 4px; padding: 12px 16px; margin: 12px 0; font-size: 15px; color: #1a2340; line-height: 1.6; }
+.optima-footer { background: #0E1C42; padding: 16px 28px; text-align: center; }
+.optima-footer .ft-main { color: #FFFFFF; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 4px; }
+.optima-footer .ft-sub { color: #55C8E8; font-size: 11px; }
+.visual-label { font-size: 12px; color: #6B4C9A; letter-spacing: 0.3px; text-align: center; margin-top: 8px; margin-bottom: 4px; font-style: italic; }
+.discussion-box { background: #FFF8E7; border: 1px solid #F0D080; border-left: 5px solid #C9A020; border-radius: 6px; padding: 16px 20px; margin: 16px 0; }
+.discussion-box .disc-head { font-size: 12px; color: #7A6010; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.next-list { list-style: none; margin: 0; padding: 0; }
+.next-list li { padding: 7px 0; font-size: 15px; color: #1a2340; border-bottom: 1px solid #E8EAF0; line-height: 1.5; }
+.next-list li:last-child { border-bottom: none; }
+.next-list li::before { content: "\2192\00a0"; color: #6B4C9A; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 14</div>
+        <div style="font-size: 12px; color: #666;">Modal Schemas in Pop and Folk</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 14.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Modal Schemas</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+  <!-- BODY -->
+  <div class="body-wrap">
+
+    <!-- TITLE STRIP -->
+    <div class="title-strip">
+      <div class="lesson-kicker">Lesson</div>
+      <div class="lesson-title">Modal Schemas in Pop and Folk</div>
+      <div class="lesson-sub">LESSON 14.01</div>
+    </div>
+
+    <!-- TODAY'S FOCUS -->
+    <div class="card-green">
+      <div class="section-head">&#127925; Today&rsquo;s Focus</div>
+      <p>Modes are not just scales &ndash; they have signature chord moves. This lesson is about <strong>modal schemas</strong>: the short, repeating chord loops that make Mixolydian rock, Dorian minor sound bright, and Aeolian feel like a pure natural-minor flow. You will learn to hear and build three of them.</p>
+    </div>
+
+    <!-- BY THE END -->
+    <div class="card-green">
+      <div class="section-head">By the End of This Lesson&hellip;</div>
+      <ul class="objectives-list">
+        <li>
+          <div class="obj-circle">1</div>
+          <span>Identify the Mixolydian and Dorian schemas in pop and folk music</span>
+        </li>
+        <li>
+          <div class="obj-circle">2</div>
+          <span>Build characteristic chord progressions in Dorian and Mixolydian</span>
+        </li>
+        <li>
+          <div class="obj-circle">3</div>
+          <span>Explain why modal harmony sounds different from major/minor tonal harmony</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- WHAT YOU NEED -->
+    <div class="card-navy">
+      <div class="section-head-navy">What You Need</div>
+      <ul style="margin:0; padding-left:20px; font-size:15px; color:#1a2340; line-height:1.8;">
+        <li><em>Open Music Theory</em> (OMT), pp. 626&ndash;628 (Modal Schemas)</li>
+        <li>Your notebook or staff paper</li>
+        <li>Headphones (recommended for the listening examples)</li>
+      </ul>
+    </div>
+
+    <!-- KEY VOCABULARY -->
+    <div class="content-section">
+      <h3>Key Vocabulary</h3>
+      <p>Before diving into the schemas themselves, make sure these terms are clear. Add them to your vocabulary section in your notebook.</p>
+      <div class="vocab-grid">
+        <div class="vocab-card">
+          <div class="vocab-term">Mixolydian Schema</div>
+          <div class="vocab-def">A chord loop built around the &#9837;VII chord &ndash; the subtonic triad. Example: I&ndash;&#9837;VII&ndash;IV&ndash;I. Common in rock and folk. (OMT p. 628)</div>
+        </div>
+        <div class="vocab-card">
+          <div class="vocab-term">Dorian Schema</div>
+          <div class="vocab-def">A minor-mode loop with a <em>major</em> IV chord. The raised 6th of Dorian makes IV major instead of minor. Example: i&ndash;IV. (OMT p. 627)</div>
+        </div>
+        <div class="vocab-card">
+          <div class="vocab-term">Aeolian Schema</div>
+          <div class="vocab-def">A natural-minor loop using only unaltered scale degrees. Examples: III&ndash;VII&ndash;i and i&ndash;VII&ndash;VI&ndash;VII. (OMT p. 626)</div>
+        </div>
+        <div class="vocab-card">
+          <div class="vocab-term">Modal Tonic</div>
+          <div class="vocab-def">A tonal center established by <em>repetition</em>, not by V&ndash;I tension. Modal music has no leading tone pulling up to the tonic.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PART 1: MIXOLYDIAN -->
+    <div class="content-section">
+      <h3>Part 1 &ndash; Mixolydian Schemas</h3>
+
+      <p>Mixolydian is like a major scale with one difference: scale degree 7 is lowered by a half step. That single change removes the leading tone (the note that pulls urgently up to the tonic in major keys) and creates a characteristic chord: <strong>&#9837;VII</strong>, the subtonic triad.</p>
+
+      <div class="key-point">
+        <strong>The rule:</strong> In Mixolydian, &#9837;VII takes the job that V usually has in major. Because scale degree 7 is flat, there is no leading-tone pull. The result is a relaxed, rocking quality instead of a tense dominant resolution.
+      </div>
+
+      <p>Three common Mixolydian schemas appear repeatedly in pop and folk:</p>
+      <ul style="font-size:15px; color:#1a2340; line-height:1.8; padding-left:20px;">
+        <li><strong>Pendulum:</strong> I &ndash; &#9837;VII &ndash; I</li>
+        <li><strong>Three-chord loop:</strong> I &ndash; IV &ndash; &#9837;VII &ndash; I</li>
+        <li><strong>Classic Mixolydian loop:</strong> I &ndash; &#9837;VII &ndash; IV &ndash; I</li>
+      </ul>
+
+      <p>In each case, the &#9837;VII chord is the key player. The loop never reaches V&ndash;I; it rocks between I and &#9837;VII instead. That avoidance of a dominant cadence is what marks these progressions as <em>modal</em>, not tonal.</p>
+
+      <!-- VISUAL 1 -->
+      <div style="margin: 20px 0;">
+        <div class="visual-label">Visual 1 &ndash; Mixolydian Schema: I &ndash; &#9837;VII &ndash; IV &ndash; I</div>
+        <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:680px; display:block; margin:0 auto; border-radius:8px; background:#F8F9FC; border:1px solid #D5DAE8;">
+          <!-- Box I -->
+          <rect x="20" y="30" width="130" height="80" rx="10" fill="#0E1C42" />
+          <text x="85" y="60" font-family="Segoe UI,Arial,sans-serif" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">I</text>
+          <text x="85" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#55C8E8" text-anchor="middle">Tonic</text>
+          <text x="85" y="100" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8B8D8" text-anchor="middle">major</text>
+
+          <!-- Arrow 1 -->
+          <text x="168" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="22" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <!-- Box bVII (highlighted) -->
+          <rect x="188" y="20" width="160" height="100" rx="10" fill="#4B2A7A" stroke="#FFD700" stroke-width="3" />
+          <text x="268" y="58" font-family="Segoe UI,Arial,sans-serif" font-size="26" font-weight="700" fill="#FFD700" text-anchor="middle">&#9837;VII</text>
+          <text x="268" y="80" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#E8D8FF" text-anchor="middle">characteristic chord</text>
+          <text x="268" y="97" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#C8B8F0" text-anchor="middle">lowered 7th &ndash; no leading tone</text>
+          <text x="268" y="112" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#FFD700" text-anchor="middle">subtonic triad</text>
+
+          <!-- Arrow 2 -->
+          <text x="365" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="22" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <!-- Box IV -->
+          <rect x="383" y="30" width="130" height="80" rx="10" fill="#1A6B3C" />
+          <text x="448" y="60" font-family="Segoe UI,Arial,sans-serif" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">IV</text>
+          <text x="448" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#A8E8C0" text-anchor="middle">Subdominant</text>
+          <text x="448" y="100" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#80C8A0" text-anchor="middle">major</text>
+
+          <!-- Arrow 3 -->
+          <text x="527" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="22" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <!-- Box I return -->
+          <rect x="545" y="30" width="115" height="80" rx="10" fill="#0E1C42" />
+          <text x="602" y="60" font-family="Segoe UI,Arial,sans-serif" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">I</text>
+          <text x="602" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#55C8E8" text-anchor="middle">Tonic</text>
+          <text x="602" y="100" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8B8D8" text-anchor="middle">return</text>
+        </svg>
+        <p style="text-align:center; font-size:12px; color:#6B4C9A; margin-top:6px;">The &#9837;VII box (gold border) is the characteristic Mixolydian chord. No V means no leading-tone tension &ndash; the loop rocks freely.</p>
+      </div>
+
+      <p>Many rock and folk songs use this loop for verses or as an entire song structure. The pendulum version (I &ndash; &#9837;VII &ndash; I) strips it down even further &ndash; just two chords alternating, with no harmonic goal except the return to I.</p>
+
+      <div class="discussion-box">
+        <div class="disc-head">&#127925; Listening Tip</div>
+        <p style="margin:0; font-size:14px; color:#5A4A10;">Search YouTube for <strong>"Mixolydian mode rock examples"</strong> or try classic songs like "Sweet Home Alabama" or "Norwegian Wood" &ndash; notice how the harmony never drives toward a strong V-I cadence. The &#9837;VII chord gives it that characteristic lift-and-return.</p>
+      </div>
+    </div>
+
+    <!-- PART 2: DORIAN -->
+    <div class="content-section">
+      <h3>Part 2 &ndash; Dorian Schemas</h3>
+
+      <p>Dorian is a minor mode &ndash; but it has one note that sets it apart from natural minor (Aeolian): scale degree 6 is raised by a half step. That single raised note changes everything about the IV chord.</p>
+
+      <div class="key-point">
+        <strong>The rule:</strong> In Aeolian, the chord built on scale degree 4 is <em>minor</em> (iv). In Dorian, because scale degree 6 is raised, that same chord becomes <em>major</em> (IV). The raised 6th is the 3rd of the IV chord &ndash; and what makes it major is exactly what identifies the mode as Dorian.
+      </div>
+
+      <p>The core Dorian schemas are:</p>
+      <ul style="font-size:15px; color:#1a2340; line-height:1.8; padding-left:20px;">
+        <li><strong>Core:</strong> i &ndash; IV</li>
+        <li><strong>Extended:</strong> i &ndash; &#9837;VII &ndash; IV</li>
+      </ul>
+
+      <!-- VISUAL 2 -->
+      <div style="margin: 20px 0;">
+        <div class="visual-label">Visual 2 &ndash; Dorian Schema: i &ndash; IV</div>
+        <svg viewBox="0 0 440 160" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:440px; display:block; margin:0 auto; border-radius:8px; background:#F8F9FC; border:1px solid #D5DAE8;">
+          <!-- Box i -->
+          <rect x="30" y="30" width="150" height="90" rx="10" fill="#0E1C42" />
+          <text x="105" y="65" font-family="Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">i</text>
+          <text x="105" y="88" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#55C8E8" text-anchor="middle">minor tonic</text>
+          <text x="105" y="108" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8B8D8" text-anchor="middle">e.g., D minor</text>
+
+          <!-- Arrow -->
+          <text x="215" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="26" fill="#1A6B3C" text-anchor="middle">&#8594;</text>
+
+          <!-- Box IV (highlighted) -->
+          <rect x="248" y="20" width="162" height="120" rx="10" fill="#1A4A2C" stroke="#2A9D5C" stroke-width="3" />
+          <text x="329" y="60" font-family="Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">IV</text>
+          <text x="329" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#5CE88A" text-anchor="middle">MAJOR IV</text>
+          <text x="329" y="100" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#A8E8C0" text-anchor="middle">= Dorian identifier</text>
+          <text x="329" y="116" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#80C8A0" text-anchor="middle">its 3rd = raised 6th</text>
+          <text x="329" y="130" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#FFD700" text-anchor="middle">e.g., G major in D Dorian</text>
+        </svg>
+        <p style="text-align:center; font-size:12px; color:#1A6B3C; margin-top:6px;">The IV chord (green border) is major in Dorian. That&rsquo;s the fingerprint: minor tonic + major IV. In Aeolian, IV would be minor (iv).</p>
+      </div>
+
+      <p>The major IV chord is the Dorian fingerprint. If you hear a progression that feels minor but has a bright, lifted quality on the IV chord, Dorian is likely the reason. The raised 6th that makes IV major also adds a subtle warmth to the mode &ndash; it sounds darker than major but less heavy than natural minor.</p>
+
+      <div class="key-point">
+        <strong>In practice (D Dorian example):</strong><br />
+        i = D minor (D &ndash; F &ndash; A)<br />
+        IV = G <em>major</em> (G &ndash; B&natural; &ndash; D) &ndash; the B&natural; is the raised 6th of D Dorian<br />
+        Compare: In D Aeolian, that chord would be G <em>minor</em> (G &ndash; B&#9837; &ndash; D)
+      </div>
+
+      <div class="discussion-box">
+        <div class="disc-head">&#127925; Listening Tip</div>
+        <p style="margin:0; font-size:14px; color:#5A4A10;">Search YouTube for <strong>"Dorian mode song example"</strong> or try "Oye Como Va" by Santana &ndash; the minor-but-bright feeling comes from exactly this i&ndash;IV move.</p>
+      </div>
+    </div>
+
+    <!-- PART 3: AEOLIAN + KEY VS. MODE -->
+    <div class="content-section">
+      <h3>Part 3 &ndash; Aeolian Schemas and Key vs. Mode</h3>
+
+      <p>Aeolian is natural minor &ndash; no alterations from the key signature. Its schemas use only the chords built naturally on the scale, with no raised degrees:</p>
+
+      <ul style="font-size:15px; color:#1a2340; line-height:1.8; padding-left:20px;">
+        <li><strong>Descending schema:</strong> III &ndash; VII &ndash; i</li>
+        <li><strong>Four-chord loop:</strong> i &ndash; VII &ndash; VI &ndash; VII</li>
+      </ul>
+
+      <p>Notice that VII here is a <em>major</em> chord built on the flat 7th &ndash; the same &#9837;VII that appears in Mixolydian. That makes sense: both modes have a lowered 7th. What differs is the tonic: Aeolian has a minor tonic (i), Mixolydian has a major tonic (I).</p>
+
+      <!-- VISUAL 3 -->
+      <div style="margin: 20px 0;">
+        <div class="visual-label">Visual 3 &ndash; Aeolian Schemas</div>
+        <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:680px; display:block; margin:0 auto; border-radius:8px; background:#F8F9FC; border:1px solid #D5DAE8;">
+
+          <!-- Label row 1 -->
+          <text x="20" y="22" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#6B4C9A" font-weight="700">Schema A: III &ndash; VII &ndash; i</text>
+
+          <!-- Schema A boxes -->
+          <rect x="20" y="30" width="100" height="60" rx="8" fill="#2A5080" />
+          <text x="70" y="57" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">III</text>
+          <text x="70" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8C8E8" text-anchor="middle">major</text>
+
+          <text x="133" y="64" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <rect x="148" y="30" width="100" height="60" rx="8" fill="#2A5080" />
+          <text x="198" y="57" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">VII</text>
+          <text x="198" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8C8E8" text-anchor="middle">major (&#9837;7)</text>
+
+          <text x="262" y="64" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <rect x="276" y="30" width="100" height="60" rx="8" fill="#0E1C42" />
+          <text x="326" y="57" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">i</text>
+          <text x="326" y="78" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#55C8E8" text-anchor="middle">minor tonic</text>
+
+          <!-- Label row 2 -->
+          <text x="20" y="118" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#6B4C9A" font-weight="700">Schema B: i &ndash; VII &ndash; VI &ndash; VII</text>
+
+          <!-- Schema B boxes -->
+          <rect x="20" y="126" width="90" height="58" rx="8" fill="#0E1C42" />
+          <text x="65" y="152" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">i</text>
+          <text x="65" y="172" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#55C8E8" text-anchor="middle">minor</text>
+
+          <text x="121" y="158" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <rect x="135" y="126" width="90" height="58" rx="8" fill="#2A5080" />
+          <text x="180" y="152" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">VII</text>
+          <text x="180" y="172" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8C8E8" text-anchor="middle">major</text>
+
+          <text x="236" y="158" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <rect x="250" y="126" width="90" height="58" rx="8" fill="#2A5080" />
+          <text x="295" y="152" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">VI</text>
+          <text x="295" y="172" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8C8E8" text-anchor="middle">major</text>
+
+          <text x="351" y="158" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="#6B4C9A" text-anchor="middle">&#8594;</text>
+
+          <rect x="365" y="126" width="90" height="58" rx="8" fill="#2A5080" />
+          <text x="410" y="152" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-anchor="middle">VII</text>
+          <text x="410" y="172" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#A8C8E8" text-anchor="middle">returns</text>
+
+          <!-- Key vs Mode callout box -->
+          <rect x="480" y="20" width="185" height="160" rx="10" fill="#FFF4E0" stroke="#C9A020" stroke-width="2" />
+          <text x="572" y="46" font-family="Segoe UI,Arial,sans-serif" font-size="11" fill="#7A6010" font-weight="700" text-anchor="middle">KEY VS. MODE</text>
+          <text x="572" y="66" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">Modal music gets</text>
+          <text x="572" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">stability from</text>
+          <text x="572" y="98" font-family="Segoe UI,Arial,sans-serif" font-size="10" font-weight="700" fill="#8A5A00" text-anchor="middle">repetition,</text>
+          <text x="572" y="114" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">not V&ndash;I tension.</text>
+          <text x="572" y="135" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">No leading tone.</text>
+          <text x="572" y="151" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">No dominant pull.</text>
+          <text x="572" y="167" font-family="Segoe UI,Arial,sans-serif" font-size="10" fill="#4A3A10" text-anchor="middle">Just the loop.</text>
+        </svg>
+        <p style="text-align:center; font-size:12px; color:#6B4C9A; margin-top:6px;">Aeolian uses only natural minor chords &ndash; no raised degrees. The yellow box captures the principle of all three modal schemas: tonic stability through repetition, not tension.</p>
+      </div>
+
+      <div class="key-point">
+        <strong>Key vs. Mode &ndash; the essential distinction:</strong><br />
+        A <em>key</em> is tonal: it has a hierarchy with V pulling to I, a leading tone, and clear function labels (tonic, dominant, pre-dominant). A <em>mode</em> is not tonal in this sense: there is no leading tone in Mixolydian, Dorian, or Aeolian, and no V&ndash;I cadence driving toward home. Instead, the tonic feels stable because the loop keeps returning to it. Repetition replaces tension.
+      </div>
+
+      <p>This means you can have a piece "in D Dorian" that never once uses a D major chord &ndash; the tonic D minor just keeps appearing, anchored by the characteristic Dorian schema (i&ndash;IV). The raised 6th in the melody and the major IV chord in the harmony are what tell you: this is Dorian, not D natural minor.</p>
+
+      <div class="key-point-purple">
+        <strong>Think it through:</strong> What would tell you a piece is in D Dorian rather than D natural minor (D Aeolian)?<br />
+        Write your answer in your notebook before reading on. Look for the IV chord &ndash; is it G minor (Aeolian) or G major (Dorian)? That difference is the Dorian identifier.
+      </div>
+    </div>
+
+    <!-- SCHEMA COMPARISON TABLE -->
+    <div class="content-section">
+      <h3>Schema Comparison at a Glance</h3>
+      <p>Use this table in your notes as a quick reference.</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:14px; color:#1a2340;">
+          <thead>
+            <tr style="background:#0E1C42; color:#FFFFFF;">
+              <th style="padding:10px 14px; text-align:left; border-radius:0;">Mode</th>
+              <th style="padding:10px 14px; text-align:left;">Tonic type</th>
+              <th style="padding:10px 14px; text-align:left;">Characteristic chord</th>
+              <th style="padding:10px 14px; text-align:left;">Example schema</th>
+              <th style="padding:10px 14px; text-align:left; border-radius:0;">Identifier note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#E7F4EC;">
+              <td style="padding:9px 14px; font-weight:700; border-bottom:1px solid #C0DCC8;">Mixolydian</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #C0DCC8;">Major (I)</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #C0DCC8;">&#9837;VII (subtonic)</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #C0DCC8;">I &ndash; &#9837;VII &ndash; IV &ndash; I</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #C0DCC8;">Lowered scale degree 7</td>
+            </tr>
+            <tr style="background:#EFEAF6;">
+              <td style="padding:9px 14px; font-weight:700; border-bottom:1px solid #D9CEEC;">Dorian</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #D9CEEC;">Minor (i)</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #D9CEEC;">Major IV</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #D9CEEC;">i &ndash; IV</td>
+              <td style="padding:9px 14px; border-bottom:1px solid #D9CEEC;">Raised scale degree 6</td>
+            </tr>
+            <tr style="background:#F0F2F8;">
+              <td style="padding:9px 14px; font-weight:700;">Aeolian</td>
+              <td style="padding:9px 14px;">Minor (i)</td>
+              <td style="padding:9px 14px;">III or VII (natural)</td>
+              <td style="padding:9px 14px;">III &ndash; VII &ndash; i</td>
+              <td style="padding:9px 14px;">No alterations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CHECK YOUR UNDERSTANDING -->
+    <div class="optima-widget ow-select" style="margin: 22px 0;">
+      <div class="widget-kicker">CHECK YOUR UNDERSTANDING &middot; LESSON 14.01</div>
+      <div class="widget-question">Select the best answer for each question. Click again to try a different option.</div>
+
+      <!-- Row 1 -->
+      <div class="widget-row" data-correct="2" data-fb="Correct. The &#9837;VII chord is the signature of Mixolydian &ndash; built on the lowered 7th scale degree, so there is no leading tone pulling to the tonic." data-hint="Mixolydian has a flat 7th. What chord is built on that flat 7th scale degree?">
+        <div class="widget-row-prompt">1. In Mixolydian mode, the characteristic chord is&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">IV the subdominant</button>
+          <button data-choice="1">V the dominant</button>
+          <button data-choice="2">&#9837;VII the subtonic triad</button>
+          <button data-choice="3">ii&#176; the diminished chord</button>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="widget-row" data-correct="0" data-fb="Correct. In Mixolydian, &#9837;VII takes the place of V. Because scale degree 7 is lowered, there is no leading tone, and the loop never creates V-I tension." data-hint="What happens to scale degree 7 in Mixolydian? Does that chord create a pull toward the tonic?">
+        <div class="widget-row-prompt">2. In Mixolydian, the I &ndash; &#9837;VII &ndash; IV &ndash; I loop avoids the V chord because&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">the &#9837;VII replaces V and has no leading-tone pull, creating a modal rather than tonal sound</button>
+          <button data-choice="1">V is not in the Mixolydian scale</button>
+          <button data-choice="2">IV is always played before V in pop music</button>
+          <button data-choice="3">the &#9837;VII is a borrowed chord from minor</button>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="widget-row" data-correct="3" data-fb="Correct. In Dorian, scale degree 6 is raised a half step compared to Aeolian. That raised 6th becomes the major 3rd of the IV chord, making IV major instead of minor." data-hint="What note in the IV chord is different in Dorian vs. Aeolian?">
+        <div class="widget-row-prompt">3. The Dorian schema i &ndash; IV is distinctive because&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">it uses a diminished chord on iv</button>
+          <button data-choice="1">it borrows the IV chord from the parallel major key</button>
+          <button data-choice="2">it replaces the tonic with a major chord</button>
+          <button data-choice="3">the IV chord is major, revealing the raised 6th that distinguishes Dorian from Aeolian</button>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="widget-row" data-correct="1" data-fb="Correct. III &ndash; VII &ndash; i is an Aeolian schema. It uses only natural minor chords without raised scale degrees or secondary dominants." data-hint="Aeolian uses only the natural minor scale degrees without alteration. Which progression fits only those chords?">
+        <div class="widget-row-prompt">4. Which of these schemas is most closely associated with Aeolian (natural minor)?</div>
+        <div class="widget-options">
+          <button data-choice="0">I &ndash; &#9837;VII &ndash; IV &ndash; I</button>
+          <button data-choice="1">III &ndash; VII &ndash; i</button>
+          <button data-choice="2">i &ndash; IV</button>
+          <button data-choice="3">I &ndash; IV &ndash; V &ndash; I</button>
+        </div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="widget-row" data-correct="2" data-fb="Correct. In modal harmony, there is no dominant-tonic tension from a leading tone. The tonic feels stable because it keeps returning &ndash; stability through repetition, not tension." data-hint="Modal music avoids V-I. How else can a tonal center feel stable?">
+        <div class="widget-row-prompt">5. Modal music establishes a tonal center primarily through&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">a V &ndash; I cadence at the end of each phrase</button>
+          <button data-choice="1">a leading tone pulling a half step up to the tonic</button>
+          <button data-choice="2">repetition of the tonic and characteristic chord pattern</button>
+          <button data-choice="3">modulation to the relative major</button>
+        </div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="widget-row" data-correct="0" data-fb="Correct. Both D Dorian and D Aeolian use i as D minor and VII as C major. The difference is scale degree 6: Dorian has B natural (raised 6th), making IV a G major chord. Aeolian has B&#9837;, making IV a G minor chord." data-hint="D Dorian and D Aeolian share most chords. Which chord is different, and which scale degree causes that?">
+        <div class="widget-row-prompt">6. In D Dorian, what would confirm the mode is Dorian and not D natural minor (Aeolian)?</div>
+        <div class="widget-options">
+          <button data-choice="0">the IV chord is G major (the B natural &ndash; the raised 6th &ndash; makes it major)</button>
+          <button data-choice="1">the i chord is D minor</button>
+          <button data-choice="2">the VII chord is C major</button>
+          <button data-choice="3">the piece uses a key signature with no sharps or flats</button>
+        </div>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="widget-row" data-correct="3" data-fb="Correct. The I &ndash; &#9837;VII &ndash; I rocking never builds toward a V &ndash; I resolution. The energy comes from the oscillation itself &ndash; that is the modal loop principle." data-hint="What harmonic motion does the I &ndash; &#9837;VII &ndash; I loop leave out entirely?">
+        <div class="widget-row-prompt">7. The &ldquo;pendulum&rdquo; Mixolydian schema I &ndash; &#9837;VII &ndash; I creates its effect because&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">it uses a suspension on the &#9837;VII chord</button>
+          <button data-choice="1">it modulates briefly to the subdominant</button>
+          <button data-choice="2">V is implied but not sounded</button>
+          <button data-choice="3">the back-and-forth between I and &#9837;VII creates momentum without a dominant-tonic cadence</button>
+        </div>
+      </div>
+
+      <!-- Row 8 -->
+      <div class="widget-row" data-correct="1" data-fb="Correct. The major IV chord is the fingerprint of Dorian mode. In Aeolian, the IV chord is minor. The minor tonic (i) rules out Mixolydian." data-hint="Which mode has a minor tonic AND a major IV chord?">
+        <div class="widget-row-prompt">8. A piece loops i &ndash; IV &ndash; &#9837;VII &ndash; i throughout. The major IV chord suggests this is in&hellip;</div>
+        <div class="widget-options">
+          <button data-choice="0">Aeolian (natural minor)</button>
+          <button data-choice="1">Dorian</button>
+          <button data-choice="2">Mixolydian</button>
+          <button data-choice="3">Phrygian</button>
+        </div>
+      </div>
+
+      <button class="widget-reset">Reset all answers</button>
+    </div>
+
+    <!-- WHAT YOU'LL DO NEXT -->
+    <div class="card-purple">
+      <div class="section-head-purple">What You&rsquo;ll Do Next</div>
+      <ul class="next-list">
+        <li>Write out the four modal chord progressions in the Canvas Assignment (notebook or MuseScore)</li>
+        <li>Take the Module 14 Modal Schemas Check (auto-graded, multiple attempts allowed)</li>
+        <li>Respond to the Discussion: find a Dorian or Mixolydian example on YouTube and describe what you hear</li>
+      </ul>
+    </div>
+
+    <!-- THE ONE THING TO REMEMBER -->
+    <div class="card-green">
+      <div class="section-head">The One Thing to Remember</div>
+      <p style="font-size:17px; font-weight:600; color:#0E1C42; margin:0;">Modal harmony gets its stability from <em>repetition</em>, not from V &ndash; I tension. The characteristic chord of each mode (&#9837;VII for Mixolydian, major IV for Dorian) is the loop&rsquo;s anchor &ndash; not a dominant waiting to resolve.</p>
+    </div>
+
+  </div><!-- /body-wrap -->
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 14.01 &middot; Modal Schemas</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div><!-- /canvas-frame -->
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+</body>
+</html>

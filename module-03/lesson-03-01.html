@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 - Lesson 3.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    /* reflect-style open answer */
+    .ow-reflect-open textarea { width: 100%; box-sizing: border-box; border: 1.5px solid #D9CEEC; border-radius: 6px; padding: 10px 12px; font-size: 15px; font-family: inherit; color: #0E1C42; resize: vertical; min-height: 80px; margin-top: 8px; }
+    .ow-reflect-open .reveal-btn { background: #6B4C9A; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; cursor: pointer; font-family: inherit; margin-top: 8px; }
+    .ow-reflect-open .reveal-btn:hover { background: #8A6FBF; }
+    .ow-reflect-open .model-response { display: none; background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin-top: 10px; border-radius: 4px; }
+    .ow-reflect-open .model-response.show { display: block; }
+    /* note label chips */
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+    .note-chip-aug { background:#C0392B; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 3</div>
+        <div style="font-size: 12px; color: #666;">Minor Keys, Modes, and Advanced Harmony</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 3.01</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Harmonic Minor</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 35 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">LESSON 3.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Harmonic Minor and the Augmented Triad</div>
+        <div style="font-size: 16px; color: #666;">Lesson</div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">One raised note solves the harmonic problem from Module 2. What else does it create along the way?</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">In Module 2 you found that natural minor's v chord is weak: no leading tone, no strong pull home. Composers solved that by raising scale degree 7 by one half step. That single change creates harmonic minor, restores the strong V-i cadence, and produces two fascinating side effects: an exotic sound called the <strong>augmented 2nd</strong> and a new chord type called the <strong>augmented triad</strong>.</div>
+    </div>
+
+    <!-- Objectives -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> construct a harmonic minor scale from any starting pitch by raising scale degree 7.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain why the raised 7th produces an augmented triad on III and a major V chord.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #2A9D5C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> label all seven diatonic triads of harmonic minor with correct Roman numerals and chord qualities.</div>
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED FOR THIS LESSON</div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Open Music Theory v2: read <em>Minor Scales</em>, Harmonic Minor section (p. 113) and <em>Roman Numerals and SATB Chord Construction</em> (p. 183).</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Your Music Theory notebook and staff paper (or MuseScore) for practice exercises.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #BFE3CC; padding-left: 14px;"><span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.6;">Headphones for listening to harmonic minor scale examples and the V-i cadence at the end.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 1: THE RAISED 7TH ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127926; PART 1 &middot; THE HARMONIC MINOR SCALE</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Start with natural minor. Raise scale degree 7 by <strong>one half step</strong>. That is the only change. The raised 7th is always written as an accidental in the score, not in the key signature, because it is a modification of the key, not a permanent part of it.</p>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">In <strong>A harmonic minor</strong>: the scale runs A-B-C-D-E-F-G&#9839;-A. The G is raised to G&#9839;. G&#9839; is now one half step below A, so it pulls strongly upward to the tonic. That is the definition of a <strong>leading tone</strong>.</p>
+
+        <!-- VISUAL 1: Harmonic minor scale with raised 7th, augmented 2nd bracket -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 16px; text-align:center; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 12px;">A Harmonic Minor: Raised Scale Degree 7</div>
+          <div style="overflow-x: auto;">
+          <svg viewBox="0 0 700 220" width="100%" style="min-width:500px; max-width:700px;" role="img" aria-label="A harmonic minor scale: A, B, C, D, E, F, G-sharp, A. Scale degree 7 (G-sharp) is marked with a raised accidental. The augmented 2nd between F (scale degree 6) and G-sharp (scale degree 7) is bracketed and labeled 3 half steps, the exotic sound.">
+
+            <!-- Scale degree boxes -->
+            <!-- y for degree boxes: 40. Width 75 each, x from 10 -->
+            <!-- Degrees: A(1) B(2) C(3) D(4) E(5) F(6) G#(7) A(8) -->
+            <g>
+              <rect x="10"  y="20" width="72" height="42" rx="5" fill="#0E1C42"/>
+              <rect x="88"  y="20" width="72" height="42" rx="5" fill="#2A9D5C"/>
+              <rect x="166" y="20" width="72" height="42" rx="5" fill="#2A9D5C"/>
+              <rect x="244" y="20" width="72" height="42" rx="5" fill="#2A9D5C"/>
+              <rect x="322" y="20" width="72" height="42" rx="5" fill="#2A9D5C"/>
+              <!-- degree 6: F, left edge of augmented 2nd -->
+              <rect x="400" y="20" width="72" height="42" rx="5" fill="#6B4C9A"/>
+              <!-- degree 7: G#, the raised degree, highlighted red -->
+              <rect x="478" y="20" width="72" height="42" rx="5" fill="#C0392B"/>
+              <!-- degree 8: A octave -->
+              <rect x="556" y="20" width="72" height="42" rx="5" fill="#0E1C42"/>
+            </g>
+
+            <!-- Note labels -->
+            <g font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">
+              <text x="46"  y="46">A</text>
+              <text x="124" y="46">B</text>
+              <text x="202" y="46">C</text>
+              <text x="280" y="46">D</text>
+              <text x="358" y="46">E</text>
+              <text x="436" y="46">F</text>
+              <text x="514" y="46">G&#9839;</text>
+              <text x="592" y="46">A</text>
+            </g>
+
+            <!-- Scale degree numbers -->
+            <g font-size="12" fill="#6b7a99" text-anchor="middle">
+              <text x="46"  y="15">1</text>
+              <text x="124" y="15">2</text>
+              <text x="202" y="15">3</text>
+              <text x="280" y="15">4</text>
+              <text x="358" y="15">5</text>
+              <text x="436" y="15">6</text>
+              <text x="514" y="15">7 &#8593;</text>
+              <text x="592" y="15">8</text>
+            </g>
+
+            <!-- Raised 7 indicator -->
+            <text x="514" y="74" font-size="11" fill="#C0392B" text-anchor="middle" font-weight="bold">RAISED (&#9839;)</text>
+            <text x="514" y="87" font-size="11" fill="#C0392B" text-anchor="middle">leading tone</text>
+            <text x="514" y="100" font-size="11" fill="#C0392B" text-anchor="middle">1/2 step below A</text>
+
+            <!-- Augmented 2nd bracket between F and G# -->
+            <line x1="436" y1="110" x2="436" y2="120" stroke="#8A6FBF" stroke-width="2"/>
+            <line x1="436" y1="120" x2="514" y2="120" stroke="#8A6FBF" stroke-width="2.5"/>
+            <line x1="514" y1="110" x2="514" y2="120" stroke="#8A6FBF" stroke-width="2"/>
+            <text x="475" y="135" font-size="13" fill="#6B4C9A" text-anchor="middle" font-weight="bold">Augmented 2nd</text>
+            <text x="475" y="150" font-size="12" fill="#6B4C9A" text-anchor="middle">= 3 half steps</text>
+            <text x="475" y="165" font-size="11" fill="#6B4C9A" text-anchor="middle">(the exotic sound)</text>
+
+            <!-- Step labels between degrees (below boxes) -->
+            <g font-size="11" fill="#1A6B3C" text-anchor="middle">
+              <text x="77"  y="76">W</text>
+              <text x="155" y="76">H</text>
+              <text x="233" y="76">W</text>
+              <text x="311" y="76">W</text>
+              <text x="389" y="76">H</text>
+            </g>
+            <text x="592" y="76" font-size="11" fill="#C0392B" text-anchor="middle" font-weight="bold">H+</text>
+
+            <!-- Aug 2nd annotated below bracket -->
+            <text x="270" y="185" font-size="12" fill="#666" text-anchor="middle">The jump from F to G&#9839; spans 3 half steps (an augmented 2nd): F to F&#9839; is 1, F&#9839; to G is 2, G to G&#9839; is 3.</text>
+            <text x="270" y="202" font-size="12" fill="#666" text-anchor="middle">This interval gives harmonic minor its tense, exotic sound heard in Middle Eastern and Romani music.</text>
+          </svg>
+          </div>
+        </div>
+
+        <div style="background: #EFEAF6; border-left: 5px solid #6B4C9A; border-radius: 6px; padding: 14px 20px; margin: 4px 0 14px;">
+            <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 8px;">&#128161; THE AUGMENTED 2ND</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">Between scale degrees 6 and 7 in harmonic minor there is a gap of <strong>3 half steps</strong>. A normal major 2nd is 2 half steps; this one is stretched (augmented) by one. You cannot sing it as a smooth step. It leaps, and that leap is the distinctive exotic quality you hear in harmonic minor pieces. It is the trade-off composers accepted to get the strong leading tone they needed.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 2: THE AUGMENTED TRIAD ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127929; PART 2 &middot; THE AUGMENTED TRIAD ON III</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">When you raise scale degree 7, you change what triad sits on scale degree 3. In natural minor, III is a major triad (C-E-G in A minor). In harmonic minor, the G is raised to G&#9839;. Now the triad on III is C-E-G&#9839;: a <strong>root, major third, and augmented fifth</strong>. That is an <strong>augmented triad</strong>, written III+ or III&#43;.</p>
+
+        <!-- VISUAL 2: Augmented triad III+ stacked diagram -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:20px 16px; text-align:center; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 14px;">The Augmented Triad on III (III+) in A Harmonic Minor: C-E-G&#9839;</div>
+          <svg viewBox="0 0 400 260" width="100%" style="max-width:400px;" role="img" aria-label="Augmented triad III-plus built in A harmonic minor. Three notes stacked: C at the bottom (root), E in the middle (major third, 4 half steps up), and G-sharp at the top (augmented fifth, 8 half steps above root). Labels show the intervals between each note.">
+
+            <!-- Background panel -->
+            <rect x="80" y="10" width="240" height="240" rx="10" fill="#EFEAF6" />
+
+            <!-- Top note: G# (augmented fifth) -->
+            <rect x="120" y="25" width="160" height="50" rx="7" fill="#C0392B" />
+            <text x="200" y="53" font-size="18" fill="#ffffff" text-anchor="middle" font-weight="bold">G&#9839;</text>
+            <text x="200" y="68" font-size="12" fill="#ffffff" text-anchor="middle">Augmented 5th (A5)</text>
+
+            <!-- Interval label between E and G#: 4 half steps (major 3rd) -->
+            <line x1="200" y1="80" x2="200" y2="110" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="4,3"/>
+            <rect x="130" y="86" width="140" height="26" rx="4" fill="#FFFFFF" stroke="#D9CEEC"/>
+            <text x="200" y="103" font-size="12" fill="#6B4C9A" text-anchor="middle" font-weight="bold">Major 3rd = 4 half steps</text>
+
+            <!-- Middle note: E (major third above root) -->
+            <rect x="120" y="112" width="160" height="50" rx="7" fill="#6B4C9A" />
+            <text x="200" y="140" font-size="18" fill="#ffffff" text-anchor="middle" font-weight="bold">E</text>
+            <text x="200" y="155" font-size="12" fill="#ffffff" text-anchor="middle">Major 3rd (M3)</text>
+
+            <!-- Interval label between C and E: 4 half steps (major 3rd) -->
+            <line x1="200" y1="167" x2="200" y2="197" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="4,3"/>
+            <rect x="130" y="173" width="140" height="26" rx="4" fill="#FFFFFF" stroke="#D9CEEC"/>
+            <text x="200" y="190" font-size="12" fill="#6B4C9A" text-anchor="middle" font-weight="bold">Major 3rd = 4 half steps</text>
+
+            <!-- Bottom note: C (root) -->
+            <rect x="120" y="200" width="160" height="50" rx="7" fill="#0E1C42" />
+            <text x="200" y="228" font-size="18" fill="#ffffff" text-anchor="middle" font-weight="bold">C</text>
+            <text x="200" y="243" font-size="12" fill="#ffffff" text-anchor="middle">Root (scale degree 3)</text>
+
+            <!-- Right-side total span label -->
+            <line x1="292" y1="30" x2="305" y2="30" stroke="#C0392B" stroke-width="1.5"/>
+            <line x1="305" y1="30" x2="305" y2="245" stroke="#C0392B" stroke-width="1.5"/>
+            <line x1="292" y1="245" x2="305" y2="245" stroke="#C0392B" stroke-width="1.5"/>
+            <text x="320" y="130" font-size="11" fill="#C0392B" text-anchor="start" font-weight="bold">A5 =</text>
+            <text x="320" y="144" font-size="11" fill="#C0392B" text-anchor="start">8 half</text>
+            <text x="320" y="158" font-size="11" fill="#C0392B" text-anchor="start">steps</text>
+          </svg>
+          <div style="font-size:13px; color:#666; margin-top:8px;">Two stacked <strong>major thirds</strong> produce an augmented fifth (8 half steps) instead of a perfect fifth (7 half steps). That extra half step is what makes the triad augmented.</div>
+        </div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">An augmented triad sounds tense and unstable because the top note (the augmented fifth) does not settle the chord. It wants to resolve. Composers used it as a color chord, not as a home base. You will often see III+ resolving to the iv chord in harmonic minor pieces.</p>
+
+        <div style="background: #E7F4EC; border-left: 5px solid #2A9D5C; border-radius: 6px; padding: 14px 20px; margin: 4px 0 0;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#128218; OMT NOTE</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">OMT p. 183 confirms: the augmented triad on III arises in harmonic minor when scale degrees 3-5-7 are used and degree 7 is raised. The symbol III+ means augmented quality on scale degree 3. The + (plus sign) is used because &#43; = augmented in chord symbols.</div>
+        </div>
+    </div>
+
+    <!-- ===================== PART 3: DIATONIC TRIADS OF HARMONIC MINOR ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127928; PART 3 &middot; DIATONIC TRIADS OF HARMONIC MINOR</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Raising scale degree 7 changes three of the seven diatonic triads from natural minor. Compare them side by side:</p>
+
+        <!-- VISUAL 3: Diatonic triads of harmonic minor -->
+        <div style="background:#FCFCFD; border:1px solid #E2E7F0; border-radius:8px; padding:18px 16px; margin: 6px 0 18px;">
+          <div style="font-size: 14px; color: #0E1C42; font-weight: bold; margin-bottom: 12px; text-align: center;">Diatonic Triads of A Harmonic Minor (compare with natural minor)</div>
+          <div style="overflow-x: auto;">
+          <svg viewBox="0 0 700 230" width="100%" style="min-width:500px; max-width:700px;" role="img" aria-label="Seven diatonic triads in A harmonic minor: i minor, ii diminished, III augmented, iv minor, V major (highlighted in green), VI major, vii diminished.">
+            <!-- Roman numerals -->
+            <!-- i -->
+            <rect x="10" y="10" width="80" height="42" rx="5" fill="#0E1C42" />
+            <text x="50" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">i</text>
+            <!-- ii dim -->
+            <rect x="110" y="10" width="80" height="42" rx="5" fill="#6B4C9A" />
+            <text x="150" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">ii&#176;</text>
+            <!-- III+ -->
+            <rect x="210" y="10" width="80" height="42" rx="5" fill="#C0392B" />
+            <text x="250" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">III+</text>
+            <!-- iv -->
+            <rect x="310" y="10" width="80" height="42" rx="5" fill="#0E1C42" />
+            <text x="350" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">iv</text>
+            <!-- V (the payoff -- major now!) -->
+            <rect x="410" y="10" width="80" height="42" rx="5" fill="#1A6B3C" />
+            <text x="450" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">V</text>
+            <!-- VI -->
+            <rect x="510" y="10" width="80" height="42" rx="5" fill="#2A9D5C" />
+            <text x="550" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">VI</text>
+            <!-- vii dim -->
+            <rect x="610" y="10" width="80" height="42" rx="5" fill="#6B4C9A" />
+            <text x="650" y="36" font-size="20" fill="#ffffff" text-anchor="middle" font-weight="bold">vii&#176;</text>
+
+            <!-- Root notes -->
+            <g font-size="14" fill="#0E1C42" text-anchor="middle">
+              <text x="50"  y="76">A</text>
+              <text x="150" y="76">B</text>
+              <text x="250" y="76">C</text>
+              <text x="350" y="76">D</text>
+              <text x="450" y="76">E</text>
+              <text x="550" y="76">F</text>
+              <text x="650" y="76">G&#9839;</text>
+            </g>
+
+            <!-- Quality labels -->
+            <g font-size="12" text-anchor="middle">
+              <text x="50"  y="98" fill="#0E1C42">minor</text>
+              <text x="150" y="98" fill="#6B4C9A">dim</text>
+              <text x="250" y="98" fill="#C0392B" font-weight="bold">aug+</text>
+              <text x="350" y="98" fill="#0E1C42">minor</text>
+              <text x="450" y="98" fill="#1A6B3C" font-weight="bold">MAJOR!</text>
+              <text x="550" y="98" fill="#1A6B3C">major</text>
+              <text x="650" y="98" fill="#6B4C9A">dim</text>
+            </g>
+
+            <!-- Highlight callout for V (payoff) and III+ (side effect) -->
+            <rect x="398" y="108" width="104" height="60" rx="5" fill="#D8F0DD" stroke="#1A6B3C" stroke-width="2"/>
+            <text x="450" y="125" font-size="11" fill="#1A6B3C" text-anchor="middle" font-weight="bold">V is NOW MAJOR</text>
+            <text x="450" y="140" font-size="11" fill="#1A6B3C" text-anchor="middle">(has a leading tone!)</text>
+            <text x="450" y="155" font-size="11" fill="#1A6B3C" text-anchor="middle">Strong V-i cadence</text>
+            <text x="450" y="168" font-size="10" fill="#1A6B3C" text-anchor="middle">= the whole point</text>
+
+            <rect x="198" y="108" width="104" height="50" rx="5" fill="#FDECEC" stroke="#C0392B" stroke-width="1.5"/>
+            <text x="250" y="125" font-size="11" fill="#8A1F16" text-anchor="middle" font-weight="bold">III+ (augmented)</text>
+            <text x="250" y="140" font-size="11" fill="#8A1F16" text-anchor="middle">side effect of</text>
+            <text x="250" y="155" font-size="10" fill="#8A1F16" text-anchor="middle">raised scale deg. 7</text>
+
+            <rect x="598" y="108" width="104" height="50" rx="5" fill="#EFEAF6" stroke="#6B4C9A" stroke-width="1.5"/>
+            <text x="650" y="125" font-size="11" fill="#6B4C9A" text-anchor="middle" font-weight="bold">vii&#176; (dim)</text>
+            <text x="650" y="140" font-size="11" fill="#6B4C9A" text-anchor="middle">replaces natural</text>
+            <text x="650" y="155" font-size="10" fill="#6B4C9A" text-anchor="middle">minor's VII (major)</text>
+
+            <!-- Caption -->
+            <text x="350" y="200" font-size="12" fill="#666" text-anchor="middle">i, ii&#176;, iv, VI stay the same as natural minor. Three change: III becomes III+, v becomes V (major), VII becomes vii&#176;.</text>
+            <text x="350" y="215" font-size="12" fill="#666" text-anchor="middle">All three changes result from the single raised scale degree 7.</text>
+          </svg>
+          </div>
+        </div>
+
+        <div style="background: #D8F0DD; border-left: 5px solid #1A6B3C; border-radius: 6px; padding: 14px 20px; margin: 4px 0 14px;">
+            <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 8px;">&#9989; THE PAYOFF</div>
+            <div style="font-size: 17px; color: #0E1C42; line-height: 1.6;">The V chord in harmonic minor is now <strong>major</strong> (E-G&#9839;-B in A harmonic minor). It contains G&#9839;, the leading tone: one half step below A. When V resolves to i, that G&#9839; pulls upward to A, creating the same strong V-i authentic cadence that major keys use. This is why harmonic minor was developed. The exotic augmented 2nd and the III+ chord are the price paid for that resolution strength.</div>
+        </div>
+
+        <!-- ow-reflect open: think before you look -->
+        <div class="optima-widget ow-reflect-open">
+          <div class="widget-kicker">&#128221; THINK FIRST &middot; THEN CHECK</div>
+          <div class="widget-question">In your notebook: list the three triads in harmonic minor that differ from natural minor, and explain why each one changed. Write your answer before revealing the model response.</div>
+          <textarea placeholder="Write your answer here before tapping Reveal..."></textarea>
+          <br/>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Reveal model response</button>
+          <div class="model-response">Three triads change when you raise scale degree 7 by a half step: (1) <strong>III becomes III+</strong> because the raised 7th is the fifth of the III chord, stretching it from a perfect fifth to an augmented fifth. (2) <strong>v becomes V</strong> (major) because the raised 7th is the third of the V chord, changing it from a minor third to a major third. (3) <strong>VII (major) becomes vii&#176; (diminished)</strong> because the chord that was rooted on the natural scale degree 7 now sits on the raised degree 7, making a diminished triad. All three changes trace back to that single raised note.</div>
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== PART 4: SELECT QUIZ ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 14px;">&#9997;&#65039; PART 4 &middot; CHECK YOUR UNDERSTANDING</div>
+
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 14px 0;">Think through each question using the visuals above. Write your answers in your notebook first, then check.</p>
+
+        <!-- ow-select: scrambled correct indices: 2, 0, 3, 1 -->
+        <div class="optima-widget ow-select">
+          <div class="widget-kicker">&#9889; CHECK IT &middot; HARMONIC MINOR</div>
+          <div class="widget-question">Four questions on harmonic minor. Think before you tap.</div>
+
+          <div class="widget-row" data-correct="2" data-fb="Correct. Harmonic minor raises only scale degree 7. The other six scale degrees stay the same as natural minor." data-hint="Harmonic minor is natural minor with one change. Which scale degree is altered?">
+            <div class="widget-row-prompt">1. Harmonic minor differs from natural minor by&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">lowering scale degree 3 and 6</button>
+              <button data-choice="1">raising scale degree 6 by a half step</button>
+              <button data-choice="2">raising scale degree 7 by a half step</button>
+              <button data-choice="3">adding a flat to scale degree 2</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="0" data-fb="Correct. The interval from scale degree 6 to the raised scale degree 7 is 3 half steps, which is an augmented 2nd. A normal major 2nd is only 2 half steps." data-hint="Count from F to G-sharp: F to F-sharp is 1 half step, F-sharp to G is 2, G to G-sharp is 3. What kind of interval has 3 half steps?">
+            <div class="widget-row-prompt">2. The interval between scale degrees 6 and 7 in harmonic minor is called an&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">augmented 2nd (3 half steps)</button>
+              <button data-choice="1">major 2nd (2 half steps)</button>
+              <button data-choice="2">minor 3rd (3 half steps)</button>
+              <button data-choice="3">diminished 3rd (2 half steps)</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="3" data-fb="Correct. The III+ chord (augmented triad on scale degree 3) uses scale degrees 3-5-7. The raised 7th stretches the fifth of the chord from a perfect fifth to an augmented fifth." data-hint="The III+ chord spans scale degrees 3, 5, and 7. What happens to the interval between 3 and 7 when degree 7 is raised?">
+            <div class="widget-row-prompt">3. The chord on scale degree 3 in harmonic minor is augmented because&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">it has an extra note added on top</button>
+              <button data-choice="1">it uses a lowered scale degree 5</button>
+              <button data-choice="2">scale degree 3 itself is raised</button>
+              <button data-choice="3">the raised scale degree 7 stretches the fifth of that chord from perfect to augmented</button>
+            </div>
+          </div>
+
+          <div class="widget-row" data-correct="1" data-fb="Correct. In A harmonic minor the V chord is E-G#-B. G# is the leading tone, one half step below the tonic A. When V resolves to i, G# steps up to A, creating a strong authentic cadence." data-hint="What notes are in the V chord in A harmonic minor? Look for the leading tone.">
+            <div class="widget-row-prompt">4. In A harmonic minor, the V chord (E-G&#9839;-B) creates a strong cadence to i because&hellip;</div>
+            <div class="widget-options">
+              <button data-choice="0">both chords are minor triads</button>
+              <button data-choice="1">G&#9839; is a leading tone, one half step below A, pulling strongly upward to the tonic</button>
+              <button data-choice="2">the V chord in minor always resolves strongly</button>
+              <button data-choice="3">E is the dominant in all minor keys</button>
+            </div>
+          </div>
+
+          <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===================== WHAT YOU'LL DO NEXT ===================== -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Harmonic Minor Practice (MuseScore)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Build the harmonic minor scale and all seven diatonic triads for A, E, and D harmonic minor in MuseScore. Export your file and submit in Canvas.</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #6B4C9A; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Module 3 Harmonic Minor Check (Canvas quiz)</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Auto-graded quiz on the scale, the augmented 2nd, the III+ chord, and the V chord. Multiple attempts allowed.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; THE ONE THING TO REMEMBER</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Harmonic minor = natural minor with scale degree 7 raised by one half step. That one change buys a strong <strong>V-i cadence</strong> (the whole point) but costs an <strong>augmented 2nd</strong> (the exotic gap between degrees 6 and 7) and produces an <strong>augmented triad on III</strong> (the III+ chord). The diatonic triads are i, ii&#176;, III+, iv, V (major!), VI, vii&#176;. Keep the V in your ear: that is what harmonic minor was invented for.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 3.01 &middot; Harmonic Minor</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      w.querySelectorAll('.model-response').forEach(function (r) { r.classList.remove('show'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>

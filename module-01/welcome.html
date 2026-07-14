@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M/J Music Theory 2 &mdash; Welcome</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+    /* ===== WIDGET CSS (green/purple skin: purple frame, green correct) ===== */
+    .optima-widget { background: linear-gradient(135deg, #EFEAF6 0%, #F7F4FB 100%); border: 1px solid #D9CEEC; border-left: 5px solid #6B4C9A; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #6B4C9A; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-row { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+    .widget-row-prompt { font-size: 15px; color: #0E1C42; margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D9CEEC; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F0FA; border-color: #8A6FBF; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #D8F0DD; border-color: #2A9D5C; color: #1A6B3D; }
+    .widget-options button.incorrect { background: #FDECEC; border-color: #C0392B; color: #8A1F16; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #6B4C9A; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .row-feedback { padding: 8px 12px; margin-top: 8px; font-size: 14px; border-radius: 4px; line-height: 1.5; }
+    .row-feedback.correct { background: #D8F0DD; border-left: 3px solid #2A9D5C; color: #1A6B3D; }
+    .row-feedback.incorrect { background: #FDECEC; border-left: 3px solid #C0392B; color: #8A1F16; }
+    .widget-reset { background: transparent; border: 1px solid #6B4C9A; color: #6B4C9A; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #F0EAF7; }
+    .ow-flip { background: #FFFFFF; border: 1px solid #D9CEEC; border-radius: 8px; padding: 18px 20px; cursor: pointer; text-align: center; }
+    .ow-flip .ow-flip-back { display: none; color: #1a2340; }
+    .ow-flip.flipped .ow-flip-front { display: none; }
+    .ow-flip.flipped .ow-flip-back { display: block; }
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .flip-grid { grid-template-columns: 1fr; } }
+    .note-chip { display:inline-block; min-width:22px; text-align:center; background:#1A6B3C; color:#fff; border-radius:5px; padding:2px 7px; font-size:14px; margin:0 2px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<!-- ===== HEADER ===== -->
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">M/J MUSIC THEORY 2</div>
+</div>
+
+<!-- ===== METADATA STRIP ===== -->
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 1</div>
+        <div style="font-size: 12px; color: #666;">Theory I Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Page</div>
+        <div style="font-size: 17px; color: #0e1c42;">Welcome</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Course Orientation</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Time</div>
+        <div style="font-size: 17px; color: #0e1c42;">About 15 min</div>
+    </div>
+</div>
+
+<!-- ===== BODY WRAPPER ===== -->
+<div style="padding: 24px 34px;">
+
+    <!-- title strip -->
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">WELCOME</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;">Welcome to M/J Music Theory 2</div>
+        <div style="font-size: 16px; color: #666;">Course Orientation</div>
+    </div>
+
+    <!-- Welcome message (green card) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#127925; WELCOME BACK</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 12px;">You already know the fundamentals. Now you go further.</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.65; margin-bottom: 12px;">If you completed Music Theory 1, you spent a year learning the grammar of music: how notes are named and written, how scales and key signatures work, how intervals are built, how triads are constructed, and how Roman numerals describe harmonic motion. That is a real foundation.</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.65;">Music Theory 2 picks up exactly where you left off. This year you will push into territory that working musicians, composers, and arrangers use every day: minor keys in all their forms, the ancient modes, richer chords, counterpoint, classical forms, jazz harmony, world music, and a capstone composition of your own. The tools you already have will carry you here. The new ones will change how you hear everything.</div>
+    </div>
+
+    <!-- What Theory II adds (green card) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#127919; WHAT YOU WILL BUILD THIS YEAR</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6; margin-bottom: 14px;">Theory II has seven major areas, each building on the last:</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px;">
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">1</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Minor keys</strong> in all three scale forms</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">2</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Modes</strong> and modal mixture (borrowed chords)</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">3</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Seventh chords</strong> and their inversions</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">4</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Counterpoint</strong>: two voices in conversation</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">5</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Classical forms</strong>: binary, ternary, sonata, rondo</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">6</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Jazz and world music</strong> harmony and rhythm</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:12px; grid-column: 1 / -1;">
+                <div style="min-width:28px; height:28px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">7</div>
+                <div style="font-size:16px; color:#1a2340; line-height:1.5;"><strong>Advanced composition capstone</strong>: a full original piece applying everything</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Year-at-a-glance roadmap visual (CSS) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 16px;">&#128506; YEAR AT A GLANCE &middot; YOUR FOUR-QUARTER JOURNEY</div>
+
+        <!-- 4-quarter roadmap -->
+        <div style="display:flex; gap:0; align-items:stretch; flex-wrap:wrap;">
+            <!-- Q1 -->
+            <div style="flex:1; min-width:180px; background:#1A6B3C; color:#fff; border-radius:8px 0 0 8px; padding:18px 16px; position:relative;">
+                <div style="font-size:11px; opacity:0.8; margin-bottom:6px; letter-spacing:0.5px;">QUARTER 1</div>
+                <div style="font-size:16px; font-weight:600; margin-bottom:8px; line-height:1.3;">Minor Keys &amp; Modes</div>
+                <div style="font-size:13px; opacity:0.9; line-height:1.5;">Natural, harmonic, melodic minor &middot; minor key signatures &middot; all 7 modes &middot; modal mixture</div>
+                <div style="position:absolute; right:-13px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:18px solid transparent; border-bottom:18px solid transparent; border-left:14px solid #1A6B3C; z-index:2;"></div>
+            </div>
+            <!-- Q2 -->
+            <div style="flex:1; min-width:180px; background:#2A9D5C; color:#fff; padding:18px 16px 18px 26px; position:relative;">
+                <div style="font-size:11px; opacity:0.85; margin-bottom:6px; letter-spacing:0.5px;">QUARTER 2</div>
+                <div style="font-size:16px; font-weight:600; margin-bottom:8px; line-height:1.3;">Form, Counterpoint &amp; Jazz</div>
+                <div style="font-size:13px; opacity:0.9; line-height:1.5;">Seventh chords &middot; SATB voice leading &middot; counterpoint &middot; binary/ternary/sonata &middot; jazz basics</div>
+                <div style="position:absolute; right:-13px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:18px solid transparent; border-bottom:18px solid transparent; border-left:14px solid #2A9D5C; z-index:2;"></div>
+            </div>
+            <!-- Q3 -->
+            <div style="flex:1; min-width:180px; background:#6B4C9A; color:#fff; padding:18px 16px 18px 26px; position:relative;">
+                <div style="font-size:11px; opacity:0.85; margin-bottom:6px; letter-spacing:0.5px;">QUARTER 3</div>
+                <div style="font-size:16px; font-weight:600; margin-bottom:8px; line-height:1.3;">Popular, World &amp; 20th-Century</div>
+                <div style="font-size:13px; opacity:0.9; line-height:1.5;">Rock/pop &middot; world music rhythms &middot; 20th-century techniques &middot; chromatic harmony intro</div>
+                <div style="position:absolute; right:-13px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:18px solid transparent; border-bottom:18px solid transparent; border-left:14px solid #6B4C9A; z-index:2;"></div>
+            </div>
+            <!-- Q4 -->
+            <div style="flex:1; min-width:180px; background:#8A6FBF; color:#fff; padding:18px 16px 18px 26px; border-radius:0 8px 8px 0;">
+                <div style="font-size:11px; opacity:0.85; margin-bottom:6px; letter-spacing:0.5px;">QUARTER 4</div>
+                <div style="font-size:16px; font-weight:600; margin-bottom:8px; line-height:1.3;">Chromatic Harmony &amp; Capstone</div>
+                <div style="font-size:13px; opacity:0.9; line-height:1.5;">Secondary dominants &middot; borrowed chords &middot; Neapolitan &middot; capstone composition + portfolio</div>
+            </div>
+        </div>
+        <div style="font-size:13px; color:#666; margin-top:10px; text-align:center;">37 modules total &middot; approximately one module per week &middot; about 80 minutes per week</div>
+    </div>
+
+    <!-- How this async course works (green card) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128218; HOW THIS COURSE WORKS</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.65; margin-bottom: 14px;">Music Theory 2 is fully self-paced. You decide when you work each week, as long as you keep up with the module pace. Here is the rhythm:</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:14px;">
+                <span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+                <div style="font-size: 17px; color: #1a2340; line-height: 1.6;"><strong>One module per week</strong> (~80 minutes total). No fixed meeting times.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:14px;">
+                <span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+                <div style="font-size: 17px; color: #1a2340; line-height: 1.6;"><strong>Interactive lessons</strong> are on GitHub and embedded in Canvas. Work through them at your own pace before doing Canvas assignments.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:14px;">
+                <span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+                <div style="font-size: 17px; color: #1a2340; line-height: 1.6;"><strong>Open Music Theory v2</strong> is your free textbook. Every reading is linked directly in the lesson. No purchase needed.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:14px;">
+                <span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+                <div style="font-size: 17px; color: #1a2340; line-height: 1.6;"><strong>MuseScore</strong> (free) is your notation software for composition work. Download it at musescore.org if you do not already have it.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px; border-left:3px solid #BFE3CC; padding-left:14px;">
+                <span style="color: #1A6B3C; font-size: 18px; flex-shrink: 0;">&#9654;</span>
+                <div style="font-size: 17px; color: #1a2340; line-height: 1.6;"><strong>Questions?</strong> Use Canvas messaging to reach your instructor. Optional ungraded office hours are posted in Canvas each week - check the Announcements.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- What you need list (green card) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 14px;">&#128203; WHAT YOU NEED</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.65; margin-bottom: 12px;">You need all of these before Module 1 is due:</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:22px; height:22px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">&#10003;</div>
+                <div style="font-size:17px; color:#1a2340; line-height:1.6;"><strong>A device with internet access</strong> for Canvas, lessons, and Open Music Theory</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:22px; height:22px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">&#10003;</div>
+                <div style="font-size:17px; color:#1a2340; line-height:1.6;"><strong>MuseScore</strong> (free at musescore.org) - install now if you do not have it</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:22px; height:22px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">&#10003;</div>
+                <div style="font-size:17px; color:#1a2340; line-height:1.6;"><strong>A Theory notebook</strong> (digital Word doc or paper) for working out exercises</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:22px; height:22px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">&#10003;</div>
+                <div style="font-size:17px; color:#1a2340; line-height:1.6;"><strong>Headphones</strong> for ear-training exercises and listening activities</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="min-width:22px; height:22px; border-radius:50%; background:#2A9D5C; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">&#10003;</div>
+                <div style="font-size:17px; color:#1a2340; line-height:1.6;"><strong>Open Music Theory v2</strong> - free at viva.pressbooks.pub/openmusictheory (bookmark it now)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How to succeed (purple card) -->
+    <div style="background: #FFFFFF; border-top: 3px solid #6B4C9A; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #6B4C9A; margin-bottom: 14px;">&#9889; HOW TO SUCCEED IN THIS COURSE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.65; margin-bottom: 14px;">Theory 2 is more demanding than Theory 1 - that is expected, and it is manageable. Three habits make the difference:</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="background: #EFEAF6; border-radius: 8px; padding: 14px 18px; border-left: 4px solid #6B4C9A;">
+                <div style="font-size: 16px; color: #0e1c42; font-weight: 600; margin-bottom: 4px;">1. Work a little every day rather than all at once.</div>
+                <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">Ear training and notation recognition are motor skills. Short daily sessions beat one long session. Even 10 minutes counts.</div>
+            </div>
+            <div style="background: #EFEAF6; border-radius: 8px; padding: 14px 18px; border-left: 4px solid #6B4C9A;">
+                <div style="font-size: 16px; color: #0e1c42; font-weight: 600; margin-bottom: 4px;">2. Use the OMT reading before the lesson, not after.</div>
+                <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">Each lesson links the exact pages. Read first, then work through the lesson. The concepts click faster when you have seen the vocabulary.</div>
+            </div>
+            <div style="background: #EFEAF6; border-radius: 8px; padding: 14px 18px; border-left: 4px solid #6B4C9A;">
+                <div style="font-size: 16px; color: #0e1c42; font-weight: 600; margin-bottom: 4px;">3. Ask early, not the night before something is due.</div>
+                <div style="font-size: 15px; color: #1a2340; line-height: 1.55;">Canvas messaging reaches your instructor. Peers in the discussion boards are also a resource. Theory gets easier when you talk through it.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap-up -->
+    <div style="background: #FFFFFF; border-top: 3px solid #2A9D5C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #1A6B3C; margin-bottom: 12px;">&#128170; READY TO BEGIN</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">When you are ready, head to <strong>Lesson 1.01</strong> for a Theory I refresher. You will review the fundamentals that carry you through all of Theory 2 and take a self-assessment to identify where you want to strengthen your skills before new content starts in Module 2.</p>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; M/J MUSIC THEORY 2 &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Module 1 &middot; Welcome &amp; Course Orientation</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<!-- ===== WIDGET RUNTIME ===== -->
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      w.querySelectorAll('.row-feedback').forEach(function (f) { f.remove(); });
+      w.querySelectorAll('.ow-flip.flipped').forEach(function (c) { c.classList.remove('flipped'); });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var sBtn = e.target.closest('.ow-select .widget-row .widget-options button');
+    if (sBtn) {
+      var row = sBtn.closest('.widget-row');
+      var correct = row.dataset.correct;
+      row.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected', 'correct', 'incorrect'); });
+      var right = sBtn.dataset.choice === correct;
+      sBtn.classList.add(right ? 'correct' : 'incorrect');
+      var text = right ? (sBtn.dataset.fb || row.dataset.fb || 'Right.') : (sBtn.dataset.fb || row.dataset.hint || 'Not quite. Try again.');
+      var rf = row.querySelector('.row-feedback') || row.appendChild(document.createElement('div'));
+      rf.className = 'row-feedback ' + (right ? 'correct' : 'incorrect');
+      rf.textContent = text;
+      return;
+    }
+    var flip = e.target.closest('.ow-flip');
+    if (flip) { flip.classList.toggle('flipped'); return; }
+  });
+})();
+</script>
+
+</body>
+</html>
